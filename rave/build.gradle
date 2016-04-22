@@ -1,0 +1,13 @@
+apply plugin: 'maven'
+apply plugin: 'cobertura'
+
+dependencies {
+    provided project(":support-annotations")
+
+    testCompile project(":rave-test")
+    testCompile 'junit:junit:4.10'
+}
+
+cobertura {
+    coverageFormats = ['html', 'xml']
+}

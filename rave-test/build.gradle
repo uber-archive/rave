@@ -1,0 +1,6 @@
+apply plugin: 'maven'
+
+dependencies {
+    provided project(":support-annotations")
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}

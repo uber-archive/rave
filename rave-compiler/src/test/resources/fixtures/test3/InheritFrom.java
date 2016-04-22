@@ -1,0 +1,25 @@
+package fixtures.test3;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import fixtures.SampleFactory;
+
+import com.ubercab.rave.annotation.Validated;
+
+@Validated(factory = SampleFactory.class)
+public class InheritFrom extends ValidateSample2 implements ValidateByInterface {
+
+    protected InheritFrom(String notNullField) {
+        super(notNullField);
+    }
+
+    @NonNull
+    @Override
+    public String getNonNullString() {
+        return "Fooo";
+    }
+
+    @Nullable
+    public String getANullableString() { return null; }
+}

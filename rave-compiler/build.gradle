@@ -1,0 +1,31 @@
+apply plugin: 'maven'
+apply plugin: 'cobertura'
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ["src/test/java"]
+        }
+    }
+}
+
+dependencies {
+    provided 'com.google.auto.service:auto-service:1.0-rc2'
+    provided project(":support-annotations")
+
+    compile project(':rave')
+    compile 'com.google.auto:auto-common:0.4'
+    compile 'com.google.guava:guava:19.0-rc2'
+    compile 'com.squareup:javapoet:1.2.0'
+
+    testCompile project(":rave-test")
+    testCompile 'org.assertj:assertj-core:1.7.1'
+    testCompile 'com.google.android:android:4.1.1.4'
+    testCompile 'com.google.testing.compile:compile-testing:0.5'
+    testCompile files("${System.properties['java.home']}/../lib/tools.jar")
+    dependencies { testCompile "org.mockito:mockito-core:1.+" }
+}
+
+cobertura {
+    coverageFormats = ['html', 'xml']
+}

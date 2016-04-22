@@ -1,0 +1,40 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:3.0.1'
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.8'
+    }
+}
+
+allprojects {
+    apply plugin: 'checkstyle'
+    apply plugin: 'java'
+    apply plugin: 'nebula.provided-base'
+
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+
+    group = "com.ubercab"
+    version = "0.6.0"
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    checkstyle {
+        toolVersion = '6.17'
+    }
+
+    dependencies {
+        testCompile 'org.slf4j:slf4j-api:1.7.6'
+    }
+
+    checkstyleTest {
+        configFile = new File("config/checkstyle/checkstyle-test.xml")
+    }
+}
+
