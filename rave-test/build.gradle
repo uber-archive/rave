@@ -1,0 +1,34 @@
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'nebula.provided-base'
+
+def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
+def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
+for (File file : sdkHandler.sdkLoader.repositories) {
+    repositories.maven {
+        url = file.toURI()
+    }
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+configurations {
+    provided
+    compile.extendsFrom provided
+}
+
+dependencies {
+    compile deps.supportAnnotations
+    testCompile deps.slf4japi
+}
+
+checkstyle {
+    toolVersion = '6.17'
+}
+
+checkstyleTest {
+    configFile = new File("config/checkstyle/checkstyle-test.xml")
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
