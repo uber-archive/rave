@@ -1,0 +1,55 @@
+apply plugin: 'java'
+apply plugin: 'cobertura'
+apply plugin: 'checkstyle'
+apply plugin: 'nebula.provided-base'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
+def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
+for (File file : sdkHandler.sdkLoader.repositories) {
+    repositories.maven {
+        url = file.toURI()
+    }
+}
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ["src/test/java"]
+        }
+    }
+}
+
+dependencies {
+    compile project(':rave')
+    compile deps.supportAnnotations
+    provided 'com.google.auto.service:auto-service:1.0-rc2'
+
+    compile 'com.google.auto:auto-common:0.4'
+    compile 'com.google.guava:guava:19.0-rc2'
+    compile 'com.squareup:javapoet:1.2.0'
+
+    testCompile project(":rave-test")
+    testCompile 'org.assertj:assertj-core:1.7.1'
+    testCompile 'com.google.android:android:4.1.1.4'
+    testCompile 'com.google.testing.compile:compile-testing:0.5'
+    testCompile 'org.slf4j:slf4j-api:1.7.6'
+    testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+    testCompile "org.mockito:mockito-core:1.+"
+}
+
+cobertura {
+    coverageFormats = ['html', 'xml']
+}
+
+checkstyle {
+    toolVersion = '6.17'
+}
+
+checkstyleTest {
+    configFile = new File("config/checkstyle/checkstyle-test.xml")
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
