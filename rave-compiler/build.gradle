@@ -1,5 +1,27 @@
 apply plugin: 'maven'
 apply plugin: 'cobertura'
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'nebula.provided-base'
+
+
+def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
+def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
+for (File file : sdkHandler.sdkLoader.repositories) {
+    repositories.maven {
+        url = file.toURI()
+    }
+}
+
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+configurations {
+    provided
+    compile.extendsFrom provided
+}
+
 
 sourceSets {
     test {
@@ -11,7 +33,7 @@ sourceSets {
 
 dependencies {
     provided 'com.google.auto.service:auto-service:1.0-rc2'
-    provided project(":support-annotations")
+    compile deps.supportAnnotations
 
     compile project(':rave')
     compile 'com.google.auto:auto-common:0.4'
@@ -22,10 +44,25 @@ dependencies {
     testCompile 'org.assertj:assertj-core:1.7.1'
     testCompile 'com.google.android:android:4.1.1.4'
     testCompile 'com.google.testing.compile:compile-testing:0.5'
-    testCompile files("${System.properties['java.home']}/../lib/tools.jar")
+    testCompile 'org.slf4j:slf4j-api:1.7.6'
+    testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
     dependencies { testCompile "org.mockito:mockito-core:1.+" }
 }
 
 cobertura {
     coverageFormats = ['html', 'xml']
 }
+
+
+group = "com.ubercab"
+version = "0.6.0"
+
+
+checkstyle {
+    toolVersion = '6.17'
+}
+
+checkstyleTest {
+    configFile = new File("config/checkstyle/checkstyle-test.xml")
+}
+
