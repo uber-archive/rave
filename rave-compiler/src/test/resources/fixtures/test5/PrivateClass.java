@@ -2,7 +2,7 @@ package fixtures.test5;
 
 import fixtures.SampleFactory;
 
-import com.ubercab.rave.annotation.Validated;
+import com.uber.rave.annotation.Validated;
 
 
 public class PrivateClass<T> {

@@ -1,13 +1,13 @@
-package com.ubercab.rave.model;
+package com.uber.rave.model;
 
 import android.support.annotation.IntRange;
 
-import com.ubercab.rave.AnnotationSpecs;
-import com.ubercab.rave.LongCreator;
-import com.ubercab.rave.ObjectCreator;
-import com.ubercab.rave.ObjectCreatorIncrementer;
-import com.ubercab.rave.annotation.Validated;
-import com.ubercab.rave.compiler.MyFactory;
+import com.uber.rave.AnnotationSpecs;
+import com.uber.rave.LongCreator;
+import com.uber.rave.ObjectCreator;
+import com.uber.rave.ObjectCreatorIncrementer;
+import com.uber.rave.annotation.Validated;
+import com.uber.rave.compiler.MyFactory;
 
 /**
  * Test IntRange annotation code generation.
@@ -28,7 +28,7 @@ public class IntRangeTestModel {
         return value;
     }
 
-    public static class Builder extends ObjectCreator<IntRangeTestModel> {
+    public static class Builder extends ObjectCreator<com.uber.rave.model.IntRangeTestModel> {
 
         private final LongCreator matchIntRangeCreator;
         private final ObjectCreatorIncrementer incrementer;
@@ -46,14 +46,14 @@ public class IntRangeTestModel {
 
         public void buildValidCases() {
             while (incrementer.hasValidPermutations()) {
-                addValidType(new IntRangeTestModel(matchIntRangeCreator.getValidItem()));
+                addValidType(new com.uber.rave.model.IntRangeTestModel(matchIntRangeCreator.getValidItem()));
                 incrementer.incrementValidCreators();
             }
         }
 
         public void buildInvalidCases() {
             while (incrementer.hasInvalidPermutations()) {
-                addInvalidType(new IntRangeTestModel(matchIntRangeCreator.getInvalidItem()));
+                addInvalidType(new com.uber.rave.model.IntRangeTestModel(matchIntRangeCreator.getInvalidItem()));
                 incrementer.incrementInvalidCreators();
             }
         }

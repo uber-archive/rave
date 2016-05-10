@@ -20,11 +20,11 @@ RAVE will leverage the user provided annotation to provide concise and efficient
 To integrate RAVE into your project add the following to your dependencies in your 'build.gradle' file:
 
 ```
-apt 'com.ubercab:rave-compiler:0.5.0'
+apt 'com.uber:rave-compiler:0.5.0'
 ```
 
 ```
-compile 'com.ubercab:rave:0.5.0'
+compile 'com.uber:rave:0.5.0'
 ```
 
 ## Code Example

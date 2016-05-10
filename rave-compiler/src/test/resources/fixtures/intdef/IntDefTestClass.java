@@ -1,6 +1,6 @@
 package fixtures.intdef;
 
-import com.ubercab.rave.annotation.Validated;
+import com.uber.rave.annotation.Validated;
 import fixtures.SampleFactory;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

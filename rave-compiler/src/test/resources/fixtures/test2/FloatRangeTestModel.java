@@ -1,13 +1,13 @@
-package com.ubercab.rave.model;
+package com.uber.rave.model;
 
 import android.support.annotation.FloatRange;
 
-import com.ubercab.rave.AnnotationSpecs;
-import com.ubercab.rave.DoubleCreator;
-import com.ubercab.rave.ObjectCreator;
-import com.ubercab.rave.ObjectCreatorIncrementer;
-import com.ubercab.rave.annotation.Validated;
-import com.ubercab.rave.compiler.MyFactory;
+import com.uber.rave.AnnotationSpecs;
+import com.uber.rave.DoubleCreator;
+import com.uber.rave.ObjectCreator;
+import com.uber.rave.ObjectCreatorIncrementer;
+import com.uber.rave.annotation.Validated;
+import com.uber.rave.compiler.MyFactory;
 
 /**
  * A class that uses {@link android.support.annotation.FloatRange} annotation.
@@ -28,7 +28,7 @@ public class FloatRangeTestModel {
         return value;
     }
 
-    public static class Builder extends ObjectCreator<FloatRangeTestModel> {
+    public static class Builder extends ObjectCreator<com.uber.rave.model.FloatRangeTestModel> {
 
         private final DoubleCreator matchFloatRangeCreator;
         private final ObjectCreatorIncrementer incrementer;
@@ -46,14 +46,14 @@ public class FloatRangeTestModel {
 
         public void buildValidCases() {
             while (incrementer.hasValidPermutations()) {
-                addValidType(new FloatRangeTestModel(matchFloatRangeCreator.getValidItem()));
+                addValidType(new com.uber.rave.model.FloatRangeTestModel(matchFloatRangeCreator.getValidItem()));
                 incrementer.incrementValidCreators();
             }
         }
 
         public void buildInvalidCases() {
             while (incrementer.hasInvalidPermutations()) {
-                addInvalidType(new FloatRangeTestModel(matchFloatRangeCreator.getInvalidItem()));
+                addInvalidType(new com.uber.rave.model.FloatRangeTestModel(matchFloatRangeCreator.getInvalidItem()));
                 incrementer.incrementInvalidCreators();
             }
         }

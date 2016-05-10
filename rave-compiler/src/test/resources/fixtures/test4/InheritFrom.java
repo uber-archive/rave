@@ -2,7 +2,7 @@ package fixtures.test4;
 
 import fixtures.SampleFactory;
 
-import com.ubercab.rave.annotation.Validated;
+import com.uber.rave.annotation.Validated;
 
 /**
  * Sample class that shows how inheritence would work with validation.

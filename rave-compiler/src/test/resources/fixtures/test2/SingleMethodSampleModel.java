@@ -1,15 +1,15 @@
-package com.ubercab.rave.model;
+package com.uber.rave.model;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 import android.support.annotation.StringDef;
 
-import com.ubercab.rave.AnnotationSpecs;
-import com.ubercab.rave.ObjectCreator;
-import com.ubercab.rave.ObjectCreatorIncrementer;
-import com.ubercab.rave.StringCreator;
-import com.ubercab.rave.annotation.Validated;
-import com.ubercab.rave.compiler.MyFactory;
+import com.uber.rave.AnnotationSpecs;
+import com.uber.rave.ObjectCreator;
+import com.uber.rave.ObjectCreatorIncrementer;
+import com.uber.rave.StringCreator;
+import com.uber.rave.annotation.Validated;
+import com.uber.rave.compiler.MyFactory;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -51,7 +51,7 @@ public class SingleMethodSampleModel {
         return matchStringDef;
     }
 
-    public static class Builder extends ObjectCreator<SingleMethodSampleModel> {
+    public static class Builder extends ObjectCreator<com.uber.rave.model.SingleMethodSampleModel> {
 
         ObjectCreatorIncrementer incrementer;
         private final StringCreator notNullStringCreator = new StringCreator(1, 20, 2, false);
@@ -70,7 +70,7 @@ public class SingleMethodSampleModel {
 
         private void buildValidCases() {
             while (incrementer.hasValidPermutations()) {
-                addValidType(new SingleMethodSampleModel(notNullStringCreator.getValidItem(),
+                addValidType(new com.uber.rave.model.SingleMethodSampleModel(notNullStringCreator.getValidItem(),
                         matchStringDefStringCreator.getValidItem()));
                 incrementer.incrementValidCreators();
             }
@@ -78,7 +78,7 @@ public class SingleMethodSampleModel {
 
         private void buildInvalidCases() {
             while (incrementer.hasInvalidPermutations()) {
-                addInvalidType(new SingleMethodSampleModel(notNullStringCreator.getInvalidItem(),
+                addInvalidType(new com.uber.rave.model.SingleMethodSampleModel(notNullStringCreator.getInvalidItem(),
                         matchStringDefStringCreator.getInvalidItem()));
                 incrementer.incrementInvalidCreators();
             }

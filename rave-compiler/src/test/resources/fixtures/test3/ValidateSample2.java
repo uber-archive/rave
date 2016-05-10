@@ -3,7 +3,7 @@ package fixtures.test3;
 import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 
-import com.ubercab.rave.annotation.Validated;
+import com.uber.rave.annotation.Validated;
 
 import fixtures.SampleFactory;
 

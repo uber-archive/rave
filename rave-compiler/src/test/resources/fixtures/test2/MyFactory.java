@@ -18,12 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package com.ubercab.rave.compiler;
+package com.uber.rave.compiler;
 
 import android.support.annotation.NonNull;
 
-import com.ubercab.rave.BaseValidator;
-import com.ubercab.rave.ValidatorFactory;
+import com.uber.rave.BaseValidator;
+import com.uber.rave.ValidatorFactory;
 
 public final class MyFactory implements ValidatorFactory {
     @NonNull

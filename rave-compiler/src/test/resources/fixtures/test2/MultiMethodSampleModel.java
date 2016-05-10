@@ -1,19 +1,19 @@
-package com.ubercab.rave.model;
+package com.uber.rave.model;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 
-import com.ubercab.rave.AnnotationSpecs;
-import com.ubercab.rave.BooleanCreator;
-import com.ubercab.rave.CollectionCreator;
-import com.ubercab.rave.annotation.MustBeFalse;
-import com.ubercab.rave.annotation.MustBeTrue;
-import com.ubercab.rave.ObjectCreatorIncrementer;
-import com.ubercab.rave.ParameterizedBuilder;
-import com.ubercab.rave.StringCreator;
-import com.ubercab.rave.annotation.Validated;
-import com.ubercab.rave.compiler.MyFactory;
+import com.uber.rave.AnnotationSpecs;
+import com.uber.rave.BooleanCreator;
+import com.uber.rave.CollectionCreator;
+import com.uber.rave.annotation.MustBeFalse;
+import com.uber.rave.annotation.MustBeTrue;
+import com.uber.rave.ObjectCreatorIncrementer;
+import com.uber.rave.ParameterizedBuilder;
+import com.uber.rave.StringCreator;
+import com.uber.rave.annotation.Validated;
+import com.uber.rave.compiler.MyFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +25,7 @@ import java.util.List;
 @Validated(factory = MyFactory.class)
 public class MultiMethodSampleModel {
 
-    final NonAnnotated annotatedObject;
+    final com.uber.rave.model.NonAnnotated annotatedObject;
     String notNullField;
     String canBeNullField;
     String betweenOneAndFive;
@@ -34,7 +34,7 @@ public class MultiMethodSampleModel {
     private boolean mustBeTrue;
 
     public MultiMethodSampleModel(
-            NonAnnotated annotatedObject,
+            com.uber.rave.model.NonAnnotated annotatedObject,
             String notNullField,
             String canBeNullField,
             String betweenOneAndFive,
@@ -51,7 +51,7 @@ public class MultiMethodSampleModel {
     }
 
     @Nullable
-    public NonAnnotated getNonAnnotatedObject() {
+    public com.uber.rave.model.NonAnnotated getNonAnnotatedObject() {
         return annotatedObject;
     }
 
@@ -119,11 +119,11 @@ public class MultiMethodSampleModel {
     }
 
     /**
-     * The parameterized builder for {@link MultiMethodSampleModel}.
+     * The parameterized builder for {@link com.uber.rave.model.MultiMethodSampleModel}.
      */
-    public static class Builder implements ParameterizedBuilder<MultiMethodSampleModel> {
-        List<MultiMethodSampleModel> validModels = new ArrayList<>();
-        List<MultiMethodSampleModel> invalidModels = new ArrayList<>();
+    public static class Builder implements ParameterizedBuilder<com.uber.rave.model.MultiMethodSampleModel> {
+        List<com.uber.rave.model.MultiMethodSampleModel> validModels = new ArrayList<>();
+        List<com.uber.rave.model.MultiMethodSampleModel> invalidModels = new ArrayList<>();
         ObjectCreatorIncrementer mIncrementer;
         private final StringCreator nonAnnotatedString = new StringCreator(false);
         private final StringCreator notNullFieldCreator = new StringCreator(false);
@@ -140,10 +140,10 @@ public class MultiMethodSampleModel {
                     canBeNullFieldCreator, betweenOneAndFive, mustBeTrue, names);
         }
         @Override
-        public Collection<MultiMethodSampleModel> getValidCases() {
+        public Collection<com.uber.rave.model.MultiMethodSampleModel> getValidCases() {
             while (mIncrementer.hasValidPermutations()) {
-                validModels.add(new MultiMethodSampleModel(
-                        new NonAnnotated(nonAnnotatedString.getValidItem()),
+                validModels.add(new com.uber.rave.model.MultiMethodSampleModel(
+                        new com.uber.rave.model.NonAnnotated(nonAnnotatedString.getValidItem()),
                         notNullFieldCreator.getValidItem(),
                         canBeNullFieldCreator.getValidItem(), betweenOneAndFive.getValidItem(),
                         mustBeTrue.getValidItem(), names.getValidItem()));
@@ -153,10 +153,10 @@ public class MultiMethodSampleModel {
         }
 
         @Override
-        public Collection<MultiMethodSampleModel> getInvalidCases() {
+        public Collection<com.uber.rave.model.MultiMethodSampleModel> getInvalidCases() {
             while (mIncrementer.hasInvalidPermutations()) {
-                invalidModels.add(new MultiMethodSampleModel(
-                        new NonAnnotated(nonAnnotatedString.getInvalidItem()),
+                invalidModels.add(new com.uber.rave.model.MultiMethodSampleModel(
+                        new com.uber.rave.model.NonAnnotated(nonAnnotatedString.getInvalidItem()),
                         notNullFieldCreator.getInvalidItem(),
                         canBeNullFieldCreator.getInvalidItem(), betweenOneAndFive.getInvalidItem(),
                         mustBeTrue.getInvalidItem(), names.getInvalidItem()));

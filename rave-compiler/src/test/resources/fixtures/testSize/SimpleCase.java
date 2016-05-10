@@ -4,7 +4,7 @@ import fixtures.SampleFactory;
 
 import android.support.annotation.Size;
 
-import com.ubercab.rave.annotation.Validated;
+import com.uber.rave.annotation.Validated;
 
 @Validated(factory = SampleFactory.class)
 public class SimpleCase {

@@ -1,10 +1,10 @@
 package fixtures;
 
 import android.support.annotation.NonNull;
-import com.ubercab.rave.BaseValidator;
-import com.ubercab.rave.ExclusionStrategy;
-import com.ubercab.rave.InvalidModelException;
-import com.ubercab.rave.RaveError;
+import com.uber.rave.BaseValidator;
+import com.uber.rave.ExclusionStrategy;
+import com.uber.rave.InvalidModelException;
+import com.uber.rave.RaveError;
 import fixtures.test1.SimpleCase;
 import java.lang.Class;
 import java.lang.IllegalArgumentException;

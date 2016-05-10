@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import fixtures.SampleFactory;
 
-import com.ubercab.rave.annotation.Validated;
+import com.uber.rave.annotation.Validated;
 
 @Validated(factory = SampleFactory.class)
 public class InheritFrom extends ValidateSample2 implements ValidateByInterface {

@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 
-import com.ubercab.rave.annotation.MustBeFalse;
-import com.ubercab.rave.annotation.Validated;
+import com.uber.rave.annotation.MustBeFalse;
+import com.uber.rave.annotation.Validated;
 
 import fixtures.SampleFactory;
 

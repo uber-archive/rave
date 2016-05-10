@@ -1,12 +1,13 @@
-package com.ubercab.rave.model;
+package com.uber.rave.model;
 
 import android.support.annotation.NonNull;
 
-import com.ubercab.rave.ObjectCreatorIncrementer;
-import com.ubercab.rave.ParameterizedBuilder;
-import com.ubercab.rave.StringCreator;
-import com.ubercab.rave.annotation.Validated;
-import com.ubercab.rave.compiler.MyFactory;
+import com.uber.rave.model.SingleMethodSampleModel;
+import com.uber.rave.ObjectCreatorIncrementer;
+import com.uber.rave.ParameterizedBuilder;
+import com.uber.rave.StringCreator;
+import com.uber.rave.annotation.Validated;
+import com.uber.rave.compiler.MyFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +17,8 @@ import java.util.List;
  * Sample class that shows how inheritence would work with validation.
  */
 @Validated(factory = MyFactory.class)
-public class InheritFrom extends SingleMethodSampleModel implements ValidateByInterface {
+public class InheritFrom extends com.uber.rave.model.SingleMethodSampleModel implements
+        com.uber.rave.model.ValidateByInterface {
 
     private final String nonNullString;
 
@@ -26,7 +28,7 @@ public class InheritFrom extends SingleMethodSampleModel implements ValidateByIn
     }
 
     /**
-     * @return Returns some nonnull string. See {@link ValidateByInterface} for additional restrictions on this
+     * @return Returns some nonnull string. See {@link com.uber.rave.model.ValidateByInterface} for additional restrictions on this
      * method.
      */
     @NonNull
@@ -42,10 +44,10 @@ public class InheritFrom extends SingleMethodSampleModel implements ValidateByIn
         return result;
     }
 
-    public static class Builder implements ParameterizedBuilder<InheritFrom> {
+    public static class Builder implements ParameterizedBuilder<com.uber.rave.model.InheritFrom> {
 
-        List<InheritFrom> validModels = new ArrayList<>();
-        List<InheritFrom> invalidModels = new ArrayList<>();
+        List<com.uber.rave.model.InheritFrom> validModels = new ArrayList<>();
+        List<com.uber.rave.model.InheritFrom> invalidModels = new ArrayList<>();
         ObjectCreatorIncrementer mIncrementer;
         // This size constraints come from the inherited interface.
         private final StringCreator nonNullString = new StringCreator(0, 4, 1, false);
@@ -56,20 +58,20 @@ public class InheritFrom extends SingleMethodSampleModel implements ValidateByIn
         }
 
         @Override
-        public Collection<InheritFrom> getValidCases() {
+        public Collection<com.uber.rave.model.InheritFrom> getValidCases() {
             while (mIncrementer.hasValidPermutations()) {
                 validModels.add(
-                        new InheritFrom(nonNullString.getValidItem(), nonNullField1to20Multiof2.getValidItem()));
+                        new com.uber.rave.model.InheritFrom(nonNullString.getValidItem(), nonNullField1to20Multiof2.getValidItem()));
                 mIncrementer.incrementValidCreators();
             }
             return validModels;
         }
 
         @Override
-        public Collection<InheritFrom> getInvalidCases() {
+        public Collection<com.uber.rave.model.InheritFrom> getInvalidCases() {
             while (mIncrementer.hasInvalidPermutations()) {
                 invalidModels.add(
-                        new InheritFrom(nonNullString.getInvalidItem(), nonNullField1to20Multiof2.getInvalidItem()));
+                        new com.uber.rave.model.InheritFrom(nonNullString.getInvalidItem(), nonNullField1to20Multiof2.getInvalidItem()));
                 mIncrementer.incrementInvalidCreators();
             }
             return invalidModels;

@@ -2,8 +2,8 @@ package fixtures;
 
 import android.support.annotation.NonNull;
 
-import com.ubercab.rave.BaseValidator;
-import com.ubercab.rave.ValidatorFactory;
+import com.uber.rave.BaseValidator;
+import com.uber.rave.ValidatorFactory;
 
 
 public final class SampleFactory implements ValidatorFactory {

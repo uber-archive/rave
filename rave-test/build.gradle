@@ -26,7 +26,7 @@ dependencies {
     testCompile 'org.slf4j:slf4j-api:1.7.6'
 }
 
-group = "com.ubercab"
+group = "com.uber"
 version = "0.6.0"
 
 

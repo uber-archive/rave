@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.annotation.StringDef;
 
-import com.ubercab.rave.annotation.MustBeFalse;
-import com.ubercab.rave.annotation.MustBeTrue;
-import com.ubercab.rave.annotation.Validated;
+import com.uber.rave.annotation.MustBeFalse;
+import com.uber.rave.annotation.MustBeTrue;
+import com.uber.rave.annotation.Validated;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,6 +1,6 @@
 package fixtures.compileFail;
 
-import com.ubercab.rave.annotation.Validated;
+import com.uber.rave.annotation.Validated;
 
 import fixtures.SampleFactory;
 
