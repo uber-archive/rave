@@ -39,4 +39,7 @@ ext {
 
 ext.deps = [
         supportAnnotations: 'com.android.support:support-annotations:23.3.0',
+        slf4japi: 'org.slf4j:slf4j-api:1.7.6',
+        junit4: 'junit:junit:4.10',
+
 ]

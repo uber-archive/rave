@@ -1,6 +1,5 @@
-apply plugin: 'maven'
-apply plugin: 'cobertura'
 apply plugin: 'java'
+apply plugin: 'cobertura'
 apply plugin: 'checkstyle'
 apply plugin: 'nebula.provided-base'
 
@@ -15,12 +14,6 @@ for (File file : sdkHandler.sdkLoader.repositories) {
     }
 }
 
-configurations {
-    provided
-    compile.extendsFrom provided
-}
-
-
 sourceSets {
     test {
         java {
@@ -30,10 +23,10 @@ sourceSets {
 }
 
 dependencies {
-    provided 'com.google.auto.service:auto-service:1.0-rc2'
-    compile deps.supportAnnotations
-
     compile project(':rave')
+    compile deps.supportAnnotations
+    provided 'com.google.auto.service:auto-service:1.0-rc2'
+
     compile 'com.google.auto:auto-common:0.4'
     compile 'com.google.guava:guava:19.0-rc2'
     compile 'com.squareup:javapoet:1.2.0'
@@ -44,15 +37,12 @@ dependencies {
     testCompile 'com.google.testing.compile:compile-testing:0.5'
     testCompile 'org.slf4j:slf4j-api:1.7.6'
     testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
-    dependencies { testCompile "org.mockito:mockito-core:1.+" }
+    testCompile "org.mockito:mockito-core:1.+"
 }
 
 cobertura {
     coverageFormats = ['html', 'xml']
 }
-
-group = "com.uber"
-version = "0.6.0"
 
 checkstyle {
     toolVersion = '6.17'
@@ -62,3 +52,4 @@ checkstyleTest {
     configFile = new File("config/checkstyle/checkstyle-test.xml")
 }
 
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

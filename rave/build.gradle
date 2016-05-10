@@ -1,6 +1,5 @@
-apply plugin: 'maven'
-apply plugin: 'cobertura'
 apply plugin: 'java'
+apply plugin: 'cobertura'
 apply plugin: 'checkstyle'
 apply plugin: 'nebula.provided-base'
 
@@ -24,16 +23,13 @@ dependencies {
     compile deps.supportAnnotations
 
     testCompile project(":rave-test")
-    testCompile 'junit:junit:4.10'
-    testCompile 'org.slf4j:slf4j-api:1.7.6'
+    testCompile deps.junit4
+    testCompile deps.slf4japi
 }
 
 cobertura {
     coverageFormats = ['html', 'xml']
 }
-
-group = "com.uber"
-version = "0.6.0"
 
 checkstyle {
     toolVersion = '6.17'
@@ -43,3 +39,4 @@ checkstyleTest {
     configFile = new File("config/checkstyle/checkstyle-test.xml")
 }
 
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
