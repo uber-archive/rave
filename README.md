@@ -178,6 +178,7 @@ There may be some cases in which you want to exclude/ignore certain models from 
 ## Limitations
 
 * Rave currently does not validate fields in a model. Rave only validates model methods. If you want  a field in a model validated there must  be a getter method for that field.
+
 ## Contributors
 
 We'd love for you to contribute to our open source projects. Before we can accept your contributions, we kindly ask you to sign our [Uber Contributor License Agreement](https://docs.google.com/a/uber.com/forms/d/1pAwS_-dA1KhPlfxzYLBqK6rsSWwRwH95OCCZrcsY5rk/viewform).
