@@ -1,11 +1,11 @@
-## RAVE (Runtime Annotation Validation Engine)
+## RAVE (Runtime Annotation Validation Engine) [![Build Status](https://travis-ci.org/uber-common/rave.svg?branch=master)](https://travis-ci.org/uber-common/rave)
 
 RAVE is a data model validation framework that uses java annotation processing in order to generate runtime code to validate specific data constraints within your data models.
 
 
 ## Motivation
 
-The use of java annotation processing we can provide an efficient mechanism to allow engineers to place restrictions and checks on the data produced and consumed within a client code base. This allows the processor to take additional steps such as generate compiler errors, warning and even generate source code. 
+The use of java annotation processing we can provide an efficient mechanism to allow engineers to place restrictions and checks on the data produced and consumed within a client code base. This allows the processor to take additional steps such as generate compiler errors, warning and even generate source code.
 
 RAVE will leverage the user provided annotation to provide concise and efficient code to validate model data used in your java code base. Regardless of the transport format RAVE gives us a flexible means to ensure that we are getting the data we expect and continue to expect throughout the data model lifecycle.
 
@@ -30,7 +30,7 @@ compile 'com.uber:rave:0.6.0'
 ## Code Example
 
 ### Step 1: Create a Factory Class in your module/library.
-There can only be one ValidatorFactory in any given module/library. 
+There can only be one ValidatorFactory in any given module/library.
 Example:
 
 ```java
@@ -173,7 +173,7 @@ There may be some cases in which you want to exclude/ignore certain models from 
         .addMethod(MyExcludedClass.class, "excludedMethodName")
         .addMethod("path.to.class.MyExcludedClass", "otherMethodToExclude");
  Rave.getInstance().validate(object, builder.build());
-        
+
 ````
 ## Limitations
 
