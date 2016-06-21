@@ -87,7 +87,7 @@ public class Rave {
      * @param object the object to be validated.
      * @throws RaveException if validation fails.
      */
-    public synchronized void validate(@NonNull Object object) throws RaveException {
+    public void validate(@NonNull Object object) throws RaveException {
         validate(object, EMPTY_EXCLUSION);
     }
 
@@ -100,20 +100,23 @@ public class Rave {
      * validation.
      * @throws RaveException if validation fails.
      */
-    public synchronized void validate(@NonNull Object object, @NonNull ExclusionStrategy exclusionStrategy)
+    public void validate(@NonNull Object object, @NonNull ExclusionStrategy exclusionStrategy)
             throws RaveException {
         Class<?> clazz = object.getClass();
         Validated validated = clazz.getAnnotation(Validated.class);
-        if (validated == null && !unannotatedModelValidator.hasSeen(clazz)) {
-            unannotatedModelValidator.processNonAnnotatedClasses(clazz);
-        }
-        BaseValidator validator = classValidatorMap.get(clazz);
-        if (validator == null) {
-            validator = getValidatorInstance(clazz);
-        }
-        if (validator == null) {
-            throw new UnsupportedObjectException(Collections.singletonList(
-                    new RaveError(clazz, "", RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR)));
+        BaseValidator validator;
+        synchronized (this) {
+            if (validated == null && !unannotatedModelValidator.hasSeen(clazz)) {
+                unannotatedModelValidator.processNonAnnotatedClasses(clazz);
+            }
+            validator = classValidatorMap.get(clazz);
+            if (validator == null) {
+                validator = getValidatorInstance(clazz);
+            }
+            if (validator == null) {
+                throw new UnsupportedObjectException(Collections.singletonList(
+                        new RaveError(clazz, "", RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR)));
+            }
         }
         validator.validate(object, exclusionStrategy);
     }
@@ -146,7 +149,7 @@ public class Rave {
      * validation.
      * @throws RaveException thrown if the validation process fails.
      */
-    synchronized void validateAs(
+    void validateAs(
             @NonNull Object obj,
             @NonNull Class<?> clazz,
             @NonNull ExclusionStrategy exclusionStrategy) throws RaveException {
@@ -154,13 +157,16 @@ public class Rave {
             throw new IllegalArgumentException("Trying to validate " + obj.getClass().getCanonicalName() + " as "
                     + clazz.getCanonicalName());
         }
-        BaseValidator base = classValidatorMap.get(clazz);
-        if (base == null) {
-            base = getValidatorInstance(clazz);
-        }
-        if (base == null) {
-            throw new UnsupportedObjectException(Collections.singletonList(
-                    new RaveError(obj.getClass(), "", RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR)));
+        BaseValidator base;
+        synchronized (this) {
+            base = classValidatorMap.get(clazz);
+            if (base == null) {
+                base = getValidatorInstance(clazz);
+            }
+            if (base == null) {
+                throw new UnsupportedObjectException(Collections.singletonList(
+                        new RaveError(obj.getClass(), "", RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR)));
+            }
         }
         base.validateAs(obj, clazz, exclusionStrategy);
     }
