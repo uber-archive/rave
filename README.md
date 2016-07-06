@@ -1,13 +1,13 @@
 ## RAVE (Runtime Annotation Validation Engine) [![Build Status](https://travis-ci.org/uber-common/rave.svg?branch=master)](https://travis-ci.org/uber-common/rave)
 
-RAVE is a data model validation framework that uses java annotation processing in order to generate runtime code to validate specific data constraints within your data models.
+RAVE is a data model validation framework that uses Java annotation processing in order to generate runtime code to validate specific data constraints within your data models.
 
 
 ## Motivation
 
-The use of java annotation processing we can provide an efficient mechanism to allow engineers to place restrictions and checks on the data produced and consumed within a client code base. This allows the processor to take additional steps such as generate compiler errors, warning and even generate source code.
+Using Java annotation processing, RAVE provides an efficient mechanism to allow engineers to place restrictions and checks on the data produced and consumed within a client code base. This allows the processor to take additional steps such as generate compiler errors, warnings and even generate source code.
 
-RAVE will leverage the user provided annotation to provide concise and efficient code to validate model data used in your java code base. Regardless of the transport format RAVE gives us a flexible means to ensure that we are getting the data we expect and continue to expect throughout the data model lifecycle.
+RAVE will leverage the user-provided annotation to provide concise and efficient code to validate model data used in your Java code base. Regardless of the transport format, RAVE gives us flexible means to ensure that we are getting the data we expect and continue to expect throughout the data model lifecycle.
 
 ### Application of RAVE
 * Validating schema's from the server and reporting when the server violates the contract.
@@ -16,7 +16,7 @@ RAVE will leverage the user provided annotation to provide concise and efficient
 * Validating models after mutation.
 
 ## Installation
-#### gradle
+#### Gradle
 To integrate RAVE into your project add the following to your dependencies in your 'build.gradle' file:
 
 ```
@@ -145,7 +145,7 @@ public class ValidatedGsonConverter extends GsonConverter {
 
 
 ## API Reference
-The two main RAVE api are as follows.
+The two main RAVE APIs are as follows:
 ```java
     /**
      * Get an instance of RAVE validator.
@@ -166,7 +166,7 @@ The two main RAVE api are as follows.
 ```
 
 ### Advanced Usage
-There may be some cases in which you want to exclude/ignore certain models from validation. To do this we have ExclusionStrategy class. Use the builder to exclude class or class + methods.
+There may be some cases in which you want to exclude/ignore certain models from validation. To do this we have the `ExclusionStrategy` class. Use the builder to exclude class or class + methods.
 
 ```java
  ExclusionStrategy builder = new ExclusionStrategy.Builder()
@@ -177,7 +177,7 @@ There may be some cases in which you want to exclude/ignore certain models from 
 ````
 ## Limitations
 
-* Rave currently does not validate fields in a model. Rave only validates model methods. If you want  a field in a model validated there must  be a getter method for that field.
+* Rave currently does not validate fields in a model. Rave only validates model methods. If you want a field in a model validated there must be a getter method for that field.
 
 ## Contributors
 
