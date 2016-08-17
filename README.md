@@ -101,7 +101,7 @@ public class SimpleModel {
 
 public void validateMyModel(SimpleModel myModel) {
     try {
-        Rave.getInstance().validate(object);
+        Rave.getInstance().validate(myModel);
     } catch (UnsupportedObjectException e) {
         // handle unsupported error case.
     } catch (RaveException e) {
