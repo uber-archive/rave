@@ -115,8 +115,8 @@ public final class AnnotationSpecs {
         AnnotationSpecs annotationSpecs = new AnnotationSpecs();
 
         /**
-         * Set the {@link } annotation parameters. Indicates that this spec has
-         * a size annotation with min and max.
+         * Sets size parameters on the {@link AnnotationSpecs}. Indicates that this spec has a size annotation
+         * with min and max.
          *
          * @param min the minimum size value seen on the annotation.
          * @param max the maximum size value seen on the annotation.

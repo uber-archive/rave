@@ -243,10 +243,10 @@ class AnnotationVerifier {
     }
 
     /**
-     * Get the {@link javax.lang.model.type.TypeMirror} for given class.
+     * Get the {@link TypeMirror} for given class.
      *
      * @param cls The class.
-     * @return The {@link javax.lang.model.type.TypeMirror} for given class.
+     * @return The {@link TypeMirror} for given class.
      */
     private TypeMirror getTypeMirror(@NonNull Class<?> cls) {
         return elements.getTypeElement(cls.getName()).asType();

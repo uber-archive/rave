@@ -34,8 +34,8 @@ import java.util.ArrayList;
 
 import javax.tools.JavaFileObject;
 
+import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourcesSubjectFactory.javaSources;
-import static org.truth0.Truth.ASSERT;
 
 public class RaveProcessorTest {
 
@@ -64,9 +64,11 @@ public class RaveProcessorTest {
                 fileContents);
         sources.add(source);
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
-                .compilesWithoutError().and().generatesSources(fileObject);
+                .compilesWithoutError()
+                .and()
+                .generatesSources(fileObject);
     }
 
     @Test
@@ -83,7 +85,7 @@ public class RaveProcessorTest {
                 fileContents);
         sources.add(source);
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .compilesWithoutError().and().generatesSources(fileObject);
     }
@@ -102,7 +104,7 @@ public class RaveProcessorTest {
                 fileContents);
         sources.add(source);
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .compilesWithoutError().and().generatesSources(fileObject);
     }
@@ -121,7 +123,7 @@ public class RaveProcessorTest {
                 fileContents);
         sources.add(source);
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile().withErrorContaining(AnnotationVerifier.INTDEF_BAD_RETURN_TYPE_ERROR);
     }
@@ -140,7 +142,7 @@ public class RaveProcessorTest {
                 fileContents);
         sources.add(source);
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .compilesWithoutError().and().generatesSources(fileObject);
     }
@@ -159,7 +161,7 @@ public class RaveProcessorTest {
                 fileContents);
         sources.add(source);
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .compilesWithoutError().and().generatesSources(fileObject);
     }
@@ -187,7 +189,7 @@ public class RaveProcessorTest {
         sources.add(JavaFileObjects.forResource("fixtures/test2/FloatRangeTestModel.java"));
         JavaFileObject myValidator = JavaFileObjects.forResource("fixtures/test2/MyFactory.java");
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .compilesWithoutError().and().generatesSources(fileObject);
     }
@@ -209,7 +211,7 @@ public class RaveProcessorTest {
         sources.add(JavaFileObjects.forResource("fixtures/test3/ValidateSample.java"));
         sources.add(JavaFileObjects.forResource("fixtures/test3/ValidateSample2.java"));
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .compilesWithoutError().and().generatesSources(fileObject);
     }
@@ -229,7 +231,7 @@ public class RaveProcessorTest {
         sources.add(JavaFileObjects.forResource("fixtures/test4/ValidateByInterface.java"));
         sources.add(JavaFileObjects.forResource("fixtures/test4/ValidateSample2.java"));
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .compilesWithoutError().and().generatesSources(fileObject);
     }
@@ -247,7 +249,7 @@ public class RaveProcessorTest {
                 fileContents);
         sources.add(JavaFileObjects.forResource("fixtures/testSize/SimpleCase.java"));
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .compilesWithoutError().and().generatesSources(fileObject);
     }
@@ -265,7 +267,7 @@ public class RaveProcessorTest {
                 fileContents);
         sources.add(JavaFileObjects.forResource("fixtures/testSize/BadSizeAnnotation.java"));
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile().withErrorContaining("Multiple value is less than 1 with value");
     }
@@ -276,7 +278,7 @@ public class RaveProcessorTest {
         sources.add(myValidator);
         String expected = "Annotations " + MustBeFalse.class.getCanonicalName() + " cannot be used with "
                 + MustBeTrue.class.getCanonicalName();
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile().withErrorContaining(expected);
     }
@@ -288,7 +290,7 @@ public class RaveProcessorTest {
         sources.add(myValidator);
         JavaFileObject otherValidator = JavaFileObjects.forResource("fixtures/test2/MyFactory.java");
         sources.add(otherValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile();
     }
@@ -297,7 +299,7 @@ public class RaveProcessorTest {
     public void verifyValidatedAnnotations_whenModelIsPrivate_shouldFailCompile() {
         sources.add(JavaFileObjects.forResource("fixtures/test5/PrivateClass.java"));
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile().withErrorContaining("Class is private. It must be at least package private");
     }
@@ -306,7 +308,7 @@ public class RaveProcessorTest {
     public void verifyValidatedAnnotations_whenModelIsProtected_shouldFailCompile() {
         sources.add(JavaFileObjects.forResource("fixtures/test5/ProtectedClassWrongPackage.java"));
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile().withErrorContaining("is not visible to");
     }
@@ -315,7 +317,7 @@ public class RaveProcessorTest {
     public void verifyValidatedAnnotations_whenModelIsPackagePrivate_shouldFailCompile() {
         sources.add(JavaFileObjects.forResource("fixtures/test5/PackagePrivateClass.java"));
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile();
     }
@@ -324,7 +326,7 @@ public class RaveProcessorTest {
     public void verifyValidatedAnnotations_whenFloatRangeIsOnWrongReturnType_shouldFailCompile() {
         sources.add(JavaFileObjects.forResource("fixtures/floatrange/BadFloatRangeUsage.java"));
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile().withErrorContaining(AnnotationVerifier.FLOAT_RANGE_BAD_RETURN_TYPE_ERROR);
     }
@@ -333,7 +335,7 @@ public class RaveProcessorTest {
     public void verifyValidatedAnnotations_whenIntRangeIsOnWrongReturnType_shouldFailCompile() {
         sources.add(JavaFileObjects.forResource("fixtures/intrange/BadIntRangeUsage.java"));
         sources.add(myValidator);
-        ASSERT.about(javaSources()).that(sources)
+        assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile().withErrorContaining(AnnotationVerifier.INT_RANGE_BAD_RETURN_TYPE_ERROR);
     }

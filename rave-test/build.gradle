@@ -10,8 +10,8 @@ for (File file : sdkHandler.sdkLoader.repositories) {
     }
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 configurations {
     provided
@@ -24,7 +24,7 @@ dependencies {
 }
 
 checkstyle {
-    toolVersion = '6.17'
+    toolVersion = '7.6'
 }
 
 checkstyleTest {
