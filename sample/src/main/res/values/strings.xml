@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Rave</string>
+    <string name="network_request">Call GitHub!</string>
+</resources>
