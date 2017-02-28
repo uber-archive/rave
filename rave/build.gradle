@@ -32,7 +32,7 @@ cobertura {
 }
 
 checkstyle {
-    toolVersion = '6.17'
+    toolVersion = '7.6'
 }
 
 checkstyleTest {

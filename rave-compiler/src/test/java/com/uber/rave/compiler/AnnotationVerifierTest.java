@@ -21,7 +21,6 @@
 package com.uber.rave.compiler;
 
 import org.junit.Test;
-import org.mockito.Matchers;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +34,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -49,11 +49,11 @@ public class AnnotationVerifierTest {
         AnnotationVerifier verifier = new AnnotationVerifier(messager, element, types);
         TypeElement typeElement = mock(TypeElement.class);
         verifier.verify(typeElement);
-        verify(messager).printMessage(eq(Diagnostic.Kind.ERROR), Matchers.anyString(), eq(typeElement));
+        verify(messager).printMessage(eq(Diagnostic.Kind.ERROR), anyString(), eq(typeElement));
     }
 
     @Test(expected = AbortProcessingException.class)
-    public void verify_whenTypeElementIsPasckagePrivate_shouldAbortWithError() {
+    public void verify_whenTypeElementIsPackagePrivate_shouldAbortWithError() {
         Set<Modifier> modSet = new HashSet<>();
         modSet.add(Modifier.PROTECTED);
         Messager messager = mock(Messager.class);
@@ -68,6 +68,6 @@ public class AnnotationVerifierTest {
         when(typeElement.getModifiers()).thenReturn(modSet);
         when(typeElement.getEnclosingElement()).thenReturn(packageElement);
         verifier.verify(typeElement);
-        verify(messager).printMessage(eq(Diagnostic.Kind.ERROR), Matchers.anyString(), eq(typeElement));
+        verify(messager).printMessage(eq(Diagnostic.Kind.ERROR), anyString(), eq(typeElement));
     }
 }
