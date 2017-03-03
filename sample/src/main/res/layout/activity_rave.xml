@@ -17,4 +17,14 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/network_request"/>
+
+    <Button
+        android:id="@+id/storage_request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/make_request"
+        android:layout_marginTop="60dp"
+        android:text="@string/storage_request"/>
 </RelativeLayout>
