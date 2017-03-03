@@ -1,9 +1,7 @@
 package com.uber.rave.sample;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.uber.rave.Rave;
@@ -13,12 +11,6 @@ import com.uber.rave.sample.github.GitHubService;
 import com.uber.rave.sample.github.model.Owner;
 import com.uber.rave.sample.github.model.Repo;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -26,6 +18,9 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.uber.rave.sample.DefaultSerializer.deserialize;
+import static com.uber.rave.sample.DefaultSerializer.serialize;
 
 public class RaveActivity extends Activity {
 
@@ -88,44 +83,6 @@ public class RaveActivity extends Activity {
             makeToast("Storage object passed RAVE validation");
         } catch (RaveException e) {
             makeToast("Storage object failed RAVE validation");
-        }
-    }
-
-    private byte[] serialize(Owner owner) {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
-            ObjectOutputStream out = new ObjectOutputStream(bos);
-            out.writeObject(owner);
-            out.flush();
-            return bos.toByteArray();
-        } catch (IOException ignored) {
-            return new byte[0];
-        } finally {
-            try {
-                bos.close();
-            } catch (IOException ex) {
-                // ignore close exception
-            }
-        }
-    }
-
-    private Owner deserialize(byte[] bytes) {
-        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-        ObjectInputStream in = null;
-
-        try {
-            in = new ObjectInputStream(bis);
-            return (Owner) in.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            return null;
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException ex) {
-                // ignore close exception
-            }
         }
     }
 
