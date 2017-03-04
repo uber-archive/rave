@@ -27,15 +27,6 @@ subprojects {
     }
 }
 
-ext {
-    minSdkVersion = 8
-    targetSdkVersion = 23
-    compileSdkVersion = 23
-    buildToolsVersion = '25.0.3'
-    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-    targetCompatibilityVersion = JavaVersion.VERSION_1_7
-}
-
 ext.deps = [
         supportAnnotations: 'com.android.support:support-annotations:25.0.1',
         slf4japi: 'org.slf4j:slf4j-api:1.7.24',
