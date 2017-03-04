@@ -9,6 +9,7 @@ android:
     - extra-google-m2repository
     - extra-android-support
 
+# https://github.com/travis-ci/docs-travis-ci-com/issues/779
 install:
   - echo y | android update sdk -u -a -t tools
   - echo y | android update sdk -u -a -t platform-tools
