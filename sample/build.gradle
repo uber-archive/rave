@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.uber.rave.sample"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -17,14 +17,10 @@ android {
         abortOnError true
         lintConfig file("config/lint/lint.xml")
     }
-
-    configurations {
-        all*.exclude group: 'com.android.support', module: 'support-v4'
-    }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:multidex:1.0.1'
 
     compile 'com.google.dagger:dagger:2.9'
