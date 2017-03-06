@@ -2,6 +2,7 @@ package com.uber.rave.sample;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.uber.rave.RaveException;
@@ -13,6 +14,7 @@ import com.uber.rave.sample.github.model.Repo;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
@@ -23,6 +25,7 @@ public class RaveActivity extends Activity {
 
     @Inject GitHubService gitHubService;
     @Inject OwnerStorage ownerStorage;
+    @BindView(R.id.use_valid_storage_object) CheckBox useValidStorageCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +62,12 @@ public class RaveActivity extends Activity {
     void fetchFromStorage() {
         Owner original = new Owner();
 
-        // Commenting out the line below will cause this to fail RAVE validation. This emulates if you had invalid
-        // date serialized and stored in storage, and retrieved at a later point. Though the object exists, it is no
-        // longer valid with our new Nullness Annotations.
-        original.setLogin("abc");
+        // Not setting a login for an Owner will cause this to fail RAVE validation. This emulates if you had an older
+        // model serialized and stored in storage without the required "login" field, and then retrieved at a later
+        // point after it has been added. Though the object exists, it's no longer valid with our Nullness Annotations.
+        if (useValidStorageCheckBox.isChecked()) {
+            original.setLogin("abc");
+        }
         original.setId(1);
 
         ownerStorage.storeOwner(original);
@@ -70,13 +75,13 @@ public class RaveActivity extends Activity {
 
         try {
             ownerStorage.getOwner();
-
             makeToast("Deserialized object passed RAVE validation");
         } catch (RuntimeException e) {
             if (e.getCause() instanceof RaveException) {
-                makeToast("Deserialized object failed RAVE validation");
+                makeToast("Deserialized object failed RAVE validation: " + e.getCause().getMessage());
+            } else {
+                makeToast("Failed for unknown reason: " + e.getCause().getMessage());
             }
-            makeToast("Failed for unknown reason: " + e.getCause().getMessage());
         }
     }
 
