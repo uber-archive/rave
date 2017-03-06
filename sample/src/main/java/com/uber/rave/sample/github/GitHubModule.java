@@ -36,4 +36,10 @@ public abstract class GitHubModule {
     static GitHubService gitHubService(Retrofit retrofit) {
         return retrofit.create(GitHubService.class);
     }
+
+    @RaveActivityScope
+    @Provides
+    static OwnerStorage defaultSerializer() {
+        return new OwnerStorage();
+    }
 }

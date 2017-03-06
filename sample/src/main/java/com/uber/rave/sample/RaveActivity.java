@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.uber.rave.Rave;
 import com.uber.rave.RaveException;
+import com.uber.rave.sample.github.OwnerStorage;
 import com.uber.rave.sample.github.GitHubModule;
 import com.uber.rave.sample.github.GitHubService;
 import com.uber.rave.sample.github.model.Owner;
@@ -19,12 +19,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.uber.rave.sample.DefaultSerializer.deserialize;
-import static com.uber.rave.sample.DefaultSerializer.serialize;
-
 public class RaveActivity extends Activity {
 
     @Inject GitHubService gitHubService;
+    @Inject OwnerStorage ownerStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,28 +59,24 @@ public class RaveActivity extends Activity {
     void fetchFromStorage() {
         Owner original = new Owner();
 
-        //Commenting out the line below will cause this to fail RAVE validation. This emulates if you had invalid
-        //date serialized and stored in storage, and retrieved at a later point. Though the object exists, it is no
-        //longer valid with our new Nullness Annotations.
+        // Commenting out the line below will cause this to fail RAVE validation. This emulates if you had invalid
+        // date serialized and stored in storage, and retrieved at a later point. Though the object exists, it is no
+        // longer valid with our new Nullness Annotations.
         original.setLogin("abc");
         original.setId(1);
 
-        Owner fromStorage = deserialize(serialize(original));
-        if (fromStorage == null) {
-            makeToast("Could not serialize/deserialize");
-            return;
-        }
+        ownerStorage.storeOwner(original);
 
-        if (!fromStorage.equals(original)) {
-            makeToast("Serialization/deserialization had problems, original and new object not equal.");
-            return;
-        }
 
         try {
-            Rave.getInstance().validate(fromStorage);
-            makeToast("Storage object passed RAVE validation");
-        } catch (RaveException e) {
-            makeToast("Storage object failed RAVE validation");
+            ownerStorage.getOwner();
+
+            makeToast("Deserialized object passed RAVE validation");
+        } catch (RuntimeException e) {
+            if (e.getCause() instanceof RaveException) {
+                makeToast("Deserialized object failed RAVE validation");
+            }
+            makeToast("Failed for unknown reason: " + e.getCause().getMessage());
         }
     }
 

@@ -1,5 +1,10 @@
-package com.uber.rave.sample;
+package com.uber.rave.sample.github;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.uber.rave.Rave;
+import com.uber.rave.RaveException;
 import com.uber.rave.sample.github.model.Owner;
 
 import java.io.ByteArrayInputStream;
@@ -11,17 +16,18 @@ import java.io.ObjectOutputStream;
 /**
  * This uses the default Java serializer.
  */
-class DefaultSerializer {
+public class OwnerStorage {
+    byte[] serializedOwner = new byte[0];
 
-    static byte[] serialize(Owner owner) {
+    public void storeOwner(Owner owner) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
             ObjectOutputStream out = new ObjectOutputStream(bos);
             out.writeObject(owner);
             out.flush();
-            return bos.toByteArray();
+            serializedOwner = bos.toByteArray();
         } catch (IOException ignored) {
-            return new byte[0];
+
         } finally {
             try {
                 bos.close();
@@ -31,15 +37,23 @@ class DefaultSerializer {
         }
     }
 
-    static Owner deserialize(byte[] bytes) {
-        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    public Owner getOwner() {
+        if (serializedOwner.length == 0) {
+            return null;
+        }
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(serializedOwner);
         ObjectInputStream in = null;
 
         try {
             in = new ObjectInputStream(bis);
-            return (Owner) in.readObject();
+            Owner deserializedOwner = (Owner) in.readObject();
+            Rave.getInstance().validate(deserializedOwner);
+            return deserializedOwner;
         } catch (ClassNotFoundException | IOException e) {
             return null;
+        } catch (RaveException e) {
+            throw new RuntimeException(e);
         } finally {
             try {
                 if (in != null) {
