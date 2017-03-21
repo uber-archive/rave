@@ -23,8 +23,6 @@ package com.uber.rave;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.uber.rave.annotation.MustBeFalse;
-import com.uber.rave.annotation.MustBeTrue;
 import com.uber.rave.annotation.Validated;
 
 import java.util.Collections;
