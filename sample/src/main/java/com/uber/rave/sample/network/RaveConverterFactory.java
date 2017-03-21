@@ -1,4 +1,4 @@
-package com.uber.rave.sample.github;
+package com.uber.rave.sample.network;
 
 import com.uber.rave.Rave;
 import com.uber.rave.RaveException;

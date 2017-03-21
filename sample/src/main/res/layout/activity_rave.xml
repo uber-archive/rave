@@ -26,7 +26,7 @@
         android:layout_below="@+id/make_request"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
-        android:text="@string/cb_valid_storage_object"/>
+        android:text="@string/valid_storage_object"/>
 
     <Button
         android:id="@+id/storage_request"
@@ -36,6 +36,4 @@
         android:layout_below="@id/use_valid_storage_object"
         android:layout_marginTop="8dp"
         android:text="@string/storage_request"/>
-
-
 </RelativeLayout>

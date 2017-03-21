@@ -1,4 +1,4 @@
-package com.uber.rave.sample.github;
+package com.uber.rave.sample.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,7 +10,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Provides dependencies required to make a network request to GitHub.
+ * Provides dependencies related to making a network request to GitHub.
  */
 @Module
 public abstract class GitHubModule {
@@ -35,11 +35,5 @@ public abstract class GitHubModule {
     @Provides
     static GitHubService gitHubService(Retrofit retrofit) {
         return retrofit.create(GitHubService.class);
-    }
-
-    @RaveActivityScope
-    @Provides
-    static OwnerStorage defaultSerializer() {
-        return new OwnerStorage();
     }
 }

@@ -2,5 +2,5 @@
     <string name="app_name">Rave</string>
     <string name="network_request">Call GitHub!</string>
     <string name="storage_request">Fetch from Storage</string>
-    <string name="cb_valid_storage_object">Use valid storage object?</string>
+    <string name="valid_storage_object">Persist Valid Object?</string>
 </resources>

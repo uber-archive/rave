@@ -6,11 +6,12 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.uber.rave.RaveException;
-import com.uber.rave.sample.github.OwnerStorage;
-import com.uber.rave.sample.github.GitHubModule;
-import com.uber.rave.sample.github.GitHubService;
-import com.uber.rave.sample.github.model.Owner;
-import com.uber.rave.sample.github.model.Repo;
+import com.uber.rave.sample.storage.DiskStorage;
+import com.uber.rave.sample.network.GitHubModule;
+import com.uber.rave.sample.network.GitHubService;
+import com.uber.rave.sample.network.model.Owner;
+import com.uber.rave.sample.network.model.Repo;
+import com.uber.rave.sample.storage.StorageModule;
 
 import javax.inject.Inject;
 
@@ -24,7 +25,7 @@ import retrofit2.Response;
 public class RaveActivity extends Activity {
 
     @Inject GitHubService gitHubService;
-    @Inject OwnerStorage ownerStorage;
+    @Inject DiskStorage diskStorage;
     @BindView(R.id.use_valid_storage_object) CheckBox useValidStorageCheckBox;
 
     @Override
@@ -61,36 +62,35 @@ public class RaveActivity extends Activity {
     @OnClick(R.id.storage_request)
     void fetchFromStorage() {
         Owner original = new Owner();
+        original.setId(1);
 
-        // Not setting a login for an Owner will cause this to fail RAVE validation. This emulates if you had an older
-        // model serialized and stored in storage without the required "login" field, and then retrieved at a later
-        // point after it has been added. Though the object exists, it's no longer valid with our Nullness Annotations.
+        // Not setting a login for an Owner will cause RAVE validation to fail because login is @NonNull.
         if (useValidStorageCheckBox.isChecked()) {
             original.setLogin("abc");
         }
-        original.setId(1);
 
-        ownerStorage.storeOwner(original);
+        // Store to disk.
+        diskStorage.storeOwner(original);
 
-
+        // Retrieve from disk.
         try {
-            ownerStorage.getOwner();
+            diskStorage.getOwner();
             makeToast("Deserialized object passed RAVE validation");
         } catch (RuntimeException e) {
             if (e.getCause() instanceof RaveException) {
-                makeToast("Deserialized object failed RAVE validation: " + e.getCause().getMessage());
+                makeToast("Deserializing object from storage failed RAVE validation: " + e.getCause().getMessage());
             } else {
-                makeToast("Failed for unknown reason: " + e.getCause().getMessage());
+                makeToast("Retrieving object from storage failed for unknown reason: " + e.getCause().getMessage());
             }
         }
     }
 
     private void makeToast(String text) {
-        Toast.makeText(RaveActivity.this, text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(RaveActivity.this, text, Toast.LENGTH_LONG).show();
     }
 
     @RaveActivityScope
-    @dagger.Component(modules ={GitHubModule.class})
+    @dagger.Component(modules ={GitHubModule.class, StorageModule.class})
     interface Component {
         void inject(RaveActivity activity);
     }

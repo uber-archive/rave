@@ -1,11 +1,8 @@
-package com.uber.rave.sample.github;
-
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+package com.uber.rave.sample.storage;
 
 import com.uber.rave.Rave;
 import com.uber.rave.RaveException;
-import com.uber.rave.sample.github.model.Owner;
+import com.uber.rave.sample.network.model.Owner;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,10 +11,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * This uses the default Java serializer. This simulate storing the object to disk, but only to memory for
- * demo purposes.
+ * Storage class that provides APIs for reading and writing an {@link Owner} object. Performs RAVE validation when
+ * after reading. Uses the default Java serializer to serialize objects.
+ *
+ * NOTE: This class does not actually persist to disk and only holds objects in memory for demo purposes.
  */
-public class OwnerStorage {
+public class DiskStorage {
+
     private byte[] serializedOwner = new byte[0];
 
     /**
@@ -40,6 +40,7 @@ public class OwnerStorage {
 
     /**
      * Serialize a given Owner object into a byte array.
+     *
      * @param owner {@link Owner} object to serialize.
      * @return serialized owner as a byte array
      */
@@ -63,6 +64,7 @@ public class OwnerStorage {
 
     /**
      * Deserialize a byte array to an Owner object.
+     *
      * @param bytes byte array to deserialize
      * @return {@link Owner} object deserialized from byte array
      */

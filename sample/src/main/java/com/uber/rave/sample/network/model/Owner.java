@@ -1,9 +1,9 @@
-package com.uber.rave.sample.github.model;
+package com.uber.rave.sample.network.model;
 
 import android.support.annotation.NonNull;
 
 import com.uber.rave.annotation.Validated;
-import com.uber.rave.sample.github.RaveValidatorFactory;
+import com.uber.rave.sample.network.RaveValidatorFactory;
 
 import java.io.Serializable;
 
@@ -39,7 +39,6 @@ public class Owner implements Serializable {
 
         if (id != owner.id) return false;
         return login != null ? login.equals(owner.login) : owner.login == null;
-
     }
 
     @Override

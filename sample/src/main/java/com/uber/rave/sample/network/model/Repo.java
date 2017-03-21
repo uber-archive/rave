@@ -1,9 +1,9 @@
-package com.uber.rave.sample.github.model;
+package com.uber.rave.sample.network.model;
 
 import android.support.annotation.NonNull;
 
 import com.uber.rave.annotation.Validated;
-import com.uber.rave.sample.github.RaveValidatorFactory;
+import com.uber.rave.sample.network.RaveValidatorFactory;
 
 @Validated(factory = RaveValidatorFactory.class)
 public class Repo {
