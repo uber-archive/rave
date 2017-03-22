@@ -17,7 +17,7 @@ subprojects {
 
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:2.3.0-rc1'
+            classpath 'com.android.tools.build:gradle:2.3.0'
             classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         }
     }
@@ -27,17 +27,8 @@ subprojects {
     }
 }
 
-ext {
-    minSdkVersion = 8
-    targetSdkVersion = 23
-    compileSdkVersion = 23
-    buildToolsVersion = '25.0.1'
-    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-    targetCompatibilityVersion = JavaVersion.VERSION_1_7
-}
-
 ext.deps = [
-        supportAnnotations: 'com.android.support:support-annotations:25.0.1',
+        supportAnnotations: 'com.android.support:support-annotations:25.2.0',
         slf4japi: 'org.slf4j:slf4j-api:1.7.24',
         junit4: 'junit:junit:4.10',
 ]
