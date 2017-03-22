@@ -23,8 +23,6 @@ package com.uber.rave;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.uber.rave.annotation.MustBeFalse;
-import com.uber.rave.annotation.MustBeTrue;
 import com.uber.rave.annotation.Validated;
 
 import java.util.Collections;
@@ -53,13 +51,6 @@ import java.util.Set;
  * <p>
  * Then, example usage: {@code Rave.getInstance().validate(myModelObject);}
  * </p>
- * Rave supported Annotations:
- * <ul>
- * <li>{@link Nullable}</li>
- * <li>{@link NonNull}</li>
- * <li>{@link MustBeTrue}</li>
- * <li>{@link MustBeFalse}</li>
- * </ul>
  */
 public class Rave {
 

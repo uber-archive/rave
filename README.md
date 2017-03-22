@@ -175,6 +175,10 @@ There may be some cases in which you want to exclude/ignore certain models from 
  Rave.getInstance().validate(object, builder.build());
 
 ````
+
+## Supported Annotations
+Supported annotations are listed [here](https://github.com/uber-common/rave/blob/master/rave-compiler/src/main/java/com/uber/rave/compiler/CompilerUtils.java#L54)
+
 ## Limitations
 
 * Rave currently does not validate fields in a model. Rave only validates model methods. If you want a field in a model validated there must be a getter method for that field.
