@@ -1,6 +1,6 @@
 ## RAVE (Runtime Annotation Validation Engine) [![Build Status](https://travis-ci.org/uber-common/rave.svg?branch=master)](https://travis-ci.org/uber-common/rave)
 
-RAVE is shield that prevents invalid data from crashing or causing hard to spot bugs in your Android apps. RAVE uses java annotation processing to leverage the annotations ([Nullness](https://developer.android.com/studio/write/annotations.html#adding-nullness), [Value Constraint](https://developer.android.com/studio/write/annotations.html#value-constraint), [Typedef](https://developer.android.com/studio/write/annotations.html#enum-annotations)) already present in your model classes to increase safety at runtime. Specifically, it ensures models adhere to the set of expectations that are described by their annotations.
+RAVE is a shield that prevents invalid data from crashing or causing hard to spot bugs in your Android apps. RAVE uses java annotation processing to leverage the annotations ([Nullness](https://developer.android.com/studio/write/annotations.html#adding-nullness), [Value Constraint](https://developer.android.com/studio/write/annotations.html#value-constraint), [Typedef](https://developer.android.com/studio/write/annotations.html#enum-annotations)) already present in your model classes to increase safety at runtime. Specifically, it ensures models adhere to the set of expectations that are described by their annotations.
 
 
 ## Motivation
@@ -11,7 +11,7 @@ Android apps consume data from a variety of sources (network, disk, etc) that yo
 * Validating responses from the network match what the client expects
 * Avoiding errors caused by stale schemas when fetching data from disk
 * Verifying models are valid after mutation
-* Ensuring third party APIs don’t crash your app by providing unexpected data
+* Ensuring third party APIs don’t crash your app when providing unexpected data
 
 ## Installation
 #### Gradle
