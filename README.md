@@ -5,7 +5,7 @@ RAVE is a shield that prevents invalid data from crashing or causing hard to spo
 
 ## Motivation
 
-Android apps consume data from a variety of sources (network, disk, etc) that you as an app developer don’t have control over. When external APIs behave badly and return `null` for something that’s supposed to be `@NonNull`, your app can crash. Even when APIs behave well sometimes their corner cases aren’t well documented, are unknown or may change overtime. RAVE ensures the data you receive from these sources adheres to the set of expectations described by the annotations present on your models.
+Android apps consume data from a variety of sources (network, disk, etc.) that you as an app developer don’t have control over. When external APIs behave badly and return `null` for something that’s supposed to be `@NonNull`, your app can crash. Even when APIs behave well, sometimes their corner cases aren’t well-documented, are unknown or may change overtime. RAVE ensures the data you receive from these sources adheres to the set of expectations described by the annotations present on your models.
 
 ### Application of RAVE
 * Validating responses from the network match what the client expects
