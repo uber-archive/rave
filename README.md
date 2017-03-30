@@ -1,19 +1,17 @@
 ## RAVE (Runtime Annotation Validation Engine) [![Build Status](https://travis-ci.org/uber-common/rave.svg?branch=master)](https://travis-ci.org/uber-common/rave)
 
-RAVE is a data model validation framework that uses Java annotation processing in order to generate runtime code to validate specific data constraints within your data models.
+RAVE is a shield that prevents invalid data from crashing or causing hard to spot bugs in your Android apps. RAVE uses java annotation processing to leverage the annotations ([Nullness](https://developer.android.com/studio/write/annotations.html#adding-nullness), [Value Constraint](https://developer.android.com/studio/write/annotations.html#value-constraint), [Typedef](https://developer.android.com/studio/write/annotations.html#enum-annotations)) already present in your model classes to increase safety at runtime. Specifically, it ensures models adhere to the set of expectations that are described by their annotations.
 
 
 ## Motivation
 
-Using Java annotation processing, RAVE provides an efficient mechanism to allow engineers to place restrictions and checks on the data produced and consumed within a client code base. This allows the processor to take additional steps such as generate compiler errors, warnings and even generate source code.
-
-RAVE will leverage the user-provided annotation to provide concise and efficient code to validate model data used in your Android Java code base. Regardless of the transport format, RAVE gives us flexible means to ensure that we are getting the data we expect and continue to expect throughout the data model lifecycle.
+Android apps consume data from a variety of sources (network, disk, etc.) that you as an app developer don’t have control over. When external APIs behave badly and return `null` for something that’s supposed to be `@NonNull`, your app can crash. Even when APIs behave well, sometimes their corner cases aren’t well-documented, are unknown or may change overtime. RAVE ensures the data you receive from these sources adheres to the set of expectations described by the annotations present on your models.
 
 ### Application of RAVE
-* Validating schema's from the server and reporting when the server violates the contract.
-* Validating schema from disk cache and avoiding errors caused by stale schemas.
-* Validating models throughout their clientside lifecycle.
-* Validating models after mutation.
+* Validating responses from the network match what the client expects
+* Avoiding errors caused by stale schemas when fetching data from disk
+* Verifying models are valid after mutation
+* Ensuring third party APIs don’t crash your app when providing unexpected data
 
 ## Installation
 #### Gradle
@@ -27,8 +25,7 @@ dependencies {
 }
 ```
 
-If you're using a version of the Android gradle plugin below `2.2` you need to use the apt plugin, see
-https://bitbucket.org/hvisser/android-apt.
+If you're using a version of the Android gradle plugin below `2.2` you need to use the [apt](https://bitbucket.org/hvisser/android-apt) plugin.
 
 ## Code Example
 
@@ -46,7 +43,7 @@ public final class SampleFactory implements ValidatorFactory {
     }
 }
 
-````
+```
 
 In the example above ```SampleFactory_Generated_Validator``` is generated once a model references the SampleFactory class using the ```@Validated``` annotation. See Step 2.
 
@@ -100,8 +97,6 @@ public class SimpleModel {
 ### Step 3: Start Validating
 
 ```java
-
-
 public void validateMyModel(SimpleModel myModel) {
     try {
         Rave.getInstance().validate(object);
@@ -112,60 +107,47 @@ public void validateMyModel(SimpleModel myModel) {
     }
 }
 
-
 ```
 
-### An example with Retrofit:
-Here is a simple example extending a ```retrofit.converter.GsonConverter``` to use Rave.
+### Use with Retrofit 2:
+Here's a simple recipe to use Rave with [Retrofit 2](https://github.com/square/retrofit). This is documented and included in the RAVE sample app.
 
 ```java
+final class RaveConverterFactory extends Converter.Factory {
 
-public class ValidatedGsonConverter extends GsonConverter {
-
-    private final Rave mRave;
-
-    public ValidatedGsonConverter(Gson gson, Rave rave) {
-        super(gson);
-        mRave = rave;
+    static RaveConverterFactory create() {
+        return new RaveConverterFactory();
     }
 
     @Override
-    public Object fromBody(TypedInput body, Type type) throws ConversionException {
-        Object object = super.fromBody(body, type);
-        try {
-            mRave.validate(object);
-        } catch (UnsupportedObjectException e) {
-            // handle unsupported error case.
-        } catch (RaveException e) {
-            // handle rave validation error.
-        }
-        return object;
+    public Converter<ResponseBody, ?> responseBodyConverter(
+            Type type, Annotation[] annotations, Retrofit retrofit) {
+        Converter<ResponseBody, ?> delegateConverter = retrofit.nextResponseBodyConverter(this, type, annotations);
+        return new RaveResponseConverter(delegateConverter);
     }
 
-    ...
+    private static final class RaveResponseConverter implements Converter<ResponseBody, Object> {
+
+        private final Converter<ResponseBody, ?> delegateConverter;
+
+        RaveResponseConverter(Converter<ResponseBody, ?> delegateConverter) {
+            this.delegateConverter = delegateConverter;
+        }
+
+        @Override
+        public Object convert(ResponseBody value) throws IOException {
+            Object convert = delegateConverter.convert(value);
+            try {
+                Rave.getInstance().validate(convert);
+            } catch (RaveException e) {
+                // This response didn't pass RAVE validation, throw an exception.
+                throw new RuntimeException(e);
+            }
+            return convert;
+        }
+    }
 }
-```
 
-
-## API Reference
-The two main RAVE APIs are as follows:
-```java
-    /**
-     * Get an instance of RAVE validator.
-     *
-     * @return the singleton instance of the RAVE validator.
-     */
-    @NonNull
-    public static synchronized Rave getInstance();
-
-    /**
-     * Validate an object. If the object is not supported, nothing will happen. Otherwise the object will be routed to
-     * the correct sub-validator which knows how to validate it.
-     *
-     * @param object the object to be validated.
-     * @throws RaveException if validation fails.
-     */
-    public synchronized void validate(@NonNull Object object) throws RaveException;
 ```
 
 ### Advanced Usage
@@ -177,14 +159,15 @@ There may be some cases in which you want to exclude/ignore certain models from 
         .addMethod("path.to.class.MyExcludedClass", "otherMethodToExclude");
  Rave.getInstance().validate(object, builder.build());
 
-````
+```
 
 ## Supported Annotations
-Supported annotations are listed [here](https://github.com/uber-common/rave/blob/master/rave-compiler/src/main/java/com/uber/rave/compiler/CompilerUtils.java#L54)
+
+A list of supported annotations can be found [here](https://github.com/uber-common/rave/blob/master/rave-compiler/src/main/java/com/uber/rave/compiler/CompilerUtils.java#L54).
 
 ## Limitations
 
-* Rave currently does not validate fields in a model. Rave only validates model methods. If you want a field in a model validated there must be a getter method for that field.
+Rave currently does not validate fields in a model. Rave only validates model methods. If you want a field in a model validated there must be a getter method for that field.
 
 ## Contributors
 
