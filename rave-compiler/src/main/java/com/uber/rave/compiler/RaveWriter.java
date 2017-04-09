@@ -28,6 +28,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.annotation.StringDef;
 
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -47,6 +48,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Generated;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
@@ -97,6 +99,9 @@ final class RaveWriter {
         String className = raveIR.getSimpleName() + GENERATED_CLASS_POSTFIX;
         TypeSpec.Builder builder = TypeSpec.classBuilder(className);
         builder.superclass(BaseValidator.class)
+                .addAnnotation(AnnotationSpec.builder(Generated.class)
+                        .addMember("value", "RaveProcessor")
+                        .build())
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addMethods(allMethods);
         TypeSpec validatorClass = builder.build();
