@@ -100,7 +100,7 @@ final class RaveWriter {
         TypeSpec.Builder builder = TypeSpec.classBuilder(className);
         builder.superclass(BaseValidator.class)
                 .addAnnotation(AnnotationSpec.builder(Generated.class)
-                        .addMember("value", "RaveProcessor")
+                        .addMember("value", RaveProcessor.class.getName())
                         .build())
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addMethods(allMethods);
