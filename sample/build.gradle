@@ -29,8 +29,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 
-    compile 'com.uber:rave:0.6.0'
-    annotationProcessor 'com.uber:rave-compiler:0.6.0'
+    compile project(':rave')
+    annotationProcessor project(':rave-compiler')
 
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
