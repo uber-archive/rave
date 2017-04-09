@@ -33,6 +33,7 @@ import com.uber.rave.annotation.Validated;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -152,6 +153,7 @@ public final class RaveProcessor extends AbstractProcessor {
                 .addAll(ElementFilter.methodsIn(typeElement.getEnclosedElements())).build();
         String classPackage = CompilerUtils.packageNameOf(typeElement);
         boolean samePackage = classPackage.equals(CompilerUtils.packageNameOf(typesUtils.asElement(factoryTypeMirror)));
+        boolean isAutoValue = getAnnotations(typeElement).contains("AutoValue");
         for (ExecutableElement executableElement : methodElements) {
             if (!executableElement.getParameters().isEmpty()
                     || executableElement.getModifiers().contains(Modifier.STATIC)) {
@@ -160,7 +162,12 @@ public final class RaveProcessor extends AbstractProcessor {
             if (!executableElement.getModifiers().contains(Modifier.PUBLIC) && !samePackage) {
                 continue;
             }
-            MethodIR methodIR = new MethodIR(executableElement.getSimpleName().toString());
+            String methodName = executableElement.getSimpleName().toString();
+            if (isAutoValue && "toBuilder".equals(methodName)) {
+                // This is fulfilled by AutoValue and *not* something we should be validating
+                continue;
+            }
+            MethodIR methodIR = new MethodIR(methodName);
             for (AnnotationMirror mirror : elementUtils.getAllAnnotationMirrors(executableElement)) {
                 String annotationName = mirror.getAnnotationType().toString();
                 if (CompilerUtils.annotationsIsSupported(mirror.getAnnotationType().toString())) {
@@ -182,7 +189,7 @@ public final class RaveProcessor extends AbstractProcessor {
     /**
      * This method extracts Def type annotations. These include {@link StringDef} {@link IntDef}. These annotations
      * are extended so there is a extra level of annotation hierarchy traversal that is required.
-
+     *
      * @param element The {@link Element} to check.
      * @return null if this isn't a support annotation type otherwise the annotation.
      */
@@ -258,5 +265,16 @@ public final class RaveProcessor extends AbstractProcessor {
         } else {
             messager.printMessage(Diagnostic.Kind.ERROR, String.format(msg, args), e);
         }
+    }
+
+    private static Set<String> getAnnotations(Element element) {
+        Set<String> set = new LinkedHashSet<>();
+
+        List<? extends AnnotationMirror> annotations = element.getAnnotationMirrors();
+        for (AnnotationMirror annotation : annotations) {
+            set.add(annotation.getAnnotationType().asElement().getSimpleName().toString());
+        }
+
+        return Collections.unmodifiableSet(set);
     }
 }
