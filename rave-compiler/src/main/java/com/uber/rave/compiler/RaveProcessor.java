@@ -120,7 +120,7 @@ public final class RaveProcessor extends AbstractProcessor {
      */
     private void generateSource(RaveIR raveIR) throws IOException {
         Filer filer = processingEnv.getFiler();
-        RaveWriter raveWriter = new RaveWriter(filer, typesUtils);
+        RaveWriter raveWriter = new RaveWriter(filer, typesUtils, processingEnv.getElementUtils());
         raveWriter.generateJava(raveIR);
     }
 

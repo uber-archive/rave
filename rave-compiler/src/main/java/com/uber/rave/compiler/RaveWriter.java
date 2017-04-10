@@ -52,6 +52,7 @@ import javax.annotation.Generated;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
 /**
@@ -78,12 +79,21 @@ final class RaveWriter {
             ParameterizedTypeName.get(ClassName.get(Class.class),
                     WildcardTypeName.subtypeOf(TypeName.get(Object.class)));
 
+    private static final String GENERATED_COMMENTS = "https://github.com/uber-common/rave";
+    private static final AnnotationSpec GENERATED =
+            AnnotationSpec.builder(Generated.class)
+                    .addMember("value", "$S", RaveProcessor.class.getName())
+                    .addMember("comments", "$S", GENERATED_COMMENTS)
+                    .build();
+
     @NonNull private final Filer filer;
     @NonNull private final Types typeUtils;
+    private final boolean generatedAnnotationAvailable;
 
-    protected RaveWriter(@NonNull Filer filer, @NonNull Types typesUtils) {
+    protected RaveWriter(@NonNull Filer filer, @NonNull Types typesUtils, Elements elements) {
         this.filer = filer;
         this.typeUtils = typesUtils;
+        generatedAnnotationAvailable = elements.getTypeElement("javax.annotation.Generated") != null;
     }
 
     /**
@@ -99,11 +109,11 @@ final class RaveWriter {
         String className = raveIR.getSimpleName() + GENERATED_CLASS_POSTFIX;
         TypeSpec.Builder builder = TypeSpec.classBuilder(className);
         builder.superclass(BaseValidator.class)
-                .addAnnotation(AnnotationSpec.builder(Generated.class)
-                        .addMember("value", RaveProcessor.class.getName())
-                        .build())
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addMethods(allMethods);
+        if (generatedAnnotationAvailable) {
+            builder.addAnnotation(GENERATED);
+        }
         TypeSpec validatorClass = builder.build();
         JavaFile.builder(raveIR.getPackageName(), validatorClass).build().writeTo(filer);
     }
