@@ -19,7 +19,12 @@ import java.lang.IllegalArgumentException;
 import java.lang.Object;
 import java.lang.Override;
 import java.util.List;
+import javax.annotation.Generated;
 
+@Generated(
+        value = "com.uber.rave.compiler.RaveProcessor",
+        comments = "https://github.com/uber-common/rave"
+)
 public final class MyFactory_Generated_Validator extends BaseValidator {
   MyFactory_Generated_Validator() {
     addSupportedClass(InheritFrom.class);
