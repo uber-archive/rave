@@ -34,14 +34,17 @@ import java.util.Map;
 final class MethodIR {
     @NonNull private final Map<Class<? extends Annotation>, Annotation> annotations;
     @NonNull private final String getterName;
+    private final boolean isPrimative;
 
     /**
      * Create a new methodir object.
      * @param getterName the name of the method getter that this IR represents.
+     * @param isPrimative whether the method return type is a primative.
      */
-    MethodIR(@NonNull String getterName) {
+    MethodIR(@NonNull String getterName, boolean isPrimative) {
         annotations = new HashMap<>();
         this.getterName = getterName;
+        this.isPrimative = isPrimative;
     }
 
     /**
@@ -68,6 +71,13 @@ final class MethodIR {
      */
     boolean hasAnnotation(@NonNull Class<? extends Annotation> cls) {
         return annotations.containsKey(cls);
+    }
+
+    /**
+     * @return {@code true} if the return type of the method is a primative, false otherwise.
+     */
+    boolean isPrimative() {
+        return isPrimative;
     }
 
     /**

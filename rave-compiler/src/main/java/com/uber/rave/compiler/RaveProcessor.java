@@ -28,6 +28,7 @@ import android.support.annotation.StringDef;
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableList;
 import com.uber.rave.BaseValidator;
+import com.uber.rave.Validator;
 import com.uber.rave.annotation.Validated;
 
 import java.io.IOException;
@@ -94,11 +95,13 @@ public final class RaveProcessor extends AbstractProcessor {
         }
 
         Collection<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(Validated.class);
-        List<TypeElement> annotatedTypes = new ImmutableList.Builder<TypeElement>()
-                .addAll(ElementFilter.typesIn(annotatedElements)).build();
         if (annotatedElements.isEmpty()) {
             return false;
         }
+
+        List<TypeElement> annotatedTypes = new ImmutableList.Builder<TypeElement>()
+                .addAll(ElementFilter.typesIn(annotatedElements))
+                .build();
 
         try {
             RaveIR raveIR = verify(annotatedTypes);
@@ -160,7 +163,8 @@ public final class RaveProcessor extends AbstractProcessor {
             if (!executableElement.getModifiers().contains(Modifier.PUBLIC) && !samePackage) {
                 continue;
             }
-            MethodIR methodIR = new MethodIR(executableElement.getSimpleName().toString());
+            MethodIR methodIR = new MethodIR(executableElement.getSimpleName().toString(),
+                    executableElement.getReturnType().getKind().isPrimitive());
             for (AnnotationMirror mirror : elementUtils.getAllAnnotationMirrors(executableElement)) {
                 String annotationName = mirror.getAnnotationType().toString();
                 if (CompilerUtils.annotationsIsSupported(mirror.getAnnotationType().toString())) {
@@ -242,7 +246,12 @@ public final class RaveProcessor extends AbstractProcessor {
         }
         factoryTypeMirror = verifier.getSeenFactoryTypeMirror();
         TypeElement element = (TypeElement) typesUtils.asElement(factoryTypeMirror);
-        return new RaveIR(CompilerUtils.packageNameOf(element), element.getSimpleName().toString());
+        Validator strategy = element.getAnnotation(Validator.class);
+
+        return new RaveIR(
+                CompilerUtils.packageNameOf(element),
+                element.getSimpleName().toString(),
+                strategy == null ? Validator.Mode.DEFAULT : strategy.mode());
     }
 
     /**

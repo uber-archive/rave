@@ -22,6 +22,7 @@ package com.uber.rave.compiler;
 
 import android.support.annotation.NonNull;
 
+import com.uber.rave.Validator;
 import com.uber.rave.annotation.Validated;
 
 import java.util.ArrayList;
@@ -39,15 +40,18 @@ final class RaveIR {
     @NonNull private final List<ClassIR> classIRs = new ArrayList<>();
     @NonNull private final String packageName;
     @NonNull private final String simpleName;
+    @NonNull private final Validator.Mode mode;
 
     /**
      * Create a new RAVE IR.
      * @param packageName the package name of the class that will be generted.
      * @param simpleName the simple name of the class to be generated.
+     * @param mode the validation mode to be applied when generating validation code.
      */
-    RaveIR(@NonNull String packageName, @NonNull String simpleName) {
+    RaveIR(@NonNull String packageName, @NonNull String simpleName, @NonNull Validator.Mode mode) {
         this.packageName = packageName;
         this.simpleName = simpleName;
+        this.mode = mode;
     }
 
     /**
@@ -87,5 +91,13 @@ final class RaveIR {
     @NonNull
     String getSimpleName() {
         return simpleName;
+    }
+
+    /**
+     * @return The validation mode for this library.
+     */
+    @NonNull
+    Validator.Mode getMode() {
+        return mode;
     }
 }

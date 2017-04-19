@@ -41,6 +41,7 @@ import com.uber.rave.BaseValidator;
 import com.uber.rave.ExclusionStrategy;
 import com.uber.rave.InvalidModelException;
 import com.uber.rave.RaveError;
+import com.uber.rave.Validator;
 import com.uber.rave.annotation.MustBeFalse;
 import com.uber.rave.annotation.MustBeTrue;
 
@@ -156,7 +157,7 @@ final class RaveWriter {
         builder.endControlFlow();
         List<MethodSpec> concreteSpecs = new ArrayList<>(raveIR.getNumClasses());
         for (ClassIR classIR : raveIR.getClassIRs()) {
-            MethodSpec specificSpec = generateConcreteMethodSpec(classIR);
+            MethodSpec specificSpec = generateConcreteMethodSpec(raveIR, classIR);
             concreteSpecs.add(specificSpec);
             builder.beginControlFlow("if ($L.equals($T.class))", VALIDATE_METHOD_CLAZZ_ARG_NAME,
                     classIR.getTypeMirror());
@@ -177,13 +178,14 @@ final class RaveWriter {
 
     /**
      * Generate a {@link MethodSpec} for a specific type. This generates the private method within the generated class
-     * that validates the object as as specific type.
+     * that validates the object as a specific type.
      *
+     * @param raveIR the intermediate representation of the library.
      * @param classIR the type to generate a method for.
      * @return the {@link MethodSpec} to validate the given specific class.
      */
     @NonNull
-    private MethodSpec generateConcreteMethodSpec(@NonNull ClassIR classIR) {
+    private MethodSpec generateConcreteMethodSpec(@NonNull RaveIR raveIR, @NonNull ClassIR classIR) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder(VALIDATE_METHOD_NAME)
                 .addException(RAVE_INVALID_MODEL_EXCEPTION_CLASS)
                 .addModifiers(Modifier.PRIVATE)
@@ -202,7 +204,7 @@ final class RaveWriter {
                     VALIDATE_METHOD_ARG_NAME, EXCLUSION_STRATEGY_MAP_ARG_NAME);
         }
         for (MethodIR methodIR : classIR.getAllMethods()) {
-            buildAnnotationChecks(builder, methodIR, classIR.getTypeMirror());
+            buildAnnotationChecks(builder, raveIR, methodIR, classIR.getTypeMirror());
         }
         builder.beginControlFlow("if ($L != null && !$L.isEmpty())", RAVE_ERROR_ARG_NAME,
                 RAVE_ERROR_ARG_NAME);
@@ -212,13 +214,28 @@ final class RaveWriter {
     }
 
     private void buildAnnotationChecks(
-            @NonNull MethodSpec.Builder builder, @NonNull MethodIR methodIR, @NonNull TypeMirror typeMirror) {
-        // No check needed for Nullable annotation.
-        boolean isNullable = !methodIR.hasAnnotation(NonNull.class);
-        boolean hasNonNullOrNullable = methodIR.hasAnnotation(NonNull.class) || methodIR.hasAnnotation(Nullable.class);
-        AnnotationWriter writer = new AnnotationWriter(typeMirror, builder,
-                MethodSpec.methodBuilder(methodIR.getMethodGetterName()).build(), isNullable, hasNonNullOrNullable);
-        if (hasNonNullOrNullable && !(methodIR.hasAnnotation(Size.class) || methodIR.hasAnnotation(StringDef.class))) {
+            @NonNull MethodSpec.Builder builder,
+            @NonNull RaveIR raveIR,
+            @NonNull MethodIR methodIR,
+            @NonNull TypeMirror typeMirror) {
+        boolean isNullable = (!methodIR.hasAnnotation(NonNull.class)
+                && raveIR.getMode().equals(Validator.Mode.DEFAULT))
+                || methodIR.hasAnnotation(Nullable.class);
+
+        boolean hasNonNullOrNullable = methodIR.hasAnnotation(NonNull.class)
+                || methodIR.hasAnnotation(Nullable.class)
+                || raveIR.getMode().equals(Validator.Mode.STRICT);
+
+        AnnotationWriter writer = new AnnotationWriter(
+                typeMirror,
+                builder,
+                MethodSpec.methodBuilder(methodIR.getMethodGetterName()).build(),
+                isNullable,
+                hasNonNullOrNullable);
+
+        if (hasNonNullOrNullable
+                && !(methodIR.hasAnnotation(Size.class) || methodIR.hasAnnotation(StringDef.class))
+                && !methodIR.isPrimative()) {
             writer.writeNullable();
         }
         if (methodIR.hasAnnotation(Size.class)) {
