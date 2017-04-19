@@ -69,8 +69,8 @@ final class AnnotationWriter {
     private final boolean hasNonNullOrNullable;
 
     /**
-     * @param typeMirror the {@link TypeMirror} of the class being evalutated.
-     * @param builder the {@link com.squareup.javapoet.MethodSpec.Builder} that is used to generate the code.
+     * @param typeMirror the {@link TypeMirror} of the class being evaluated.
+     * @param builder the {@link MethodSpec.Builder} that is used to generate the code.
      * @param getter the {@link MethodSpec} for the getter method being evaluated.
      * @param isNullable true if the method DOES NOT have have a {@link NonNull} annotation.
      * @param hasNonNullOrNullable true if either {@link NonNull} or {@link Nullable} annotations are present on the
