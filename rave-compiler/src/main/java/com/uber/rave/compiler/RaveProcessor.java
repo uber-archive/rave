@@ -135,7 +135,7 @@ public final class RaveProcessor extends AbstractProcessor {
      */
     private void process(@NonNull RaveIR raveIR, @NonNull List<TypeElement> allTypes) {
         for (TypeElement typeElement : allTypes) {
-            raveIR.addClassIR(extractClassInfo(typeElement));
+            raveIR.addClassIR(extractClassInfo(typeElement, raveIR.getMode()));
         }
     }
 
@@ -148,7 +148,7 @@ public final class RaveProcessor extends AbstractProcessor {
      * @return the {@link ClassIR} object representing the type element.
      */
     @NonNull
-    private ClassIR extractClassInfo(@NonNull TypeElement typeElement) {
+    private ClassIR extractClassInfo(@NonNull TypeElement typeElement, Validator.Mode mode) {
         ClassIR classIR = new ClassIR(typesUtils.erasure(typeElement.asType()));
         traverseInheritanceTree(typeElement, classIR);
         List<ExecutableElement> methodElements = new ImmutableList.Builder<ExecutableElement>()
@@ -177,6 +177,12 @@ public final class RaveProcessor extends AbstractProcessor {
                         methodIR.addAnnotation(annotation);
                     }
                 }
+            }
+            if (mode == Validator.Mode.STRICT
+                    && !methodIR.hasAnnotation(NonNull.class)
+                    && !methodIR.hasAnnotation(Nullable.class)
+                    && !methodIR.isReturnTypePrimitive()) {
+                methodIR.addAnnotation(() -> NonNull.class);
             }
             classIR.addMethodIR(methodIR);
         }
