@@ -38,7 +38,6 @@ final class MethodIR {
     /**
      * Create a new methodir object.
      * @param getterName the name of the method getter that this IR represents.
-     *
      */
     MethodIR(@NonNull String getterName) {
         annotations = new HashMap<>();
