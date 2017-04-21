@@ -340,6 +340,32 @@ public class RaveProcessorTest {
                 .failsToCompile().withErrorContaining(AnnotationVerifier.INT_RANGE_BAD_RETURN_TYPE_ERROR);
     }
 
+    @Test
+    public void testStrictModeValidationStategy_whenNoAnnotationPresent_shouldTreatAsNonNull() {
+        sources.add(JavaFileObjects.forResource("fixtures/validationstrategy/simple/SimpleCase.java"));
+        sources.add(JavaFileObjects.forResource("fixtures/validationstrategy/StrictModeFactory.java"));
+
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError()
+                .and()
+                .generatesSources(JavaFileObjects
+                        .forResource("fixtures/validationstrategy/simple/StrictModeFactory_Generated_Validator.java"));
+    }
+
+    @Test
+    public void testStrictModeValidationStategy_whenPrimativePresent_shouldNotValidatePrimative() {
+        sources.add(JavaFileObjects.forResource("fixtures/validationstrategy/primative/PrimativeCase.java"));
+        sources.add(JavaFileObjects.forResource("fixtures/validationstrategy/StrictModeFactory.java"));
+
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError()
+                .and()
+                .generatesSources(JavaFileObjects.forResource(
+                        "fixtures/validationstrategy/primative/StrictModeFactory_Generated_Validator.java"));
+    }
+
     static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded);

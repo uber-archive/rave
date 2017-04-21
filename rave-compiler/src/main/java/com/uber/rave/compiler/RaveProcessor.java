@@ -28,6 +28,7 @@ import android.support.annotation.StringDef;
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableList;
 import com.uber.rave.BaseValidator;
+import com.uber.rave.Validator;
 import com.uber.rave.annotation.Validated;
 
 import java.io.IOException;
@@ -94,11 +95,13 @@ public final class RaveProcessor extends AbstractProcessor {
         }
 
         Collection<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(Validated.class);
-        List<TypeElement> annotatedTypes = new ImmutableList.Builder<TypeElement>()
-                .addAll(ElementFilter.typesIn(annotatedElements)).build();
         if (annotatedElements.isEmpty()) {
             return false;
         }
+
+        List<TypeElement> annotatedTypes = new ImmutableList.Builder<TypeElement>()
+                .addAll(ElementFilter.typesIn(annotatedElements))
+                .build();
 
         try {
             RaveIR raveIR = verify(annotatedTypes);
@@ -132,7 +135,7 @@ public final class RaveProcessor extends AbstractProcessor {
      */
     private void process(@NonNull RaveIR raveIR, @NonNull List<TypeElement> allTypes) {
         for (TypeElement typeElement : allTypes) {
-            raveIR.addClassIR(extractClassInfo(typeElement));
+            raveIR.addClassIR(extractClassInfo(typeElement, raveIR.getMode()));
         }
     }
 
@@ -145,7 +148,7 @@ public final class RaveProcessor extends AbstractProcessor {
      * @return the {@link ClassIR} object representing the type element.
      */
     @NonNull
-    private ClassIR extractClassInfo(@NonNull TypeElement typeElement) {
+    private ClassIR extractClassInfo(@NonNull TypeElement typeElement, @NonNull Validator.Mode mode) {
         ClassIR classIR = new ClassIR(typesUtils.erasure(typeElement.asType()));
         traverseInheritanceTree(typeElement, classIR);
         List<ExecutableElement> methodElements = new ImmutableList.Builder<ExecutableElement>()
@@ -173,6 +176,12 @@ public final class RaveProcessor extends AbstractProcessor {
                         methodIR.addAnnotation(annotation);
                     }
                 }
+            }
+            if (mode == Validator.Mode.STRICT
+                    && !methodIR.hasAnnotation(NonNull.class)
+                    && !methodIR.hasAnnotation(Nullable.class)
+                    && !executableElement.getReturnType().getKind().isPrimitive()) {
+                methodIR.addAnnotation(() -> NonNull.class);
             }
             classIR.addMethodIR(methodIR);
         }
@@ -242,7 +251,12 @@ public final class RaveProcessor extends AbstractProcessor {
         }
         factoryTypeMirror = verifier.getSeenFactoryTypeMirror();
         TypeElement element = (TypeElement) typesUtils.asElement(factoryTypeMirror);
-        return new RaveIR(CompilerUtils.packageNameOf(element), element.getSimpleName().toString());
+        Validator strategy = element.getAnnotation(Validator.class);
+
+        return new RaveIR(
+                CompilerUtils.packageNameOf(element),
+                element.getSimpleName().toString(),
+                strategy == null ? Validator.Mode.DEFAULT : strategy.mode());
     }
 
     /**

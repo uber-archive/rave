@@ -177,7 +177,7 @@ final class RaveWriter {
 
     /**
      * Generate a {@link MethodSpec} for a specific type. This generates the private method within the generated class
-     * that validates the object as as specific type.
+     * that validates the object as a specific type.
      *
      * @param classIR the type to generate a method for.
      * @return the {@link MethodSpec} to validate the given specific class.
