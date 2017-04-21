@@ -148,7 +148,7 @@ public final class RaveProcessor extends AbstractProcessor {
      * @return the {@link ClassIR} object representing the type element.
      */
     @NonNull
-    private ClassIR extractClassInfo(@NonNull TypeElement typeElement, Validator.Mode mode) {
+    private ClassIR extractClassInfo(@NonNull TypeElement typeElement, @NonNull Validator.Mode mode) {
         ClassIR classIR = new ClassIR(typesUtils.erasure(typeElement.asType()));
         traverseInheritanceTree(typeElement, classIR);
         List<ExecutableElement> methodElements = new ImmutableList.Builder<ExecutableElement>()
@@ -163,8 +163,7 @@ public final class RaveProcessor extends AbstractProcessor {
             if (!executableElement.getModifiers().contains(Modifier.PUBLIC) && !samePackage) {
                 continue;
             }
-            MethodIR methodIR = new MethodIR(executableElement.getSimpleName().toString(),
-                    executableElement.getReturnType().getKind().isPrimitive());
+            MethodIR methodIR = new MethodIR(executableElement.getSimpleName().toString());
             for (AnnotationMirror mirror : elementUtils.getAllAnnotationMirrors(executableElement)) {
                 String annotationName = mirror.getAnnotationType().toString();
                 if (CompilerUtils.annotationsIsSupported(mirror.getAnnotationType().toString())) {
@@ -181,7 +180,7 @@ public final class RaveProcessor extends AbstractProcessor {
             if (mode == Validator.Mode.STRICT
                     && !methodIR.hasAnnotation(NonNull.class)
                     && !methodIR.hasAnnotation(Nullable.class)
-                    && !methodIR.isReturnTypePrimitive()) {
+                    && !executableElement.getReturnType().getKind().isPrimitive()) {
                 methodIR.addAnnotation(() -> NonNull.class);
             }
             classIR.addMethodIR(methodIR);
