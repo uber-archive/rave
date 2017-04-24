@@ -31,6 +31,7 @@ import android.support.annotation.StringDef;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.uber.rave.annotation.Excluded;
 import com.uber.rave.annotation.MustBeFalse;
 import com.uber.rave.annotation.MustBeTrue;
 
@@ -60,7 +61,8 @@ final class CompilerUtils {
             StringDef.class,
             IntDef.class,
             IntRange.class,
-            FloatRange.class
+            FloatRange.class,
+            Excluded.class
     );
 
     private static final List<Pair<Class<? extends Annotation>, Class<? extends Annotation>>> CONFLICTING_ANNOTATIONS =

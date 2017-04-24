@@ -29,6 +29,7 @@ import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableList;
 import com.uber.rave.BaseValidator;
 import com.uber.rave.Validator;
+import com.uber.rave.annotation.Excluded;
 import com.uber.rave.annotation.Validated;
 
 import java.io.IOException;
@@ -45,7 +46,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -164,26 +164,32 @@ public final class RaveProcessor extends AbstractProcessor {
                 continue;
             }
             MethodIR methodIR = new MethodIR(executableElement.getSimpleName().toString());
-            for (AnnotationMirror mirror : elementUtils.getAllAnnotationMirrors(executableElement)) {
-                String annotationName = mirror.getAnnotationType().toString();
-                if (CompilerUtils.annotationsIsSupported(mirror.getAnnotationType().toString())) {
-                    Annotation annotation =
-                            executableElement.getAnnotation(CompilerUtils.getAnnotation(annotationName));
-                    methodIR.addAnnotation(annotation);
-                } else {
-                    Annotation annotation = extractDefTypeAnnotations(mirror.getAnnotationType().asElement());
-                    if (annotation != null) {
+
+            elementUtils.getAllAnnotationMirrors(executableElement)
+                .forEach(mirror -> {
+                    String annotationName = mirror.getAnnotationType().toString();
+                    if (CompilerUtils.annotationsIsSupported(mirror.getAnnotationType().toString())) {
+                        Annotation annotation
+                            = executableElement.getAnnotation(CompilerUtils.getAnnotation(annotationName));
                         methodIR.addAnnotation(annotation);
+                    } else {
+                        Annotation annotation = extractDefTypeAnnotations(mirror.getAnnotationType().asElement());
+                        if (annotation != null) {
+                            methodIR.addAnnotation(annotation);
+                        }
                     }
-                }
-            }
+                });
+
             if (mode == Validator.Mode.STRICT
                     && !methodIR.hasAnnotation(NonNull.class)
                     && !methodIR.hasAnnotation(Nullable.class)
                     && !executableElement.getReturnType().getKind().isPrimitive()) {
                 methodIR.addAnnotation(() -> NonNull.class);
             }
-            classIR.addMethodIR(methodIR);
+
+            if (!methodIR.hasAnnotation(Excluded.class)) {
+                classIR.addMethodIR(methodIR);
+            }
         }
         return classIR;
     }

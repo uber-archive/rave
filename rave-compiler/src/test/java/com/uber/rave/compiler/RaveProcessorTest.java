@@ -366,6 +366,19 @@ public class RaveProcessorTest {
                         "fixtures/validationstrategy/primative/StrictModeFactory_Generated_Validator.java"));
     }
 
+    @Test
+    public void testExcludedMethod_shouldNotGenerateValidateMethodExcluded() {
+        sources.add(JavaFileObjects.forResource("fixtures/excluded/UseOfExcluded.java"));
+        sources.add(JavaFileObjects.forResource("fixtures/SampleFactory.java"));
+
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError()
+                .and()
+                .generatesSources(JavaFileObjects.forResource(
+                        "fixtures/excluded/SampleFactory_Generated_Validator.java"));
+    }
+
     static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded);
