@@ -1,0 +1,24 @@
+Contributing to Uber's Android Template
+=======================
+
+Uber welcomes contributions of all kinds and sizes. This includes everything from from simple bug reports to large features.
+
+Workflow
+--------
+
+We love GitHub issues!
+
+For small feature requests, an issue first proposing it for discussion or demo implementation in a PR suffice.
+
+For big features, please open an issue so that we can agree on the direction, and hopefully avoid investing a lot of time on a feature that might need reworking.
+
+Small pull requests for things like typos, bug fixes, etc are always welcome.
+
+DOs and DON'Ts
+--------------
+
+* DO follow our [coding style](https://github.com/uber/java-code-styles) 
+* DO include tests when adding new features. When fixing bugs, start with adding a test that highlights how the current behavior is broken.
+* DO keep the discussions focused. When a new or related topic comes up it's often better to create new issue than to side track the discussion.
+
+* DON'T submit PRs that alter licensing related files or headers. If you believe there's a problem with them, file an issue and we'll be happy to discuss it.
