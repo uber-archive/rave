@@ -32,9 +32,11 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
@@ -193,6 +195,79 @@ public class RaveUnitTest {
         List<RaveError> errors = BaseValidator.checkNullable(array, false, context);
         assertNotNull(errors);
         assertEquals(2, errors.size());
+    }
+
+    @Test
+    public void checkNullableMap_whenMapIsNull_shouldNotProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(HashMap.class);
+        List<RaveError> errors = BaseValidator.checkNullable((Map<Object, Object>) null, true, context);
+        assertNotNull(errors);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void checkMapCollection_whenMapIsNotNull_shouldNotProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(HashMap.class);
+        List<RaveError> errors = BaseValidator.checkNullable(new HashMap<>(), false, context);
+        assertNotNull(errors);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void checkNullableMap_whenMapIsNotNullAndIsNullable_shouldNotProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(HashMap.class);
+        List<RaveError> errors = BaseValidator.checkNullable(new HashMap<>(), true, context);
+        assertNotNull(errors);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void checkNullableMap_whenMapIsNullButShouldntBe_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Map.class);
+        List<RaveError> errors = BaseValidator.checkNullable((Map<Object, Object>) null, false, context);
+        assertNotNull(errors);
+        RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
+        assertTrue(errors.size() == 1);
+        assertEquals(expectedError.toString(), errors.get(0).toString());
+    }
+
+    @Test
+    public void checkNullableMap_whenMapHasInvalidObjectAsKey_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(SingleMethodSampleModel.class);
+        context.setValidatedItemName("getNotNullField()");
+        Map<SingleMethodSampleModel, Object> map = new HashMap<>();
+        map.put(new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1), new Object());
+        List<RaveError> errors = BaseValidator.checkNullable(map, false, context);
+        assertNotNull(errors);
+        assertTrue(errors.size() == 1);
+        RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
+        assertEquals(expectedError.toString(), errors.get(0).toString());
+    }
+
+    @Test
+    public void checkNullableMap_whenMapHasInvalidObjectAsValue_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(SingleMethodSampleModel.class);
+        context.setValidatedItemName("getNotNullField()");
+        Map<Object, SingleMethodSampleModel> map = new HashMap<>();
+        map.put(new Object(), new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1));
+        List<RaveError> errors = BaseValidator.checkNullable(map, false, context);
+        assertNotNull(errors);
+        assertTrue(errors.size() == 1);
+        RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
+        assertEquals(expectedError.toString(), errors.get(0).toString());
+    }
+
+    @Test
+    public void checkNullableMap_whenMapKeyandValueAreInvalidObjects_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(SingleMethodSampleModel.class);
+        context.setValidatedItemName("getNotNullField()");
+        SingleMethodSampleModel validSingle = new SingleMethodSampleModel("ab", SingleMethodSampleModel.MATCHED1);
+        Map<SingleMethodSampleModel, SingleMethodSampleModel> map = new HashMap<>();
+        map.put(validSingle, new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1));
+        map.put(new SingleMethodSampleModel("lengthiseven", "Not matching the specified string defs"), validSingle);
+        List<RaveError> errors = BaseValidator.checkNullable(map, false, context);
+        assertNotNull(errors);
+        assertTrue(errors.size() == 2);
     }
 
     @Test
