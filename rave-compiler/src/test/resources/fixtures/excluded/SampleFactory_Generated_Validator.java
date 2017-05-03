@@ -2,7 +2,6 @@ package fixtures;
 
 import android.support.annotation.NonNull;
 import com.uber.rave.BaseValidator;
-import com.uber.rave.ExclusionStrategy;
 import com.uber.rave.InvalidModelException;
 import com.uber.rave.RaveError;
 import fixtures.test1.UseOfExcluded;
@@ -24,25 +23,23 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
     }
 
     @Override
-    protected void validateAs(@NonNull Object object, @NonNull Class<?> clazz,
-            @NonNull ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+    protected void validateAs(@NonNull Object object, @NonNull Class<?> clazz) throws
+            InvalidModelException {
         if (!clazz.isInstance(object)) {
             throw new IllegalArgumentException(object.getClass().getCanonicalName() + "is not of type" + clazz.getCanonicalName());
         }
         if (clazz.equals(UseOfExcluded.class)) {
-            validateAs((UseOfExcluded) object, exclusionStrategy);
+            validateAs((UseOfExcluded) object);
             return;
         }
         throw new IllegalArgumentException(object.getClass().getCanonicalName() + " is not supported by validator " + this.getClass().getCanonicalName());
     }
 
-    private void validateAs(UseOfExcluded object, ExclusionStrategy exclusionStrategy) throws
-            InvalidModelException {
+    private void validateAs(UseOfExcluded object) throws InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(UseOfExcluded.class);
         List<RaveError> raveErrors = null;
-        if (!setContextAndCheckshouldIgnoreMethod(UseOfExcluded.class, "getCanBeNullField", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, checkNullable(object.getCanBeNullField(), true, context));
-        }
+        context.setValidatedItemName("getCanBeNullField()");
+        raveErrors = mergeErrors(raveErrors, checkNullable(object.getCanBeNullField(), true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }
