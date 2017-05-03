@@ -272,8 +272,6 @@ public abstract class BaseValidator {
         if (map == null) {
             return raveErrors;
         }
-        raveErrors = checkIterable(map.keySet(), raveErrors);
-        raveErrors = checkIterable(map.values(), raveErrors);
         raveErrors = testMultipleParameter(multiple, map.size(), validationContext, "", raveErrors);
         if (map.size() <= max && map.size() >= min) {
             return raveErrors;
@@ -372,7 +370,8 @@ public abstract class BaseValidator {
      * @param map the map to validate.
      * @param isNullable is the object is allowed to be null.
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
-     * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
+     * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise. This
+     * method will also RAVE validate the keys and values of the map.
      */
     @NonNull
     protected static <K, V> List<RaveError> checkNullable(
@@ -383,7 +382,6 @@ public abstract class BaseValidator {
         if (map == null) {
             return errors;
         }
-
         errors = checkIterable(map.keySet(), errors);
         return checkIterable(map.values(), errors);
     }
