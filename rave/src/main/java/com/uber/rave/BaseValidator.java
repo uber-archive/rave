@@ -283,9 +283,9 @@ public abstract class BaseValidator {
     /**
      * Checks to see if the object is null.
      *
-     * @param collection the collection to validate.
+     * @param collection he collection to validate.
      * @param isNullable is the object is allowed to be null.
-     * @param validationContext The context of the item in the class being validated. This is used in case of an error.
+     * @param validationContext the context of the item in the class being validated. This is used in case of an error.
      * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
      */
     @NonNull
@@ -302,7 +302,7 @@ public abstract class BaseValidator {
      *
      * @param array the array to validate.
      * @param isNullable is the object is allowed to be null.
-     * @param validationContext The context of the item in the class being validated. This is used in case of an error.
+     * @param validationContext the context of the item in the class being validated. This is used in case of an error.
      * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
      */
     @NonNull
