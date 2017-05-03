@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -120,14 +121,14 @@ public class RaveUnitTest {
     }
 
     @Test
-    public void checkMustBeFalse_whenValidBoolean_shouldNotProdcueErrors() {
+    public void checkMustBeFalse_whenValidBoolean_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Object.class);
         List<RaveError> errors = BaseValidator.mustBeFalse(false, context);
         assertNull(errors);
     }
 
     @Test
-    public void checkisSizeOk_whenElementIsNull_shouldNotProdcueErrors() {
+    public void checkisSizeOk_whenElementIsNull_shouldNotProduceErrors() {
         Object[] objects = new Objects[1];
         objects[0] = null;
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Object.class);
@@ -137,7 +138,123 @@ public class RaveUnitTest {
     }
 
     @Test
-    public void checkMustBeFalse_whenInvalidBoolean_shouldProdcueErrors() {
+    public void checkNullableArray_whenCollectionIsNull_shouldNotProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Integer[].class);
+        List<RaveError> errors = BaseValidator.checkNullable((Integer[]) null, true, context);
+        assertNotNull(errors);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void checkNullableArray_whenCollectionIsNotNull_shouldNotProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Integer[].class);
+        List<RaveError> errors = BaseValidator.checkNullable(new Integer[0], false, context);
+        assertNotNull(errors);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void checkNullableArray_whenCollectionIsNotNullAndIsNullable_shouldNotProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Integer.class);
+        List<RaveError> errors = BaseValidator.checkNullable(new Integer[0], true, context);
+        assertNotNull(errors);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void checkNullableArray_whenCollectionIsNullButShouldntBe_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Integer.class);
+        List<RaveError> errors = BaseValidator.checkNullable((Integer[]) null, false, context);
+        assertNotNull(errors);
+        RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
+        assertTrue(errors.size() == 1);
+        assertEquals(expectedError.toString(), errors.get(0).toString());
+    }
+
+    @Test
+    public void checkNullableArray_whenCollectionHasInvalidObject_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(SingleMethodSampleModel.class);
+        context.setValidatedItemName("getNotNullField()");
+        SingleMethodSampleModel[] array = new SingleMethodSampleModel[1];
+        array[0] = new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1);
+        List<RaveError> errors = BaseValidator.checkNullable(array, false, context);
+        assertNotNull(errors);
+        assertTrue(errors.size() == 1);
+        RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
+        assertEquals(expectedError.toString(), errors.get(0).toString());
+    }
+
+    @Test
+    public void checkNullableArray_whenCollectionHas2InvalidObjects_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(SingleMethodSampleModel.class);
+        SingleMethodSampleModel[] array = new SingleMethodSampleModel[2];
+        array[0] = new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1);
+        array[1] = new SingleMethodSampleModel("lengthiseven", "Not matching the specified string defs");
+        List<RaveError> errors = BaseValidator.checkNullable(array, false, context);
+        assertNotNull(errors);
+        assertEquals(2, errors.size());
+    }
+
+    @Test
+    public void checkNullableCollection_whenCollectionIsNull_shouldNotProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Collection.class);
+        List<RaveError> errors = BaseValidator.checkNullable((Collection<Object>) null, true, context);
+        assertNotNull(errors);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void checkNullableCollection_whenCollectionIsNotNull_shouldNotProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Collection.class);
+        List<RaveError> errors = BaseValidator.checkNullable(new LinkedList<>(), false, context);
+        assertNotNull(errors);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void checkNullableCollection_whenCollectionIsNotNullAndIsNullable_shouldNotProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Collection.class);
+        List<RaveError> errors = BaseValidator.checkNullable(new LinkedList<>(), true, context);
+        assertNotNull(errors);
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void checkNullableCollection_whenCollectionIsNullButShouldntBe_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Collection.class);
+        List<RaveError> errors = BaseValidator.checkNullable((Collection<Object>) null, false, context);
+        assertNotNull(errors);
+        RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
+        assertTrue(errors.size() == 1);
+        assertEquals(expectedError.toString(), errors.get(0).toString());
+    }
+
+    @Test
+    public void checkNullableCollection_whenCollectionHasInvalidObject_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(SingleMethodSampleModel.class);
+        context.setValidatedItemName("getNotNullField()");
+        List<SingleMethodSampleModel> list = new LinkedList<>();
+        list.add(new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1));
+        List<RaveError> errors = BaseValidator.checkNullable(list, false, context);
+        assertNotNull(errors);
+        assertTrue(errors.size() == 1);
+        RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
+        assertEquals(expectedError.toString(), errors.get(0).toString());
+    }
+
+    @Test
+    public void checkNullableCollection_whenCollectionHas2InvalidObjects_shouldProduceErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(SingleMethodSampleModel.class);
+        List<SingleMethodSampleModel> list = new LinkedList<>();
+        list.add(new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1));
+        list.add(new SingleMethodSampleModel("lengthiseven", "Not matching the specified string defs"));
+        List<RaveError> errors = BaseValidator.checkNullable(list, false, context);
+        assertNotNull(errors);
+        assertEquals(2, errors.size());
+    }
+
+    @Test
+    public void checkMustBeFalse_whenInvalidBoolean_shouldProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Object.class);
         context.setValidatedItemName("someMethodName");
         List<RaveError> errors = BaseValidator.mustBeFalse(true, context);

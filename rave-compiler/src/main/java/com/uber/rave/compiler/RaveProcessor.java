@@ -58,6 +58,8 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
+import static com.uber.rave.Validator.Mode.DEFAULT;
+
 /**
  * Process the annotations for {@link Validated} annotations.
  */
@@ -182,15 +184,30 @@ public final class RaveProcessor extends AbstractProcessor {
                     }
                 }
             }
-            if (mode == Validator.Mode.STRICT
-                    && !methodIR.hasAnnotation(NonNull.class)
-                    && !methodIR.hasAnnotation(Nullable.class)
-                    && !executableElement.getReturnType().getKind().isPrimitive()) {
-                methodIR.addAnnotation(() -> NonNull.class);
-            }
+            addImplicitNullnessAnnotations(methodIR, mode, executableElement);
             classIR.addMethodIR(methodIR);
         }
         return classIR;
+    }
+
+    private void addImplicitNullnessAnnotations(
+            @NonNull MethodIR methodIR,
+            @NonNull Validator.Mode mode,
+            @NonNull ExecutableElement executableElement) {
+        if (methodIR.hasAnyAnnotation() || executableElement.getReturnType().getKind().isPrimitive()) {
+            return;
+        }
+
+        switch (mode) {
+            case DEFAULT:
+                methodIR.addAnnotation(() -> Nullable.class);
+                break;
+            case STRICT:
+                methodIR.addAnnotation(() -> NonNull.class);
+                break;
+            default:
+                error(executableElement, "Unhandled validation mode for method: %s", methodIR.getMethodGetterName());
+        }
     }
 
     /**
@@ -261,7 +278,7 @@ public final class RaveProcessor extends AbstractProcessor {
         return new RaveIR(
                 CompilerUtils.packageNameOf(element),
                 element.getSimpleName().toString(),
-                strategy == null ? Validator.Mode.DEFAULT : strategy.mode());
+                strategy == null ? DEFAULT : strategy.mode());
     }
 
     /**

@@ -192,7 +192,6 @@ public abstract class BaseValidator {
         if (collection == null) {
             return raveErrors;
         }
-        raveErrors = checkIterable(collection, null);
         int collectionSize = collection.size();
         raveErrors = testMultipleParameter(multiple, collectionSize, validationContext,
                 collection.getClass().getCanonicalName(), raveErrors);
@@ -224,19 +223,6 @@ public abstract class BaseValidator {
         List<RaveError> raveErrors = checkNullable(array, isNullable, validationContext);
         if (array == null) {
             return raveErrors;
-        }
-        Rave rave = Rave.getInstance();
-        for (T type : array) {
-            if (type == null) {
-                continue;
-            }
-            try {
-                rave.validate(type);
-            } catch (UnsupportedObjectException e) {
-                break;
-            } catch (RaveException e) {
-                raveErrors = appendErrors(e, raveErrors);
-            }
         }
         raveErrors = testMultipleParameter(multiple, array.length, validationContext, "", raveErrors);
         if (array.length <= max && array.length >= min) {
@@ -278,6 +264,56 @@ public abstract class BaseValidator {
             }
         }
         return Collections.<RaveError>emptyList();
+    }
+
+    /**
+     * Checks to see if the object is null.
+     *
+     * @param collection he collection to validate.
+     * @param isNullable is the object is allowed to be null.
+     * @param validationContext the context of the item in the class being validated. This is used in case of an error.
+     * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
+     */
+    @NonNull
+    protected static List<RaveError> checkNullable(
+            @Nullable Collection<?> collection,
+            boolean isNullable,
+            @NonNull ValidationContext validationContext) {
+        List<RaveError> errors = checkNullable((Object) collection, isNullable, validationContext);
+        return collection == null ? errors : checkIterable(collection, errors);
+    }
+
+    /**
+     * Checks to see if the object is null.
+     *
+     * @param array the array to validate.
+     * @param isNullable is the object is allowed to be null.
+     * @param validationContext the context of the item in the class being validated. This is used in case of an error.
+     * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
+     */
+    @NonNull
+    protected static <T> List<RaveError> checkNullable(
+            @Nullable T[] array,
+            boolean isNullable,
+            @NonNull ValidationContext validationContext) {
+        List<RaveError> errors = checkNullable((Object) array, isNullable, validationContext);
+        if (array == null) {
+            return errors;
+        }
+        Rave rave = Rave.getInstance();
+        for (T type : array) {
+            if (type == null) {
+                continue;
+            }
+            try {
+                rave.validate(type);
+            } catch (UnsupportedObjectException e) {
+                return errors;
+            } catch (RaveException e) {
+                errors = appendErrors(e, errors);
+            }
+        }
+        return errors;
     }
 
     /**
@@ -524,7 +560,14 @@ public abstract class BaseValidator {
         if (e == null) {
             return errors;
         }
-        errors.addAll(e.errors);
+        try {
+            errors.addAll(e.errors);
+        } catch (UnsupportedOperationException e1) {
+            List<RaveError> errorList = new LinkedList<>();
+            errorList.addAll(e.errors);
+            errorList.addAll(errors);
+            return errorList;
+        }
         return errors;
     }
 
