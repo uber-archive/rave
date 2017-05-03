@@ -281,6 +281,56 @@ public abstract class BaseValidator {
     }
 
     /**
+     * Checks to see if the object is null.
+     *
+     * @param collection the collection to validate.
+     * @param isNullable is the object is allowed to be null.
+     * @param validationContext The context of the item in the class being validated. This is used in case of an error.
+     * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
+     */
+    @NonNull
+    protected static List<RaveError> checkNullable(
+            @Nullable Collection<?> collection,
+            boolean isNullable,
+            @NonNull ValidationContext validationContext) {
+        List<RaveError> errors = checkNullable((Object) collection, isNullable, validationContext);
+        return collection == null ? errors : checkIterable(collection, errors);
+    }
+
+    /**
+     * Checks to see if the object is null.
+     *
+     * @param array the array to validate.
+     * @param isNullable is the object is allowed to be null.
+     * @param validationContext The context of the item in the class being validated. This is used in case of an error.
+     * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
+     */
+    @NonNull
+    protected static <T> List<RaveError> checkNullable(
+            @Nullable T[] array,
+            boolean isNullable,
+            @NonNull ValidationContext validationContext) {
+        List<RaveError> errors = checkNullable((Object) array, isNullable, validationContext);
+        if (array == null) {
+            return errors;
+        }
+        Rave rave = Rave.getInstance();
+        for (T type : array) {
+            if (type == null) {
+                continue;
+            }
+            try {
+                rave.validate(type);
+            } catch (UnsupportedObjectException e) {
+                return errors;
+            } catch (RaveException e) {
+                errors = appendErrors(e, errors);
+            }
+        }
+        return errors;
+    }
+
+    /**
      * Takes two RaveError lists and merges them into one.
      *
      * @param e1 the first list of {@link RaveError}s
@@ -524,7 +574,14 @@ public abstract class BaseValidator {
         if (e == null) {
             return errors;
         }
-        errors.addAll(e.errors);
+        try {
+            errors.addAll(e.errors);
+        } catch (UnsupportedOperationException e1) {
+            List<RaveError> errorList = new LinkedList<>();
+            errorList.addAll(e.errors);
+            errorList.addAll(errors);
+            return errorList;
+        }
         return errors;
     }
 
