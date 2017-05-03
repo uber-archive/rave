@@ -290,8 +290,10 @@ public final class RaveProcessor extends AbstractProcessor {
      */
     private void error(@Nullable Element e, @NonNull String msg, Object... args) {
         if (e == null) {
+            messager.printMessage(Diagnostic.Kind.ERROR, "Behrooz fuuuuuck");
             messager.printMessage(Diagnostic.Kind.ERROR, String.format(msg, args));
         } else {
+            messager.printMessage(Diagnostic.Kind.ERROR, "Behrooz fuuuuuck2");
             messager.printMessage(Diagnostic.Kind.ERROR, String.format(msg, args), e);
         }
     }

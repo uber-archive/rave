@@ -2,7 +2,6 @@ package com.uber.rave.compiler;
 
 import android.support.annotation.NonNull;
 import com.uber.rave.BaseValidator;
-import com.uber.rave.ExclusionStrategy;
 import com.uber.rave.InvalidModelException;
 import com.uber.rave.RaveError;
 import com.uber.rave.model.AbstractAnnotated;
@@ -40,190 +39,161 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
   }
 
   @Override
-  protected void validateAs(@NonNull Object object, @NonNull Class<?> clazz, @NonNull ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  protected void validateAs(@NonNull Object object, @NonNull Class<?> clazz) throws
+          InvalidModelException {
     if (!clazz.isInstance(object)) {
       throw new IllegalArgumentException(object.getClass().getCanonicalName() + "is not of type" + clazz.getCanonicalName());
     }
     if (clazz.equals(InheritFrom.class)) {
-      validateAs((InheritFrom) object, exclusionStrategy);
+      validateAs((InheritFrom) object);
       return;
     }
     if (clazz.equals(ValidateByInterface.class)) {
-      validateAs((ValidateByInterface) object, exclusionStrategy);
+      validateAs((ValidateByInterface) object);
       return;
     }
     if (clazz.equals(MultiMethodSampleModel.class)) {
-      validateAs((MultiMethodSampleModel) object, exclusionStrategy);
+      validateAs((MultiMethodSampleModel) object);
       return;
     }
     if (clazz.equals(SingleMethodSampleModel.class)) {
-      validateAs((SingleMethodSampleModel) object, exclusionStrategy);
+      validateAs((SingleMethodSampleModel) object);
       return;
     }
     if (clazz.equals(ArrayNotNull.class)) {
-      validateAs((ArrayNotNull) object, exclusionStrategy);
+      validateAs((ArrayNotNull) object);
       return;
     }
     if (clazz.equals(AbstractAnnotated.class)) {
-      validateAs((AbstractAnnotated) object, exclusionStrategy);
+      validateAs((AbstractAnnotated) object);
       return;
     }
     if (clazz.equals(IntDefModel.class)) {
-      validateAs((IntDefModel) object, exclusionStrategy);
+      validateAs((IntDefModel) object);
       return;
     }
     if (clazz.equals(IntRangeTestModel.class)) {
-      validateAs((IntRangeTestModel) object, exclusionStrategy);
+      validateAs((IntRangeTestModel) object);
       return;
     }
     if (clazz.equals(FloatRangeTestModel.class)) {
-      validateAs((FloatRangeTestModel) object, exclusionStrategy);
+      validateAs((FloatRangeTestModel) object);
       return;
     }
     throw new IllegalArgumentException(object.getClass().getCanonicalName() + " is not supported by validator " + this.getClass().getCanonicalName());
   }
 
-  private void validateAs(InheritFrom object, ExclusionStrategy exclusionStrategy) throws
-          InvalidModelException {
+  private void validateAs(InheritFrom object) throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(InheritFrom.class);
     List<RaveError> raveErrors = null;
-    raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(SingleMethodSampleModel.class, object, exclusionStrategy));
-    raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(ValidateByInterface.class, object, exclusionStrategy));
-    if (!setContextAndCheckshouldIgnoreMethod(InheritFrom.class, "getNonNullString", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkNullable(object.getNonNullString(), false, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(InheritFrom.class, "toString", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkNullable(object.toString(), true, context));
-    }
+    raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(SingleMethodSampleModel.class, object));
+    raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(ValidateByInterface.class, object));
+    context.setValidatedItemName("getNonNullString()");
+    raveErrors = mergeErrors(raveErrors, checkNullable(object.getNonNullString(), false, context));
+    context.setValidatedItemName("toString()");
+    raveErrors = mergeErrors(raveErrors, checkNullable(object.toString(), true, context));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(ValidateByInterface object, ExclusionStrategy exclusionStrategy) throws
-          InvalidModelException {
+  private void validateAs(ValidateByInterface object) throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(ValidateByInterface.class);
     List<RaveError> raveErrors = null;
-    if (!setContextAndCheckshouldIgnoreMethod(ValidateByInterface.class, "getNonNullString", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNonNullString(), false, 0L, 4L, 1L, context));
-    }
+    context.setValidatedItemName("getNonNullString()");
+    raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNonNullString(), false, 0L, 4L, 1L, context));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(MultiMethodSampleModel object, ExclusionStrategy exclusionStrategy) throws
-          InvalidModelException {
+  private void validateAs(MultiMethodSampleModel object) throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(MultiMethodSampleModel.class);
     List<RaveError> raveErrors = null;
-    if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "getNonAnnotatedObject", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkNullable(object.getNonAnnotatedObject(), true, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "getNotNullField", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkNullable(object.getNotNullField(), false, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "getCanBeNullField", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkNullable(object.getCanBeNullField(), true, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "getBetweenOneAndFive", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, isSizeOk(object.getBetweenOneAndFive(), true, 1L, 5L, 1L, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "getNames", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNames(), true, 1L, 5L, 1L, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "getIsFalse", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, mustBeFalse(object.getIsFalse(), context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "getIsTrue", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, mustBeTrue(object.getIsTrue(), context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "toString", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkNullable(object.toString(), true, context));
-    }
+    context.setValidatedItemName("getNonAnnotatedObject()");
+    raveErrors = mergeErrors(raveErrors, checkNullable(object.getNonAnnotatedObject(), true, context));
+    context.setValidatedItemName("getNotNullField()");
+    raveErrors = mergeErrors(raveErrors, checkNullable(object.getNotNullField(), false, context));
+    context.setValidatedItemName("getCanBeNullField()");
+    raveErrors = mergeErrors(raveErrors, checkNullable(object.getCanBeNullField(), true, context));
+    context.setValidatedItemName("getBetweenOneAndFive()");
+    raveErrors = mergeErrors(raveErrors, isSizeOk(object.getBetweenOneAndFive(), true, 1L, 5L, 1L, context));
+    context.setValidatedItemName("getNames()");
+    raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNames(), true, 1L, 5L, 1L, context));
+    context.setValidatedItemName("getIsFalse()");
+    raveErrors = mergeErrors(raveErrors, mustBeFalse(object.getIsFalse(), context));
+    context.setValidatedItemName("getIsTrue()");
+    raveErrors = mergeErrors(raveErrors, mustBeTrue(object.getIsTrue(), context));
+    context.setValidatedItemName("toString()");
+    raveErrors = mergeErrors(raveErrors, checkNullable(object.toString(), true, context));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(SingleMethodSampleModel object, ExclusionStrategy exclusionStrategy)
-          throws InvalidModelException {
+  private void validateAs(SingleMethodSampleModel object) throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(SingleMethodSampleModel.class);
     List<RaveError> raveErrors = null;
-    if (!setContextAndCheckshouldIgnoreMethod(SingleMethodSampleModel.class, "getNotNullField", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNotNullField(), false, 1L, 20L, 2L, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(SingleMethodSampleModel.class, "getMatchStringDef", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkStringDef(false, context, object.getMatchStringDef(), "Matched", "Matching", "AlsoMatching"));
-    }
+    context.setValidatedItemName("getNotNullField()");
+    raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNotNullField(), false, 1L, 20L, 2L, context));
+    context.setValidatedItemName("getMatchStringDef()");
+    raveErrors = mergeErrors(raveErrors, checkStringDef(false, context, object.getMatchStringDef(), "Matched", "Matching", "AlsoMatching"));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(ArrayNotNull object, ExclusionStrategy exclusionStrategy) throws
-          InvalidModelException {
+  private void validateAs(ArrayNotNull object) throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(ArrayNotNull.class);
     List<RaveError> raveErrors = null;
-    if (!setContextAndCheckshouldIgnoreMethod(ArrayNotNull.class, "getSingles", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, isSizeOk(object.getSingles(), false, 1L, 3L, 1L, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(ArrayNotNull.class, "getStringsArray", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, isSizeOk(object.getStringsArray(), false, 5L, 20L, 1L, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(ArrayNotNull.class, "toString", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkNullable(object.toString(), true, context));
-    }
+    context.setValidatedItemName("getSingles()");
+    raveErrors = mergeErrors(raveErrors, isSizeOk(object.getSingles(), false, 1L, 3L, 1L, context));
+    context.setValidatedItemName("getStringsArray()");
+    raveErrors = mergeErrors(raveErrors, isSizeOk(object.getStringsArray(), false, 5L, 20L, 1L, context));
+    context.setValidatedItemName("toString()");
+    raveErrors = mergeErrors(raveErrors, checkNullable(object.toString(), true, context));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(AbstractAnnotated object, ExclusionStrategy exclusionStrategy) throws
-          InvalidModelException {
+  private void validateAs(AbstractAnnotated object) throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(AbstractAnnotated.class);
     List<RaveError> raveErrors = null;
-    if (!setContextAndCheckshouldIgnoreMethod(AbstractAnnotated.class, "nonNullAbstractMethodString", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkNullable(object.nonNullAbstractMethodString(), false, context));
-    }
-    if (!setContextAndCheckshouldIgnoreMethod(AbstractAnnotated.class, "nonNullString", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkNullable(object.nonNullString(), false, context));
-    }
+    context.setValidatedItemName("nonNullAbstractMethodString()");
+    raveErrors = mergeErrors(raveErrors, checkNullable(object.nonNullAbstractMethodString(), false, context));
+    context.setValidatedItemName("nonNullString()");
+    raveErrors = mergeErrors(raveErrors, checkNullable(object.nonNullString(), false, context));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(IntDefModel object, ExclusionStrategy exclusionStrategy) throws
-          InvalidModelException {
+  private void validateAs(IntDefModel object) throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(IntDefModel.class);
     List<RaveError> raveErrors = null;
-    if (!setContextAndCheckshouldIgnoreMethod(IntDefModel.class, "getStandard", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkIntDef(context, object.getStandard(), false, 0L, 1L, 2L));
-    }
+    context.setValidatedItemName("getStandard()");
+    raveErrors = mergeErrors(raveErrors, checkIntDef(context, object.getStandard(), false, 0L, 1L, 2L));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(IntRangeTestModel object, ExclusionStrategy exclusionStrategy) throws
-          InvalidModelException {
+  private void validateAs(IntRangeTestModel object) throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(IntRangeTestModel.class);
     List<RaveError> raveErrors = null;
-    if (!setContextAndCheckshouldIgnoreMethod(IntRangeTestModel.class, "getValue", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkIntRange(context, object.getValue(), -15L, 1000L));
-    }
+    context.setValidatedItemName("getValue()");
+    raveErrors = mergeErrors(raveErrors, checkIntRange(context, object.getValue(), -15L, 1000L));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(FloatRangeTestModel object, ExclusionStrategy exclusionStrategy) throws
-          InvalidModelException {
+  private void validateAs(FloatRangeTestModel object) throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(FloatRangeTestModel.class);
     List<RaveError> raveErrors = null;
-    if (!setContextAndCheckshouldIgnoreMethod(FloatRangeTestModel.class, "getValue", exclusionStrategy, context)) {
-      raveErrors = mergeErrors(raveErrors, checkFloatRange(context, object.getValue(), -15.5D, 1000.9D));
-    }
+    context.setValidatedItemName("getValue()");
+    raveErrors = mergeErrors(raveErrors, checkFloatRange(context, object.getValue(), -15.5D, 1000.9D));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }

@@ -53,7 +53,7 @@ final class AnnotationWriter {
     static final String CHECK_INT_RANGE_METHOD_NAME = "checkIntRange";
     static final String CHECK_FLOAT_RANGE_METHOD_NAME = "checkFloatRange";
     static final String MERGE_ERROR_METHOD_NAME = "mergeErrors";
-    static final String SHOULD_IGNORE_METHOD_NAME = "setContextAndCheckshouldIgnoreMethod";
+    static final String SET_VALIDATION_ITEM_METHOD_NAME = "setValidatedItemName";
 
     // JavaPoet formats
     private static final String LITERAL = "$L";
@@ -195,11 +195,9 @@ final class AnnotationWriter {
      * Adds the ignore if statement check to the method and then the check statement itself.
      */
     private void buildStatements(@NonNull String statementFormat, Object... objects) {
-        builder.beginControlFlow("if (!$L($T.class, $S, $L, $L))", SHOULD_IGNORE_METHOD_NAME,
-                typeMirror, getter.name, RaveWriter.EXCLUSION_STRATEGY_MAP_ARG_NAME,
-                RaveWriter.VALIDATION_CONTEXT_ARG_NAME);
+        builder.addStatement("$L.$L($S)", RaveWriter.VALIDATION_CONTEXT_ARG_NAME, SET_VALIDATION_ITEM_METHOD_NAME,
+                getter.name + "()");
         builder.addStatement(statementFormat, objects);
-        builder.endControlFlow();
     }
 
     /**

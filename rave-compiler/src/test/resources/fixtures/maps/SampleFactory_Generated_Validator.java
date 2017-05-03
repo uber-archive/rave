@@ -2,7 +2,6 @@ package fixtures;
 
 import android.support.annotation.NonNull;
 import com.uber.rave.BaseValidator;
-import com.uber.rave.ExclusionStrategy;
 import com.uber.rave.InvalidModelException;
 import com.uber.rave.RaveError;
 import fixtures.maps.ModelWithMap;
@@ -24,23 +23,23 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
     }
 
     @Override
-    protected void validateAs(@NonNull Object object, @NonNull Class<?> clazz, @NonNull ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+    protected void validateAs(@NonNull Object object, @NonNull Class<?> clazz) throws
+            InvalidModelException {
         if (!clazz.isInstance(object)) {
             throw new IllegalArgumentException(object.getClass().getCanonicalName() + "is not of type" + clazz.getCanonicalName());
         }
         if (clazz.equals(ModelWithMap.class)) {
-            validateAs((ModelWithMap) object, exclusionStrategy);
+            validateAs((ModelWithMap) object);
             return;
         }
         throw new IllegalArgumentException(object.getClass().getCanonicalName() + " is not supported by validator " + this.getClass().getCanonicalName());
     }
 
-    private void validateAs(ModelWithMap object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+    private void validateAs(ModelWithMap object) throws InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(ModelWithMap.class);
         List<RaveError> raveErrors = null;
-        if (!setContextAndCheckshouldIgnoreMethod(ModelWithMap.class, "getMap", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, checkNullable(object.getMap(), true, context));
-        }
+        context.setValidatedItemName("getMap()");
+        raveErrors = mergeErrors(raveErrors, checkNullable(object.getMap(), true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

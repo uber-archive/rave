@@ -2,7 +2,6 @@ package fixtures;
 
 import android.support.annotation.NonNull;
 import com.uber.rave.BaseValidator;
-import com.uber.rave.ExclusionStrategy;
 import com.uber.rave.InvalidModelException;
 import com.uber.rave.RaveError;
 import fixtures.test1.SimpleCase;
@@ -25,59 +24,51 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
     }
 
     @Override
-    protected void validateAs(@NonNull Object object, @NonNull Class<?> clazz, @NonNull ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+    protected void validateAs(@NonNull Object object, @NonNull Class<?> clazz) throws
+            InvalidModelException {
         if (!clazz.isInstance(object)) {
             throw new IllegalArgumentException(object.getClass().getCanonicalName() + "is not of type" + clazz.getCanonicalName());
         }
         if (clazz.equals(SimpleCase.class)) {
-            validateAs((SimpleCase) object, exclusionStrategy);
+            validateAs((SimpleCase) object);
             return;
         }
         if (clazz.equals(SimpleCase.SomeInnerClass.class)) {
-            validateAs((SimpleCase.SomeInnerClass) object, exclusionStrategy);
+            validateAs((SimpleCase.SomeInnerClass) object);
             return;
         }
         throw new IllegalArgumentException(object.getClass().getCanonicalName() + " is not supported by validator " + this.getClass().getCanonicalName());
     }
 
-    private void validateAs(SimpleCase object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+    private void validateAs(SimpleCase object) throws InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(SimpleCase.class);
         List<RaveError> raveErrors = null;
-        if (!setContextAndCheckshouldIgnoreMethod(SimpleCase.class, "getNotNullField", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, checkNullable(object.getNotNullField(), false, context));
-        }
-        if (!setContextAndCheckshouldIgnoreMethod(SimpleCase.class, "getCanBeNullField", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, checkNullable(object.getCanBeNullField(), true, context));
-        }
-        if (!setContextAndCheckshouldIgnoreMethod(SimpleCase.class, "getBetweenOneAndFive", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, isSizeOk(object.getBetweenOneAndFive(), true, 1L, 5L, 1L, context));
-        }
-        if (!setContextAndCheckshouldIgnoreMethod(SimpleCase.class, "getNames", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNames(), true, 5L, 5L, 1L, context));
-        }
-        if (!setContextAndCheckshouldIgnoreMethod(SimpleCase.class, "getArrayNames", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, isSizeOk(object.getArrayNames(), true, 1L, 5L, 1L, context));
-        }
-        if (!setContextAndCheckshouldIgnoreMethod(SimpleCase.class, "getIsFalse", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, mustBeFalse(object.getIsFalse(), context));
-        }
-        if (!setContextAndCheckshouldIgnoreMethod(SimpleCase.class, "getIsTrue", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, mustBeTrue(object.getIsTrue(), context));
-        }
-        if (!setContextAndCheckshouldIgnoreMethod(SimpleCase.class, "getUberPoolState", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, checkStringDef(false, context, object.getUberPoolState(), "Matched", "Matching", "NotMatched"));
-        }
+        context.setValidatedItemName("getNotNullField()");
+        raveErrors = mergeErrors(raveErrors, checkNullable(object.getNotNullField(), false, context));
+        context.setValidatedItemName("getCanBeNullField()");
+        raveErrors = mergeErrors(raveErrors, checkNullable(object.getCanBeNullField(), true, context));
+        context.setValidatedItemName("getBetweenOneAndFive()");
+        raveErrors = mergeErrors(raveErrors, isSizeOk(object.getBetweenOneAndFive(), true, 1L, 5L, 1L, context));
+        context.setValidatedItemName("getNames()");
+        raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNames(), true, 5L, 5L, 1L, context));
+        context.setValidatedItemName("getArrayNames()");
+        raveErrors = mergeErrors(raveErrors, isSizeOk(object.getArrayNames(), true, 1L, 5L, 1L, context));
+        context.setValidatedItemName("getIsFalse()");
+        raveErrors = mergeErrors(raveErrors, mustBeFalse(object.getIsFalse(), context));
+        context.setValidatedItemName("getIsTrue()");
+        raveErrors = mergeErrors(raveErrors, mustBeTrue(object.getIsTrue(), context));
+        context.setValidatedItemName("getUberPoolState()");
+        raveErrors = mergeErrors(raveErrors, checkStringDef(false, context, object.getUberPoolState(), "Matched", "Matching", "NotMatched"));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }
     }
 
-    private void validateAs(SimpleCase.SomeInnerClass object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+    private void validateAs(SimpleCase.SomeInnerClass object) throws InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(SimpleCase.SomeInnerClass.class);
         List<RaveError> raveErrors = null;
-        if (!setContextAndCheckshouldIgnoreMethod(SimpleCase.SomeInnerClass.class, "getString", exclusionStrategy, context)) {
-            raveErrors = mergeErrors(raveErrors, checkNullable(object.getString(), false, context));
-        }
+        context.setValidatedItemName("getString()");
+        raveErrors = mergeErrors(raveErrors, checkNullable(object.getString(), false, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }
