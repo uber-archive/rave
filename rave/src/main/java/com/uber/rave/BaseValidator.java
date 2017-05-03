@@ -192,7 +192,6 @@ public abstract class BaseValidator {
         if (collection == null) {
             return raveErrors;
         }
-        raveErrors = checkIterable(collection, null);
         int collectionSize = collection.size();
         raveErrors = testMultipleParameter(multiple, collectionSize, validationContext,
                 collection.getClass().getCanonicalName(), raveErrors);
@@ -224,19 +223,6 @@ public abstract class BaseValidator {
         List<RaveError> raveErrors = checkNullable(array, isNullable, validationContext);
         if (array == null) {
             return raveErrors;
-        }
-        Rave rave = Rave.getInstance();
-        for (T type : array) {
-            if (type == null) {
-                continue;
-            }
-            try {
-                rave.validate(type);
-            } catch (UnsupportedObjectException e) {
-                break;
-            } catch (RaveException e) {
-                raveErrors = appendErrors(e, raveErrors);
-            }
         }
         raveErrors = testMultipleParameter(multiple, array.length, validationContext, "", raveErrors);
         if (array.length <= max && array.length >= min) {
