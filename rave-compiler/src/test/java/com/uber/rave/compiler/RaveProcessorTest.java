@@ -379,6 +379,18 @@ public class RaveProcessorTest {
     }
 
     @Test
+    public void testExcludedMethod_shouldNotGenerateValidateMethodExcluded() {
+        sources.add(JavaFileObjects.forResource("fixtures/excluded/UseOfExcluded.java"));
+        sources.add(JavaFileObjects.forResource("fixtures/SampleFactory.java"));
+
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError()
+                .and()
+                .generatesSources(JavaFileObjects.forResource(
+                        "fixtures/excluded/SampleFactory_Generated_Validator.java"));
+    }
+
     public void testDefaultModeValidationStategy_whenUnannotatedMethodAndPrimativePresent_shouldValidate() {
         sources.add(JavaFileObjects.forResource("fixtures/unannotated/UnannotatedField.java"));
         sources.add(myValidator);

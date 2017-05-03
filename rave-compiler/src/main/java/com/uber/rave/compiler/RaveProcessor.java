@@ -29,6 +29,7 @@ import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableList;
 import com.uber.rave.BaseValidator;
 import com.uber.rave.Validator;
+import com.uber.rave.annotation.Excluded;
 import com.uber.rave.annotation.Validated;
 
 import java.io.IOException;
@@ -163,6 +164,10 @@ public final class RaveProcessor extends AbstractProcessor {
                 continue;
             }
             if (!executableElement.getModifiers().contains(Modifier.PUBLIC) && !samePackage) {
+                continue;
+            }
+
+            if (executableElement.getAnnotation(Excluded.class) != null) {
                 continue;
             }
             MethodIR methodIR = new MethodIR(executableElement.getSimpleName().toString());

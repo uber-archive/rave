@@ -151,7 +151,9 @@ final class RaveConverterFactory extends Converter.Factory {
 ```
 
 ### Advanced Usage
-There may be some cases in which you want to exclude/ignore certain models from validation. To do this we have the `ExclusionStrategy` class. Use the builder to exclude class or class + methods.
+There may be some cases in which you want to exclude/ignore certain models from validation. To do this apply `@Excluded` to  the method that should be exempted from validation. RAVE will not generate validation code for this method.
+
+Alternatively we have the `ExclusionStrategy` class. Use the builder to exclude class or class + methods.
 
 ```java
  ExclusionStrategy builder = new ExclusionStrategy.Builder()
