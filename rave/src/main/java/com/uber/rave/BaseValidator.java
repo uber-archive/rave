@@ -36,8 +36,6 @@ import java.util.Set;
  */
 public abstract class BaseValidator {
 
-    private static final ExclusionStrategy EMPTY_EXCLUSION = new ExclusionStrategy.Builder().build();
-
     private final HashSet<Class<?>> supportedClasses;
 
     protected BaseValidator() {
@@ -45,15 +43,10 @@ public abstract class BaseValidator {
     }
 
     final void validate(@NonNull Object object) throws RaveException {
-        validate(object, EMPTY_EXCLUSION);
-    }
-
-    final void validate(@NonNull Object object, @NonNull ExclusionStrategy exclusionStrategy)
-            throws RaveException {
         Class<?> clazz = object.getClass();
         if (supportedClasses.contains(clazz)) {
             // This will call the object specific generated validate method.
-            validateAs(object, clazz, exclusionStrategy);
+            validateAs(object, clazz);
         } else {
             throw new IllegalArgumentException(
                     clazz.getCanonicalName() + ":" + RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR);
@@ -71,13 +64,11 @@ public abstract class BaseValidator {
      *
      * @param obj the object to validate
      * @param clazz the class to validate it as.
-     * @param exclusionStrategy a {@link ExclusionStrategy}
      * @throws RaveException if validation fails.
      */
     protected abstract void validateAs(
             @NonNull Object obj,
-            @NonNull Class<?> clazz,
-            @NonNull ExclusionStrategy exclusionStrategy)
+            @NonNull Class<?> clazz)
             throws RaveException;
 
     /**
@@ -92,10 +83,9 @@ public abstract class BaseValidator {
     @Nullable
     protected final List<RaveError> reEvaluateAsSuperType(
             @NonNull Class<?> clazz,
-            @NonNull Object obj,
-            @NonNull ExclusionStrategy exclusionStrategy) {
+            @NonNull Object obj) {
         try {
-            Rave.getInstance().validateAs(obj, clazz, exclusionStrategy);
+            Rave.getInstance().validateAs(obj, clazz);
         } catch (RaveException e) {
             return e.errors;
         }
@@ -557,26 +547,6 @@ public abstract class BaseValidator {
     }
 
     /**
-     * This method is a utility for the generated validators to set the
-     * {@link BaseValidator.ValidationContext} with the method name and then check to see if the
-     * method should be ignored.
-     *
-     * @param clazz the {@link Class} model that we are validating
-     * @param methodName the method name that is being checked.
-     * @param exclusionStrategy the {@link ExclusionStrategy}.
-     * @param validationContext the {@link BaseValidator.ValidationContext}
-     * @return if the method name should be ignored for validation.
-     */
-    protected static boolean setContextAndCheckshouldIgnoreMethod(
-            @NonNull Class<?> clazz, @NonNull String methodName,
-            @NonNull ExclusionStrategy exclusionStrategy,
-            @NonNull ValidationContext validationContext) {
-        validationContext.setValidatedItemName(methodName + "()");
-        ValidationIgnore ignore = exclusionStrategy.get(clazz);
-        return ignore != null && ignore.shouldIgnoreMethod(methodName);
-    }
-
-    /**
      * Validate the elements in a {@link Iterable}.
      *
      * @param iterable the items to check
@@ -761,7 +731,11 @@ public abstract class BaseValidator {
             return validatedItemName;
         }
 
-        void setValidatedItemName(@NonNull String item) {
+        /**
+         * The the context name for this {@link ValidationContext} object.
+         * @param item the string name for the current context.
+         */
+        public void setValidatedItemName(@NonNull String item) {
             this.validatedItemName = item;
         }
     }

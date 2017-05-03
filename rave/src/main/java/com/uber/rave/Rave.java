@@ -55,7 +55,6 @@ import java.util.Set;
 public class Rave {
 
     private static final int CLASS_VALIDATOR_DEFAULT_CACHE_SIZE = 100;
-    private static final ExclusionStrategy EMPTY_EXCLUSION = new ExclusionStrategy.Builder().build();
 
     private final Map<Class<?>, BaseValidator> classValidatorMap = new HashMap<>();
     private final UnAnnotatedModelValidator unannotatedModelValidator =
@@ -79,20 +78,6 @@ public class Rave {
      * @throws RaveException if validation fails.
      */
     public void validate(@NonNull Object object) throws RaveException {
-        validate(object, EMPTY_EXCLUSION);
-    }
-
-    /**
-     * Validate an object. If the object is not supported, nothing will happen. Otherwise the object will be routed to
-     * the correct sub-validator which knows how to validate it.
-     *
-     * @param object the object to be validated.
-     * @param exclusionStrategy the {@link ExclusionStrategy} that is used to ignore classes that are not required for
-     * validation.
-     * @throws RaveException if validation fails.
-     */
-    public void validate(@NonNull Object object, @NonNull ExclusionStrategy exclusionStrategy)
-            throws RaveException {
         Class<?> clazz = object.getClass();
         Validated validated = clazz.getAnnotation(Validated.class);
         BaseValidator validator;
@@ -109,7 +94,7 @@ public class Rave {
                         new RaveError(clazz, "", RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR)));
             }
         }
-        validator.validate(object, exclusionStrategy);
+        validator.validate(object);
     }
 
     /**
@@ -136,14 +121,12 @@ public class Rave {
      *
      * @param obj the object to validate
      * @param clazz the class type to validate it as.
-     * @param exclusionStrategy the {@link ExclusionStrategy} that is used to ignore classes that are not required for
      * validation.
      * @throws RaveException thrown if the validation process fails.
      */
     void validateAs(
             @NonNull Object obj,
-            @NonNull Class<?> clazz,
-            @NonNull ExclusionStrategy exclusionStrategy) throws RaveException {
+            @NonNull Class<?> clazz) throws RaveException {
         if (!clazz.isInstance(obj)) {
             throw new IllegalArgumentException("Trying to validate " + obj.getClass().getCanonicalName() + " as "
                     + clazz.getCanonicalName());
@@ -159,7 +142,7 @@ public class Rave {
                         new RaveError(obj.getClass(), "", RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR)));
             }
         }
-        base.validateAs(obj, clazz, exclusionStrategy);
+        base.validateAs(obj, clazz);
     }
 
     private void registerValidatorWithClass(@NonNull BaseValidator validator, @NonNull Class<?> supportedModel) {
@@ -229,8 +212,7 @@ public class Rave {
         @Override
         protected void validateAs(
                 @NonNull Object object,
-                @NonNull Class<?> clazz,
-                @NonNull ExclusionStrategy exclusionStrategy) throws RaveException {
+                @NonNull Class<?> clazz) throws RaveException {
             if (unsupportedClassesCache.containsKey(clazz)) {
                 throw new UnsupportedObjectException(Collections.singletonList(
                         new RaveError(clazz, "", RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR)));
@@ -242,7 +224,7 @@ public class Rave {
             }
             List<RaveError> raveErrors = null;
             for (Class<?> parentClass : inheritanceSet) {
-                raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(parentClass, object, exclusionStrategy));
+                raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(parentClass, object));
             }
             if (raveErrors != null && !raveErrors.isEmpty()) {
                 throw new InvalidModelException(raveErrors);

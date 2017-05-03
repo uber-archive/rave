@@ -38,7 +38,6 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.WildcardTypeName;
 import com.uber.rave.BaseValidator;
-import com.uber.rave.ExclusionStrategy;
 import com.uber.rave.InvalidModelException;
 import com.uber.rave.RaveError;
 import com.uber.rave.annotation.MustBeFalse;
@@ -72,7 +71,6 @@ final class RaveWriter {
     static final Class<? extends Exception> RAVE_INVALID_MODEL_EXCEPTION_CLASS = InvalidModelException.class;
     static final String RAVE_ERROR_ARG_NAME = "raveErrors";
     static final String VALIDATE_METHOD_CLAZZ_ARG_NAME = "clazz";
-    static final String EXCLUSION_STRATEGY_MAP_ARG_NAME = "exclusionStrategy";
     static final String VALIDATION_CONTEXT_ARG_NAME = "context";
 
     private static final ParameterizedTypeName CLASS_PARAMETERIZED_TYPE_NAME =
@@ -146,8 +144,6 @@ final class RaveWriter {
                 .addParameter(ParameterSpec.builder(Object.class, VALIDATE_METHOD_ARG_NAME)
                         .addAnnotation(NonNull.class).build())
                 .addParameter(ParameterSpec.builder(CLASS_PARAMETERIZED_TYPE_NAME, VALIDATE_METHOD_CLAZZ_ARG_NAME)
-                        .addAnnotation(NonNull.class).build())
-                .addParameter(ParameterSpec.builder(ExclusionStrategy.class, EXCLUSION_STRATEGY_MAP_ARG_NAME)
                         .addAnnotation(NonNull.class).build());
         builder.beginControlFlow("if (!$L.isInstance($L))", VALIDATE_METHOD_CLAZZ_ARG_NAME, VALIDATE_METHOD_ARG_NAME);
         builder.addStatement("throw new $T($L.getClass().getCanonicalName() + $S + $L.getCanonicalName())",
@@ -160,8 +156,8 @@ final class RaveWriter {
             concreteSpecs.add(specificSpec);
             builder.beginControlFlow("if ($L.equals($T.class))", VALIDATE_METHOD_CLAZZ_ARG_NAME,
                     classIR.getTypeMirror());
-            builder.addStatement("$L(($T) $L, $L)", VALIDATE_METHOD_NAME, classIR.getTypeMirror(),
-                    VALIDATE_METHOD_ARG_NAME, EXCLUSION_STRATEGY_MAP_ARG_NAME);
+            builder.addStatement("$L(($T) $L)", VALIDATE_METHOD_NAME, classIR.getTypeMirror(),
+                    VALIDATE_METHOD_ARG_NAME);
             builder.addStatement("return");
             builder.endControlFlow();
         }
@@ -188,18 +184,16 @@ final class RaveWriter {
                 .addException(RAVE_INVALID_MODEL_EXCEPTION_CLASS)
                 .addModifiers(Modifier.PRIVATE)
                 .returns(void.class)
-                .addParameter(TypeName.get(classIR.getTypeMirror()), VALIDATE_METHOD_ARG_NAME)
-                .addParameter(ExclusionStrategy.class, EXCLUSION_STRATEGY_MAP_ARG_NAME);
+                .addParameter(TypeName.get(classIR.getTypeMirror()), VALIDATE_METHOD_ARG_NAME);
         builder.addStatement("$T $L = getValidationContext($T.class)", BaseValidator.ValidationContext.class,
                 VALIDATION_CONTEXT_ARG_NAME, classIR.getTypeMirror());
         builder.addStatement("$T<$T> $L = null", List.class, RaveError.class,
                 RAVE_ERROR_ARG_NAME);
         for (TypeMirror mirror : classIR.getInheritedTypes()) {
             // Ex: raveErrors = mergeErrors(reEvaluateAsSuperType(ValidateSample2.class, object), raveErrors);
-            builder.addStatement("$L = $L($L, $L($T.class, $L, $L))", RAVE_ERROR_ARG_NAME,
-                    MERGE_ERROR_METHOD_NAME, RAVE_ERROR_ARG_NAME,
-                    RE_EVAL_SUPERTYPE_METHOD_NAME, typeUtils.erasure(mirror),
-                    VALIDATE_METHOD_ARG_NAME, EXCLUSION_STRATEGY_MAP_ARG_NAME);
+            builder.addStatement("$L = $L($L, $L($T.class, $L))", RAVE_ERROR_ARG_NAME,
+                    MERGE_ERROR_METHOD_NAME, RAVE_ERROR_ARG_NAME, RE_EVAL_SUPERTYPE_METHOD_NAME,
+                    typeUtils.erasure(mirror), VALIDATE_METHOD_ARG_NAME);
         }
         for (MethodIR methodIR : classIR.getAllMethods()) {
             buildAnnotationChecks(builder, methodIR, classIR.getTypeMirror());

@@ -22,7 +22,6 @@ package com.uber.rave;
 
 import android.support.annotation.NonNull;
 
-import com.uber.rave.model.AbstractAnnotated;
 import com.uber.rave.model.IntDefModel;
 import com.uber.rave.model.NonAnnotated;
 import com.uber.rave.model.SingleMethodSampleModel;
@@ -46,7 +45,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class RaveUnitTest {
-    private static final ExclusionStrategy EMPTY_EXCLUSION = new ExclusionStrategy.Builder().build();
 
     @Test
     public void validateIgnore_whenUsingConstructor_shouldHaveExpectedBehavior() {
@@ -435,12 +433,12 @@ public class RaveUnitTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void validateAs_whenClazzTypeDoesntMatchObjectType_shouldFailWithException() throws RaveException {
-        Rave.getInstance().validateAs(new Object(), String.class, EMPTY_EXCLUSION);
+        Rave.getInstance().validateAs(new Object(), String.class);
     }
 
     @Test(expected = UnsupportedObjectException.class)
     public void validateAs_whenTypeIsNotSupported_shouldFailWithRaveUnsupportedException() throws RaveException {
-        Rave.getInstance().validateAs(new Object(), Object.class, EMPTY_EXCLUSION);
+        Rave.getInstance().validateAs(new Object(), Object.class);
     }
 
     @Test(expected = UnsupportedObjectException.class)
@@ -487,25 +485,6 @@ public class RaveUnitTest {
         Rave.getInstance().validate(new NonAnnotated(null));
     }
 
-    @Test
-    public void unAnnotateValidatorHandlerValidate_whenModelInvalidButIgnoreAll_shouldNotThrowInvalidModelException()
-            throws RaveException {
-        ExclusionStrategy.Builder builder = new ExclusionStrategy.Builder();
-        builder.addClass(AbstractAnnotated.class);
-        Rave.getInstance().validate(new NonAnnotated(null), builder.build());
-    }
-
-    @Test
-    public void unAnnotateValidatorHandlerValidate_whenModelInvalidButIgnore_shouldNotThrowInvalidModelException()
-            throws RaveException {
-        ExclusionStrategy.Builder builder = new ExclusionStrategy.Builder();
-        builder.addMethod(AbstractAnnotated.class, "nonNullAbstractMethodString");
-        builder.addMethod("com.uber.rave.model.SingleMethodSampleModel", "getMatchStringDef");
-        Rave.getInstance().validate(new NonAnnotated(null), builder.build());
-        Rave.getInstance().validate(new SingleMethodSampleModel("noNull", "notMatchingstringDef"),
-                builder.build());
-    }
-
     @Test(expected = UnsupportedObjectException.class)
     public void validate_whenNonSupportedClass_shouldThrowException() throws RaveException {
         Rave.getInstance().validate(Collections.emptyList());
@@ -517,7 +496,7 @@ public class RaveUnitTest {
         Rave.UnAnnotatedModelValidator handler = new Rave.UnAnnotatedModelValidator(1);
         handler.processNonAnnotatedClasses(Object.class);
         handler.processNonAnnotatedClasses(String.class);
-        handler.validateAs("", String.class, EMPTY_EXCLUSION);
+        handler.validateAs("", String.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -526,19 +505,19 @@ public class RaveUnitTest {
         Rave.UnAnnotatedModelValidator handler = new Rave.UnAnnotatedModelValidator(1);
         handler.processNonAnnotatedClasses(Object.class);
         handler.processNonAnnotatedClasses(String.class);
-        handler.validateAs(new Object(), Object.class, EMPTY_EXCLUSION);
+        handler.validateAs(new Object(), Object.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void unAnnotateValidatorHandlerValidateAs_whenNonSupportedClass_shouldThrowException() throws RaveException {
         Rave.UnAnnotatedModelValidator handler = new Rave.UnAnnotatedModelValidator(1);
-        handler.validateAs(new NonAnnotated(""), NonAnnotated.class, EMPTY_EXCLUSION);
+        handler.validateAs(new NonAnnotated(""), NonAnnotated.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void unAnnotateValidatorHandlerValidateAs_whenModelIsAnnotated_shouldThrowException() throws RaveException {
         Rave.UnAnnotatedModelValidator handler = new Rave.UnAnnotatedModelValidator(1);
-        handler.validateAs(new SingleMethodSampleModel("", ""), SingleMethodSampleModel.class, EMPTY_EXCLUSION);
+        handler.validateAs(new SingleMethodSampleModel("", ""), SingleMethodSampleModel.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -633,7 +612,7 @@ public class RaveUnitTest {
 
         @Override
         protected void validateAs(
-                @NonNull Object obj, @NonNull Class<?> clazz, @NonNull ExclusionStrategy exclusionStrategy)
+                @NonNull Object obj, @NonNull Class<?> clazz)
                 throws RaveException {
 
         }
