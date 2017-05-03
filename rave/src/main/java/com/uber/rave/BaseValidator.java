@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -233,6 +234,40 @@ public abstract class BaseValidator {
     }
 
     /**
+     * Validate the size of an Map.
+     *
+     * @param map the {@link Map} to validate.
+     * @param isNullable if true than null is a valid value for the input string regardless of min and max.
+     * @param min the Array must have least this many elements in it.
+     * @param max the Array can have at most this many elements in it.
+     * @param multiple the multiple constraint on the {@link android.support.annotation.Size}. If less than zero it is
+     * ignored.
+     * @param validationContext the context of the item in the class being validated. This is used in case of an error.
+     * @param <K> key type of the map and can be any type.
+     * @param <V> value type of the map and can be any type.
+     * @return {@link List} of {@link RaveError}s which list the validation violations. Null otherwise.
+     */
+    @Nullable
+    protected static <K, V> List<RaveError> isSizeOk(
+            @Nullable Map<K, V> map,
+            boolean isNullable,
+            long min,
+            long max,
+            long multiple,
+            @NonNull ValidationContext validationContext) {
+        List<RaveError> raveErrors = checkNullable(map, isNullable, validationContext);
+        if (map == null) {
+            return raveErrors;
+        }
+        raveErrors = testMultipleParameter(multiple, map.size(), validationContext, "", raveErrors);
+        if (map.size() <= max && map.size() >= min) {
+            return raveErrors;
+        }
+        String msg = "With size " + map.size() + " is not within " + "bounds min: " + min + " and max: " + max;
+        return appendError(validationContext, msg, raveErrors);
+    }
+
+    /**
      * Checks to see if the object is null.
      *
      * @param obj the object to validate.
@@ -269,7 +304,7 @@ public abstract class BaseValidator {
     /**
      * Checks to see if the object is null.
      *
-     * @param collection he collection to validate.
+     * @param collection the collection to validate.
      * @param isNullable is the object is allowed to be null.
      * @param validationContext the context of the item in the class being validated. This is used in case of an error.
      * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
@@ -314,6 +349,28 @@ public abstract class BaseValidator {
             }
         }
         return errors;
+    }
+
+    /**
+     * Checks to see if the map is null.
+     *
+     * @param map the map to validate.
+     * @param isNullable is the object is allowed to be null.
+     * @param validationContext The context of the item in the class being validated. This is used in case of an error.
+     * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise. This
+     * method will also RAVE validate the keys and values of the map if they are RAVE enabled.
+     */
+    @NonNull
+    protected static <K, V> List<RaveError> checkNullable(
+            @Nullable Map<K, V> map,
+            boolean isNullable,
+            @NonNull ValidationContext validationContext) {
+        List<RaveError> errors = checkNullable((Object) map, isNullable, validationContext);
+        if (map == null) {
+            return errors;
+        }
+        errors = checkIterable(map.keySet(), errors);
+        return checkIterable(map.values(), errors);
     }
 
     /**

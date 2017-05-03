@@ -72,6 +72,18 @@ public class RaveProcessorTest {
     }
 
     @Test
+    public void testModelWithMap_whenModelHasAMapField_shouldGeneratedValidationForMap() {
+        JavaFileObject source = JavaFileObjects.forResource("fixtures/maps/ModelWithMap.java");
+        sources.add(source);
+        sources.add(myValidator);
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError()
+                .and()
+                .generatesSources(JavaFileObjects.forResource("fixtures/maps/SampleFactory_Generated_Validator.java"));
+    }
+
+    @Test
     public void testIntDef_whenUsingIntDef_shouldMatchOutput() {
         JavaFileObject source = JavaFileObjects.forResource("fixtures/intdef/IntDefTestClass.java");
         String fileContents = null;
