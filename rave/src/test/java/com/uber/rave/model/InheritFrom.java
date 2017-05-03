@@ -34,6 +34,7 @@ public class InheritFrom extends SingleMethodSampleModel implements ValidateByIn
         return nonNullString;
     }
 
+    @Override
     public String toString() {
         String result = "";
         result += "getNonNullString:" + getNonNullString() + "\n";
