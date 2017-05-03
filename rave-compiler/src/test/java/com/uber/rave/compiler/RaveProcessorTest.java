@@ -72,6 +72,27 @@ public class RaveProcessorTest {
     }
 
     @Test
+    public void testModelWithMap_whenModelHasAMapField_shouldGeneratedValidationForMap() {
+        JavaFileObject source = JavaFileObjects.forResource("fixtures/maps/ModelWithMap.java");
+        String fileContents = null;
+        String filePath = "build/resources/test/fixtures/maps/SampleFactory_Generated_Validator.java";
+        try {
+            fileContents = readFile(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't read input file: " + filePath);
+        }
+        JavaFileObject fileObject = JavaFileObjects.forSourceString("fixtures.SampleFactory_Generated_Validator",
+                fileContents);
+        sources.add(source);
+        sources.add(myValidator);
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError()
+                .and()
+                .generatesSources(fileObject);
+    }
+
+    @Test
     public void testIntDef_whenUsingIntDef_shouldMatchOutput() {
         JavaFileObject source = JavaFileObjects.forResource("fixtures/intdef/IntDefTestClass.java");
         String fileContents = null;
