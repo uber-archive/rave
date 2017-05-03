@@ -236,22 +236,23 @@ public abstract class BaseValidator {
     /**
      * Validate the size of an Map.
      *
-     * @param map the map to validate.
+     * @param map the {@link Map} to validate.
      * @param isNullable if true than null is a valid value for the input string regardless of min and max.
-     * @param min The Array must have least this many elements in it.
-     * @param max The Array can have at most this many elements in it.
-     * @param multiple The multiple constraint on the {@link android.support.annotation.Size}. If less than zero it is
+     * @param min the Array must have least this many elements in it.
+     * @param max the Array can have at most this many elements in it.
+     * @param multiple the multiple constraint on the {@link android.support.annotation.Size}. If less than zero it is
      * ignored.
-     * @param validationContext The context of the item in the class being validated. This is used in case of an error.
-     * @param <K> can be anytype.
-     * @param <V> can be anytype.
+     * @param validationContext the context of the item in the class being validated. This is used in case of an error.
+     * @param <K> can be any type.
+     * @param <V> can be any type.
      * @return {@link List} of {@link RaveError}s which list the validation violations. Null otherwise.
      */
     @Nullable
     protected static <K, V> List<RaveError> isSizeOk(
             @Nullable Map<K, V> map,
             boolean isNullable,
-            long min, long max,
+            long min,
+            long max,
             long multiple,
             @NonNull ValidationContext validationContext) {
         List<RaveError> raveErrors = checkNullable(map, isNullable, validationContext);
@@ -262,7 +263,7 @@ public abstract class BaseValidator {
         if (map.size() <= max && map.size() >= min) {
             return raveErrors;
         }
-        String msg = "With size" + map.size() + " is not within " + "bounds min:" + min + " and max:" + max;
+        String msg = "With size " + map.size() + " is not within " + "bounds min: " + min + " and max: " + max;
         return appendError(validationContext, msg, raveErrors);
     }
 
@@ -357,7 +358,7 @@ public abstract class BaseValidator {
      * @param isNullable is the object is allowed to be null.
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
      * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise. This
-     * method will also RAVE validate the keys and values of the map.
+     * method will also RAVE validate the keys and values of the map if they are RAVE enabled.
      */
     @NonNull
     protected static <K, V> List<RaveError> checkNullable(

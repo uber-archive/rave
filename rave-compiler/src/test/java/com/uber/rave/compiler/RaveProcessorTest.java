@@ -89,7 +89,7 @@ public class RaveProcessorTest {
                 .processedWith(raveProcessor)
                 .compilesWithoutError()
                 .and()
-                .generatesSources(fileObject);
+                .generatesSources(JavaFileObjects.forResource("fixtures/maps/SampleFactory_Generated_Validator.java"));
     }
 
     @Test
