@@ -196,7 +196,7 @@ final class AnnotationWriter {
      */
     private void buildStatements(@NonNull String statementFormat, Object... objects) {
         builder.addStatement("$L.$L($S)", RaveWriter.VALIDATION_CONTEXT_ARG_NAME, SET_VALIDATION_ITEM_METHOD_NAME,
-                getter.name);
+                getter.name + "()");
         builder.addStatement(statementFormat, objects);
     }
 

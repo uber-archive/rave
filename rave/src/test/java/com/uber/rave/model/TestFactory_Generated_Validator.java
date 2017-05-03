@@ -77,7 +77,7 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
         List<RaveError> raveErrors = null;
         raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(SingleMethodSampleModel.class, object));
         raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(ValidateByInterface.class, object));
-        context.setValidatedItemName("getNonNullString");
+        context.setValidatedItemName("getNonNullString()");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.getNonNullString(), false, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
@@ -88,7 +88,7 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
             InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(ValidateByInterface.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getNonNullString");
+        context.setValidatedItemName("getNonNullString()");
         raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNonNullString(), false, 0L, 4L, 1L, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
@@ -99,19 +99,19 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
             InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(MultiMethodSampleModel.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getNonAnnotatedObject");
+        context.setValidatedItemName("getNonAnnotatedObject()");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.getNonAnnotatedObject(), true, context));
         context.setValidatedItemName("getNotNullField");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.getNotNullField(), false, context));
-        context.setValidatedItemName("getCanBeNullField");
+        context.setValidatedItemName("getCanBeNullField()");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.getCanBeNullField(), true, context));
-        context.setValidatedItemName("getBetweenOneAndFive");
+        context.setValidatedItemName("getBetweenOneAndFive()");
         raveErrors = mergeErrors(raveErrors, isSizeOk(object.getBetweenOneAndFive(), true, 1L, 5L, 1L, context));
-        context.setValidatedItemName("getNames");
+        context.setValidatedItemName("getNames()");
         raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNames(), true, 1L, 5L, 1L, context));
-        context.setValidatedItemName("getIsFalse");
+        context.setValidatedItemName("getIsFalse()");
         raveErrors = mergeErrors(raveErrors, mustBeFalse(object.getIsFalse(), context));
-        context.setValidatedItemName("getIsTrue");
+        context.setValidatedItemName("getIsTrue()");
         raveErrors = mergeErrors(raveErrors, mustBeTrue(object.getIsTrue(), context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
@@ -122,9 +122,9 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
             InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(SingleMethodSampleModel.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getNotNullField");
+        context.setValidatedItemName("getNotNullField()");
         raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNotNullField(), false, 1L, 20L, 2L, context));
-        context.setValidatedItemName("getMatchStringDef");
+        context.setValidatedItemName("getMatchStringDef()");
         raveErrors = mergeErrors(raveErrors, checkStringDef(false, context, object.getMatchStringDef(), "Matched",
                 "Matching", "AlsoMatching"));
         if (raveErrors != null && !raveErrors.isEmpty()) {
@@ -135,9 +135,9 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
     private void validateAs(ArrayNotNull object) throws InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(ArrayNotNull.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getSingles");
+        context.setValidatedItemName("getSingles()");
         raveErrors = mergeErrors(raveErrors, isSizeOk(object.getSingles(), false, 1L, 3L, 1L, context));
-        context.setValidatedItemName("getStringsArray");
+        context.setValidatedItemName("getStringsArray()");
         raveErrors = mergeErrors(raveErrors, isSizeOk(object.getStringsArray(), false, 5L, 20L, 1L, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
@@ -148,9 +148,9 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
             InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(AbstractAnnotated.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("nonNullAbstractMethodString");
+        context.setValidatedItemName("nonNullAbstractMethodString()");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.nonNullAbstractMethodString(), false, context));
-        context.setValidatedItemName("nonNullString");
+        context.setValidatedItemName("nonNullString()");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.nonNullString(), false, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
@@ -161,7 +161,7 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
             InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(IntDefModel.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getStandard");
+        context.setValidatedItemName("getStandard()");
         raveErrors = mergeErrors(raveErrors, checkIntDef(context, object.getStandard(), false, 0, 1, 2));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
@@ -172,7 +172,7 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
             InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(IntRangeTestModel.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getValue");
+        context.setValidatedItemName("getValue()");
         raveErrors = mergeErrors(raveErrors, checkIntRange(context, object.getValue(), -15L, 1000L));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
@@ -183,7 +183,7 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
             InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(FloatRangeTestModel.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getValue");
+        context.setValidatedItemName("getValue()");
         raveErrors = mergeErrors(raveErrors, checkFloatRange(context, object.getValue(), -15.5d, 1000.9d));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
