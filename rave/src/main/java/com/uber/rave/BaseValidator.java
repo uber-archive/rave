@@ -243,8 +243,8 @@ public abstract class BaseValidator {
      * @param multiple the multiple constraint on the {@link android.support.annotation.Size}. If less than zero it is
      * ignored.
      * @param validationContext the context of the item in the class being validated. This is used in case of an error.
-     * @param <K> can be any type.
-     * @param <V> can be any type.
+     * @param <K> key type of the map and can be any type.
+     * @param <V> value type of the map and can be any type.
      * @return {@link List} of {@link RaveError}s which list the validation violations. Null otherwise.
      */
     @Nullable
