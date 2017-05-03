@@ -167,7 +167,7 @@ public class RaveProcessorTest {
     }
 
     @Test
-    public void test2MultipleModels_whenUsingInputsFilesFromtest2Dir_shouldSucceed() {
+    public void test2MultipleModels_whenUsingInputsFilesFromTest2Dir_shouldSucceed() {
         String fileContents = null;
         String filePath = "src/test/resources/fixtures/test2/MyFactory_Generated_Validator.java";
         try {
@@ -364,6 +364,19 @@ public class RaveProcessorTest {
                 .and()
                 .generatesSources(JavaFileObjects.forResource(
                         "fixtures/validationstrategy/primative/StrictModeFactory_Generated_Validator.java"));
+    }
+
+    @Test
+    public void testDefaultModeValidationStategy_whenUnannotatedMethodAndPrimativePresent_shouldValidate() {
+        sources.add(JavaFileObjects.forResource("fixtures/unannotated/UnannotatedField.java"));
+        sources.add(myValidator);
+
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError()
+                .and()
+                .generatesSources(JavaFileObjects.forResource(
+                        "fixtures/unannotated/SampleFactory_Generated_Validator.java"));
     }
 
     static String readFile(String path) throws IOException {
