@@ -83,7 +83,8 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     throw new IllegalArgumentException(object.getClass().getCanonicalName() + " is not supported by validator " + this.getClass().getCanonicalName());
   }
 
-  private void validateAs(InheritFrom object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  private void validateAs(InheritFrom object, ExclusionStrategy exclusionStrategy) throws
+          InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(InheritFrom.class);
     List<RaveError> raveErrors = null;
     raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(SingleMethodSampleModel.class, object, exclusionStrategy));
@@ -91,12 +92,16 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     if (!setContextAndCheckshouldIgnoreMethod(InheritFrom.class, "getNonNullString", exclusionStrategy, context)) {
       raveErrors = mergeErrors(raveErrors, checkNullable(object.getNonNullString(), false, context));
     }
+    if (!setContextAndCheckshouldIgnoreMethod(InheritFrom.class, "toString", exclusionStrategy, context)) {
+      raveErrors = mergeErrors(raveErrors, checkNullable(object.toString(), true, context));
+    }
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(ValidateByInterface object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  private void validateAs(ValidateByInterface object, ExclusionStrategy exclusionStrategy) throws
+          InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(ValidateByInterface.class);
     List<RaveError> raveErrors = null;
     if (!setContextAndCheckshouldIgnoreMethod(ValidateByInterface.class, "getNonNullString", exclusionStrategy, context)) {
@@ -107,7 +112,8 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     }
   }
 
-  private void validateAs(MultiMethodSampleModel object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  private void validateAs(MultiMethodSampleModel object, ExclusionStrategy exclusionStrategy) throws
+          InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(MultiMethodSampleModel.class);
     List<RaveError> raveErrors = null;
     if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "getNonAnnotatedObject", exclusionStrategy, context)) {
@@ -131,12 +137,16 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "getIsTrue", exclusionStrategy, context)) {
       raveErrors = mergeErrors(raveErrors, mustBeTrue(object.getIsTrue(), context));
     }
+    if (!setContextAndCheckshouldIgnoreMethod(MultiMethodSampleModel.class, "toString", exclusionStrategy, context)) {
+      raveErrors = mergeErrors(raveErrors, checkNullable(object.toString(), true, context));
+    }
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(SingleMethodSampleModel object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  private void validateAs(SingleMethodSampleModel object, ExclusionStrategy exclusionStrategy)
+          throws InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(SingleMethodSampleModel.class);
     List<RaveError> raveErrors = null;
     if (!setContextAndCheckshouldIgnoreMethod(SingleMethodSampleModel.class, "getNotNullField", exclusionStrategy, context)) {
@@ -150,7 +160,8 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     }
   }
 
-  private void validateAs(ArrayNotNull object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  private void validateAs(ArrayNotNull object, ExclusionStrategy exclusionStrategy) throws
+          InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(ArrayNotNull.class);
     List<RaveError> raveErrors = null;
     if (!setContextAndCheckshouldIgnoreMethod(ArrayNotNull.class, "getSingles", exclusionStrategy, context)) {
@@ -159,12 +170,16 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     if (!setContextAndCheckshouldIgnoreMethod(ArrayNotNull.class, "getStringsArray", exclusionStrategy, context)) {
       raveErrors = mergeErrors(raveErrors, isSizeOk(object.getStringsArray(), false, 5L, 20L, 1L, context));
     }
+    if (!setContextAndCheckshouldIgnoreMethod(ArrayNotNull.class, "toString", exclusionStrategy, context)) {
+      raveErrors = mergeErrors(raveErrors, checkNullable(object.toString(), true, context));
+    }
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }
   }
 
-  private void validateAs(AbstractAnnotated object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  private void validateAs(AbstractAnnotated object, ExclusionStrategy exclusionStrategy) throws
+          InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(AbstractAnnotated.class);
     List<RaveError> raveErrors = null;
     if (!setContextAndCheckshouldIgnoreMethod(AbstractAnnotated.class, "nonNullAbstractMethodString", exclusionStrategy, context)) {
@@ -178,7 +193,8 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     }
   }
 
-  private void validateAs(IntDefModel object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  private void validateAs(IntDefModel object, ExclusionStrategy exclusionStrategy) throws
+          InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(IntDefModel.class);
     List<RaveError> raveErrors = null;
     if (!setContextAndCheckshouldIgnoreMethod(IntDefModel.class, "getStandard", exclusionStrategy, context)) {
@@ -189,7 +205,8 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     }
   }
 
-  private void validateAs(IntRangeTestModel object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  private void validateAs(IntRangeTestModel object, ExclusionStrategy exclusionStrategy) throws
+          InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(IntRangeTestModel.class);
     List<RaveError> raveErrors = null;
     if (!setContextAndCheckshouldIgnoreMethod(IntRangeTestModel.class, "getValue", exclusionStrategy, context)) {
@@ -200,7 +217,8 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     }
   }
 
-  private void validateAs(FloatRangeTestModel object, ExclusionStrategy exclusionStrategy) throws InvalidModelException {
+  private void validateAs(FloatRangeTestModel object, ExclusionStrategy exclusionStrategy) throws
+          InvalidModelException {
     BaseValidator.ValidationContext context = getValidationContext(FloatRangeTestModel.class);
     List<RaveError> raveErrors = null;
     if (!setContextAndCheckshouldIgnoreMethod(FloatRangeTestModel.class, "getValue", exclusionStrategy, context)) {

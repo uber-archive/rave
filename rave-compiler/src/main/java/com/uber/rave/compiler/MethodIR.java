@@ -53,6 +53,13 @@ final class MethodIR {
     }
 
     /**
+     * @return whether the annotations map has any of the RAVE supported annotations.
+     */
+    boolean hasAnyAnnotation() {
+        return annotations.size() > 0;
+    }
+
+    /**
      * Returns the method name. This is generally the getter method name for some field in the data model class.
      * @return the string representation of the name.
      */
