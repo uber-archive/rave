@@ -52,6 +52,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.NoType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
@@ -160,7 +161,8 @@ public final class RaveProcessor extends AbstractProcessor {
         boolean samePackage = classPackage.equals(CompilerUtils.packageNameOf(typesUtils.asElement(factoryTypeMirror)));
         for (ExecutableElement executableElement : methodElements) {
             if (!executableElement.getParameters().isEmpty()
-                    || executableElement.getModifiers().contains(Modifier.STATIC)) {
+                    || executableElement.getModifiers().contains(Modifier.STATIC)
+                    || executableElement.getReturnType().getKind().equals(TypeKind.VOID)) {
                 continue;
             }
             if (!executableElement.getModifiers().contains(Modifier.PUBLIC) && !samePackage) {

@@ -391,6 +391,7 @@ public class RaveProcessorTest {
                         "fixtures/excluded/SampleFactory_Generated_Validator.java"));
     }
 
+    @Test
     public void testDefaultModeValidationStategy_whenUnannotatedMethodAndPrimativePresent_shouldValidate() {
         sources.add(JavaFileObjects.forResource("fixtures/unannotated/UnannotatedField.java"));
         sources.add(myValidator);
@@ -401,6 +402,19 @@ public class RaveProcessorTest {
                 .and()
                 .generatesSources(JavaFileObjects.forResource(
                         "fixtures/unannotated/SampleFactory_Generated_Validator.java"));
+    }
+
+    @Test
+    public void testVoidReturnMethod_shouldNotValidate() {
+        sources.add(JavaFileObjects.forResource("fixtures/voidreturn/VoidReturn.java"));
+        sources.add(myValidator);
+
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError()
+                .and()
+                .generatesSources(JavaFileObjects.forResource(
+                        "fixtures/voidreturn/SampleFactory_Generated_Validator.java"));
     }
 
     static String readFile(String path) throws IOException {
