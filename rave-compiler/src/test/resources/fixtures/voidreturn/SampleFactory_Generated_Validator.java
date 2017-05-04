@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import com.uber.rave.BaseValidator;
 import com.uber.rave.InvalidModelException;
 import com.uber.rave.RaveError;
-import fixtures.unannotated.UnannotatedField;
+import fixtures.voidreturn.VoidReturn;
 import java.lang.Class;
 import java.lang.IllegalArgumentException;
 import java.lang.Object;
@@ -18,7 +18,7 @@ import javax.annotation.Generated;
 )
 public final class SampleFactory_Generated_Validator extends BaseValidator {
     SampleFactory_Generated_Validator() {
-        addSupportedClass(UnannotatedField.class);
+        addSupportedClass(VoidReturn.class);
         registerSelf();
     }
 
@@ -28,18 +28,16 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
         if (!clazz.isInstance(object)) {
             throw new IllegalArgumentException(object.getClass().getCanonicalName() + "is not of type" + clazz.getCanonicalName());
         }
-        if (clazz.equals(UnannotatedField.class)) {
-            validateAs((UnannotatedField) object);
+        if (clazz.equals(VoidReturn.class)) {
+            validateAs((VoidReturn) object);
             return;
         }
         throw new IllegalArgumentException(object.getClass().getCanonicalName() + " is not supported by validator " + this.getClass().getCanonicalName());
     }
 
-    private void validateAs(UnannotatedField object) throws InvalidModelException {
-        BaseValidator.ValidationContext context = getValidationContext(UnannotatedField.class);
+    private void validateAs(VoidReturn object) throws InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(VoidReturn.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getNullableField()");
-        raveErrors = mergeErrors(raveErrors, checkNullable(object.getNullableField(), true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }
