@@ -3,6 +3,8 @@ Changelog
 
 Version 1.0.0
 ----------------------------
+2017-05-03
+
 - New: Add `@Excluded` API to facilitate ignoring methods in `@Validated` classes.
 - Remove: `ExclusionStrategy` has been removed in favor of `@Excluded` which is more efficient.
 - Improved validation for Maps: key and values are now validated.
