@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 1.0.1
+----------------------------
+2017-05-04
+
+- Fix: Do not generate validation for void return types.
+
 Version 1.0.0
 ----------------------------
 2017-05-03

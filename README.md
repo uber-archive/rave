@@ -20,8 +20,8 @@ To integrate RAVE into your project add the following to your dependencies in yo
 ```
 // Add RAVE dependencies
 dependencies {
-  annotationProcessor 'com.uber:rave-compiler:0.7.0'
-  compile 'com.uber:rave:0.7.0'
+  annotationProcessor 'com.uber:rave-compiler:1.0.1'
+  compile 'com.uber:rave:1.0.1'
 }
 ```
 
