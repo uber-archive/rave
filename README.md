@@ -153,16 +153,6 @@ final class RaveConverterFactory extends Converter.Factory {
 ### Advanced Usage
 There may be some cases in which you want to exclude/ignore certain models from validation. To do this apply `@Excluded` to  the method that should be exempted from validation. RAVE will not generate validation code for this method.
 
-Alternatively we have the `ExclusionStrategy` class. Use the builder to exclude class or class + methods.
-
-```java
- ExclusionStrategy builder = new ExclusionStrategy.Builder()
-        .addMethod(MyExcludedClass.class, "excludedMethodName")
-        .addMethod("path.to.class.MyExcludedClass", "otherMethodToExclude");
- Rave.getInstance().validate(object, builder.build());
-
-```
-
 ## Supported Annotations
 
 A list of supported annotations can be found [here](https://github.com/uber-common/rave/blob/master/rave-compiler/src/main/java/com/uber/rave/compiler/CompilerUtils.java#L54).
