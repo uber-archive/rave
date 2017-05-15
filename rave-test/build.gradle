@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'checkstyle'
-apply plugin: 'nebula.provided-base'
 
 def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
 def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
@@ -14,8 +13,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 configurations {
-    provided
-    compile.extendsFrom provided
+    compileOnly
+    compile.extendsFrom compileOnly
 }
 
 dependencies {

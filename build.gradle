@@ -4,7 +4,6 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:3.0.1'
         classpath 'net.saliman:gradle-cobertura-plugin:2.2.8'
     }
 }
@@ -18,7 +17,6 @@ subprojects {
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:2.3.1'
-            classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         }
     }
 
