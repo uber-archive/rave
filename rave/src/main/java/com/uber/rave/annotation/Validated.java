@@ -20,8 +20,6 @@
 
 package com.uber.rave.annotation;
 
-import android.support.annotation.NonNull;
-
 import com.uber.rave.BaseValidator;
 import com.uber.rave.ValidatorFactory;
 
@@ -41,5 +39,5 @@ public @interface Validated {
      * References the input class type.
      * @return the {@link Class} of the {@link ValidatorFactory}.
      */
-    @NonNull Class<? extends ValidatorFactory> factory();
+    Class<? extends ValidatorFactory> factory();
 }

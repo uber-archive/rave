@@ -20,8 +20,6 @@
 
 package com.uber.rave.compiler;
 
-import android.support.annotation.NonNull;
-
 import com.uber.rave.Validator;
 import com.uber.rave.annotation.Validated;
 
@@ -37,10 +35,10 @@ final class RaveIR {
     /**
      * All the Elements with the {@link Validated} annotation.
      */
-    @NonNull private final List<ClassIR> classIRs = new ArrayList<>();
-    @NonNull private final String packageName;
-    @NonNull private final String simpleName;
-    @NonNull private final Validator.Mode mode;
+    private final List<ClassIR> classIRs = new ArrayList<>();
+    private final String packageName;
+    private final String simpleName;
+    private final Validator.Mode mode;
 
     /**
      * Create a new RAVE IR.
@@ -48,7 +46,7 @@ final class RaveIR {
      * @param simpleName the simple name of the class to be generated.
      * @param mode the validation mode to be applied when generating validation code.
      */
-    RaveIR(@NonNull String packageName, @NonNull String simpleName, @NonNull Validator.Mode mode) {
+    RaveIR(String packageName, String simpleName, Validator.Mode mode) {
         this.packageName = packageName;
         this.simpleName = simpleName;
         this.mode = mode;
@@ -58,14 +56,13 @@ final class RaveIR {
      * Add a new {@link ClassIR} to the IR.
      * @param classIRs the {@link ClassIR} to add.
      */
-    void addClassIR(@NonNull ClassIR classIRs) {
+    void addClassIR(ClassIR classIRs) {
         this.classIRs.add(classIRs);
     }
 
     /**
      * @return Returns the list of {@link ClassIR}s that were added to this IR.
      */
-    @NonNull
     List<ClassIR> getClassIRs() {
         return classIRs;
     }
@@ -80,7 +77,6 @@ final class RaveIR {
     /**
      * @return The string name representing the package of the to-be-generated class.
      */
-    @NonNull
     String getPackageName() {
         return packageName;
     }
@@ -88,7 +84,6 @@ final class RaveIR {
     /**
      * @return This simple name of the generated class.
      */
-    @NonNull
     String getSimpleName() {
         return simpleName;
     }
@@ -96,7 +91,6 @@ final class RaveIR {
     /**
      * @return The validation mode for this library.
      */
-    @NonNull
     Validator.Mode getMode() {
         return mode;
     }

@@ -20,24 +20,22 @@
 
 package com.uber.rave;
 
-import android.support.annotation.NonNull;
-
 /**
  * Holds a single Rave error. This generally will be validation failure.
  */
 public final class RaveError {
 
-    @NonNull private final String errorMsg;
+    private final String errorMsg;
 
-    @NonNull private final String classElement;
-    @NonNull private final Class<?> clazz;
+    private final String classElement;
+    private final Class<?> clazz;
 
     /**
      * @param clazz the inner most {@link Class} that failed validation.
      * @param item the name of the item that failed validation such as the method name.
      * @param errorMsg the error message.
      */
-    public RaveError(@NonNull Class<?> clazz, @NonNull String item, @NonNull String errorMsg) {
+    public RaveError(Class<?> clazz, String item, String errorMsg) {
         this.clazz = clazz;
         this.errorMsg = errorMsg;
         classElement = item;
@@ -47,7 +45,7 @@ public final class RaveError {
      * @param validationContext the {@link BaseValidator.ValidationContext}.
      * @param errorMsg the error message.
      */
-    public RaveError(@NonNull BaseValidator.ValidationContext validationContext, @NonNull String errorMsg) {
+    public RaveError(BaseValidator.ValidationContext validationContext, String errorMsg) {
         this.clazz = validationContext.getClazz();
         classElement = validationContext.getValidatedItemName();
         this.errorMsg = errorMsg;
@@ -56,7 +54,6 @@ public final class RaveError {
     /**
      * @return the {@link String} error messaged for this error.
      */
-    @NonNull
     public String getErrorMsg() {
         return errorMsg;
     }
@@ -66,7 +63,6 @@ public final class RaveError {
      *
      * @return the {@link String} representation of the element in the class.
      */
-    @NonNull
     public String getClassElement() {
         return classElement;
     }
@@ -74,13 +70,11 @@ public final class RaveError {
     /**
      * @return the {@link Class} object.
      */
-    @NonNull
     public Class<?> getClazz() {
         return clazz;
     }
 
     @Override
-    @NonNull
     public String toString() {
         if (classElement.isEmpty()) {
             return clazz.getCanonicalName() + ":" + errorMsg;

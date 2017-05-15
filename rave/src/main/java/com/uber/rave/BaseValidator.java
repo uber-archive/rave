@@ -20,9 +20,6 @@
 
 package com.uber.rave;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,6 +27,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 /**
  * This class should only be used by generated validator classes.
@@ -42,7 +41,7 @@ public abstract class BaseValidator {
         supportedClasses = new HashSet<>();
     }
 
-    final void validate(@NonNull Object object) throws RaveException {
+    final void validate(Object object) throws RaveException {
         Class<?> clazz = object.getClass();
         if (supportedClasses.contains(clazz)) {
             // This will call the object specific generated validate method.
@@ -53,7 +52,6 @@ public abstract class BaseValidator {
         }
     }
 
-    @NonNull
     protected final Set<Class<?>> getSupportedClasses() {
         return supportedClasses;
     }
@@ -67,8 +65,8 @@ public abstract class BaseValidator {
      * @throws RaveException if validation fails.
      */
     protected abstract void validateAs(
-            @NonNull Object obj,
-            @NonNull Class<?> clazz)
+            Object obj,
+            Class<?> clazz)
             throws RaveException;
 
     /**
@@ -82,8 +80,8 @@ public abstract class BaseValidator {
      */
     @Nullable
     protected final List<RaveError> reEvaluateAsSuperType(
-            @NonNull Class<?> clazz,
-            @NonNull Object obj) {
+            Class<?> clazz,
+            Object obj) {
         try {
             Rave.getInstance().validateAs(obj, clazz);
         } catch (RaveException e) {
@@ -104,7 +102,7 @@ public abstract class BaseValidator {
      *
      * @param clazz the {@link Class} to add.
      */
-    protected final void addSupportedClass(@NonNull Class<?> clazz) {
+    protected final void addSupportedClass(Class<?> clazz) {
         supportedClasses.add(clazz);
     }
 
@@ -114,13 +112,12 @@ public abstract class BaseValidator {
      * @param clazz the {@link Class} to tie to the {@link BaseValidator.ValidationContext}
      * @return the {@link BaseValidator.ValidationContext}
      */
-    @NonNull
-    protected static ValidationContext getValidationContext(@NonNull Class<?> clazz) {
+    protected static ValidationContext getValidationContext(Class<?> clazz) {
         return new ValidationContext(clazz);
     }
 
     @Nullable
-    protected static List<RaveError> mustBeFalse(boolean input, @NonNull ValidationContext validationContext) {
+    protected static List<RaveError> mustBeFalse(boolean input, ValidationContext validationContext) {
         if (input) {
             List<RaveError> list = new LinkedList<>();
             list.add(new RaveError(validationContext, RaveErrorStrings.MUST_BE_FALSE_ERROR));
@@ -142,10 +139,9 @@ public abstract class BaseValidator {
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
      * @return {@link List} of {@link RaveError}s which list the validation violations. Null otherwise.
      */
-    @NonNull
     protected static List<RaveError> isSizeOk(
             @Nullable String string, boolean isNullable, long min, long max, long multiple,
-            @NonNull ValidationContext validationContext) {
+            ValidationContext validationContext) {
         List<RaveError> errors = checkNullable(string, isNullable, validationContext);
         if (string == null) {
             return errors;
@@ -178,7 +174,7 @@ public abstract class BaseValidator {
             long min,
             long max,
             long multiple,
-            @NonNull ValidationContext validationContext) {
+            ValidationContext validationContext) {
         List<RaveError> raveErrors = checkNullable(collection, isNullable, validationContext);
         if (collection == null) {
             return raveErrors;
@@ -210,7 +206,7 @@ public abstract class BaseValidator {
     @Nullable
     protected static <T> List<RaveError> isSizeOk(
             @Nullable T[] array, boolean isNullable, long min, long max, long multiple,
-            @NonNull ValidationContext validationContext) {
+            ValidationContext validationContext) {
         List<RaveError> raveErrors = checkNullable(array, isNullable, validationContext);
         if (array == null) {
             return raveErrors;
@@ -244,7 +240,7 @@ public abstract class BaseValidator {
             long min,
             long max,
             long multiple,
-            @NonNull ValidationContext validationContext) {
+            ValidationContext validationContext) {
         List<RaveError> raveErrors = checkNullable(map, isNullable, validationContext);
         if (map == null) {
             return raveErrors;
@@ -265,11 +261,10 @@ public abstract class BaseValidator {
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
      * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
      */
-    @NonNull
     protected static List<RaveError> checkNullable(
             @Nullable Object obj,
             boolean isNullable,
-            @NonNull ValidationContext validationContext) {
+            ValidationContext validationContext) {
         if (obj == null) {
             if (isNullable) {
                 return Collections.<RaveError>emptyList();
@@ -299,11 +294,10 @@ public abstract class BaseValidator {
      * @param validationContext the context of the item in the class being validated. This is used in case of an error.
      * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
      */
-    @NonNull
     protected static List<RaveError> checkNullable(
             @Nullable Collection<?> collection,
             boolean isNullable,
-            @NonNull ValidationContext validationContext) {
+            ValidationContext validationContext) {
         List<RaveError> errors = checkNullable((Object) collection, isNullable, validationContext);
         return collection == null ? errors : checkIterable(collection, errors);
     }
@@ -316,11 +310,10 @@ public abstract class BaseValidator {
      * @param validationContext the context of the item in the class being validated. This is used in case of an error.
      * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise.
      */
-    @NonNull
     protected static <T> List<RaveError> checkNullable(
             @Nullable T[] array,
             boolean isNullable,
-            @NonNull ValidationContext validationContext) {
+            ValidationContext validationContext) {
         List<RaveError> errors = checkNullable((Object) array, isNullable, validationContext);
         if (array == null) {
             return errors;
@@ -350,11 +343,10 @@ public abstract class BaseValidator {
      * @return a list of of {@link RaveError}s if the object is not allowed to be null. Returns null otherwise. This
      * method will also RAVE validate the keys and values of the map if they are RAVE enabled.
      */
-    @NonNull
     protected static <K, V> List<RaveError> checkNullable(
             @Nullable Map<K, V> map,
             boolean isNullable,
-            @NonNull ValidationContext validationContext) {
+            ValidationContext validationContext) {
         List<RaveError> errors = checkNullable((Object) map, isNullable, validationContext);
         if (map == null) {
             return errors;
@@ -389,8 +381,7 @@ public abstract class BaseValidator {
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
      * @return null if input is true and a {@link List} otherwise.
      */
-    @NonNull
-    protected static List<RaveError> mustBeTrue(boolean input, @NonNull ValidationContext validationContext) {
+    protected static List<RaveError> mustBeTrue(boolean input, ValidationContext validationContext) {
         return input ? Collections.<RaveError>emptyList()
                 : createNewList(new RaveError(validationContext, RaveErrorStrings.MUST_BE_TRUE_ERROR));
     }
@@ -404,10 +395,9 @@ public abstract class BaseValidator {
      * @param acceptableValues list of strings to look in.
      * @return returns an error if string is not present in list. Otherwise returns an empty list.
      */
-    @NonNull
     protected static List<RaveError> checkStringDef(
-            boolean isNullable, @NonNull ValidationContext validationContext, @Nullable String value, String...
-            acceptableValues) {
+            boolean isNullable, ValidationContext validationContext, @Nullable String value,
+            String... acceptableValues) {
         List<RaveError> errors = checkNullable(value, isNullable, validationContext);
         if (value == null) {
             return errors;
@@ -431,10 +421,9 @@ public abstract class BaseValidator {
      * @param acceptableValues list acceptable values for the input list.
      * @return returns an error if string is not present in list. Otherwise returns an empty list.
      */
-    @NonNull
     protected static List<RaveError> checkStringDef(
             boolean isNullable,
-            @NonNull ValidationContext validationContext,
+            ValidationContext validationContext,
             @Nullable Collection<String> values,
             String... acceptableValues) {
         List<RaveError> errors = checkNullable(values, isNullable, validationContext);
@@ -457,10 +446,9 @@ public abstract class BaseValidator {
      * @param acceptableValues list acceptable values for the input array.
      * @return returns an error if string is not present in list. Otherwise returns an empty list.
      */
-    @NonNull
     protected static List<RaveError> checkStringDef(
             boolean isNullable,
-            @NonNull ValidationContext validationContext,
+            ValidationContext validationContext,
             @Nullable String[] values,
             String... acceptableValues) {
         List<RaveError> errors = checkNullable(values, isNullable, validationContext);
@@ -485,14 +473,13 @@ public abstract class BaseValidator {
      * @param to the upper bound of the check (inclusive)
      * @return the {@link RaveError} if the checked value is not within the bounds.
      */
-    @NonNull
     protected static List<RaveError> checkFloatRange(
-            @NonNull ValidationContext validationContext,
+            ValidationContext validationContext,
             double value,
             double from,
             double to) {
-        boolean lowerIsOk = (from == Double.NEGATIVE_INFINITY) ? true : value >= from;
-        boolean upperIsOk = (to == Double.POSITIVE_INFINITY) ? true : value <= to;
+        boolean lowerIsOk = (from == Double.NEGATIVE_INFINITY) || value >= from;
+        boolean upperIsOk = (to == Double.POSITIVE_INFINITY) || value <= to;
         if (lowerIsOk && upperIsOk) {
             return Collections.<RaveError>emptyList();
         }
@@ -509,9 +496,8 @@ public abstract class BaseValidator {
      * @param to the upper bound of the check, inclusive.
      * @return the {@link RaveError} if the checked value is not within the bounds.
      */
-    @NonNull
     protected static List<RaveError> checkIntRange(
-            @NonNull ValidationContext validationContext,
+            ValidationContext validationContext,
             long value,
             long from,
             long to) {
@@ -533,9 +519,8 @@ public abstract class BaseValidator {
      * @param acceptableValues the values that the value parameter can take on.
      * @return an error if value is not present in list of acceptable values. Otherwise returns an empty list.
      */
-    @NonNull
     protected static List<RaveError> checkIntDef(
-            @NonNull ValidationContext validationContext, long value, boolean flag,
+            ValidationContext validationContext, long value, boolean flag,
             long... acceptableValues) {
 
         for (long acceptable : acceptableValues) {
@@ -554,8 +539,7 @@ public abstract class BaseValidator {
      * @param <T> The type of each object in the {@link Iterable}.
      * @return any new errors.
      */
-    @NonNull
-    private static <T> List<RaveError> checkIterable(@NonNull Iterable<T> iterable, @Nullable List<RaveError> errors) {
+    private static <T> List<RaveError> checkIterable(Iterable<T> iterable, @Nullable List<RaveError> errors) {
         Rave rave = Rave.getInstance();
         for (T type : iterable) {
             if (type == null) {
@@ -579,7 +563,6 @@ public abstract class BaseValidator {
      * @param errors the {@link List} to add to.
      * @return a new {@link List} if the input {@link List} was null or just append to the input {@link List}.
      */
-    @NonNull
     private static List<RaveError> appendErrors(@Nullable RaveException e, @Nullable List<RaveError> errors) {
         if (errors == null) {
             errors = new LinkedList<>();
@@ -606,9 +589,9 @@ public abstract class BaseValidator {
      * @param raveErrors the {@link List} of {@link RaveError} to add to.
      * @return a new {@link List} or {@link RaveError}s
      */
-    @NonNull
     private static List<RaveError> appendError(
-            @NonNull ValidationContext validationContext, @NonNull String msg,
+            ValidationContext validationContext,
+            String msg,
             @Nullable List<RaveError> raveErrors) {
         // If the list is empty it is also immutable so we need a new one.
         if (raveErrors == null || raveErrors.isEmpty()) {
@@ -624,8 +607,7 @@ public abstract class BaseValidator {
      * @param error the {@link RaveError} to add to the list.
      * @return a newly  populated {@link List}.
      */
-    @NonNull
-    private static List<RaveError> createNewList(@NonNull RaveError error) {
+    private static List<RaveError> createNewList(RaveError error) {
         List<RaveError> errors = new LinkedList<>();
         errors.add(error);
         return errors;
@@ -641,13 +623,12 @@ public abstract class BaseValidator {
      * @param raveErrors the list of {@link RaveError}s.
      * @return a list of {@link RaveError}.
      */
-    @NonNull
     private static List<RaveError> testMultipleParameter(
             long multiple,
             int size,
-            @NonNull ValidationContext validationContext,
-            @NonNull String elementType,
-            @NonNull List<RaveError> raveErrors) {
+            ValidationContext validationContext,
+            String elementType,
+            List<RaveError> raveErrors) {
         if (multiple >= 0 && size % multiple != 0) {
             String msg = elementType + " is not a multiple of " + multiple + ", size is " + size;
             raveErrors = appendError(validationContext, msg, raveErrors);
@@ -663,10 +644,10 @@ public abstract class BaseValidator {
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
      * @return a {@link RaveError} corresponding to the non matching error.
      */
-    @NonNull
     private static List<RaveError> createStringDefError(
-            @Nullable String value, @NonNull String[] acceptableValues,
-            @NonNull ValidationContext validationContext) {
+            @Nullable String value,
+            String[] acceptableValues,
+            ValidationContext validationContext) {
 
         StringBuilder stringBuilder = new StringBuilder();
         boolean first = true;
@@ -714,19 +695,17 @@ public abstract class BaseValidator {
      */
     public static final class ValidationContext {
 
-        @NonNull private final Class<?> clazz;
-        @NonNull private String validatedItemName = "";
+        private final Class<?> clazz;
+        private String validatedItemName = "";
 
-        private ValidationContext(@NonNull Class<?> clazz) {
+        private ValidationContext(Class<?> clazz) {
             this.clazz = clazz;
         }
 
-        @NonNull
         Class<?> getClazz() {
             return clazz;
         }
 
-        @NonNull
         String getValidatedItemName() {
             return validatedItemName;
         }
@@ -735,7 +714,7 @@ public abstract class BaseValidator {
          * The the context name for this {@link ValidationContext} object.
          * @param item the string name for the current context.
          */
-        public void setValidatedItemName(@NonNull String item) {
+        public void setValidatedItemName(String item) {
             this.validatedItemName = item;
         }
     }

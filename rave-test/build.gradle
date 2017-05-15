@@ -18,6 +18,7 @@ configurations {
 }
 
 dependencies {
+    compileOnly deps.jsr305
     compile deps.supportAnnotations
     testCompile deps.slf4japi
 }

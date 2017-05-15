@@ -22,7 +22,6 @@ package com.uber.rave.compiler;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 
 import com.google.auto.service.AutoService;
@@ -39,6 +38,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -137,7 +137,7 @@ public final class RaveProcessor extends AbstractProcessor {
      * @param raveIR the IR that will be filled in with required information collected during processing.
      * @param allTypes the elements annotated with the {@link Validated} annotation.
      */
-    private void process(@NonNull RaveIR raveIR, @NonNull List<TypeElement> allTypes) {
+    private void process(RaveIR raveIR, List<TypeElement> allTypes) {
         for (TypeElement typeElement : allTypes) {
             raveIR.addClassIR(extractClassInfo(typeElement, raveIR.getMode()));
         }
@@ -151,8 +151,7 @@ public final class RaveProcessor extends AbstractProcessor {
      * @param typeElement The {@link TypeElement} annotated with the {@link Validated} annotation.
      * @return the {@link ClassIR} object representing the type element.
      */
-    @NonNull
-    private ClassIR extractClassInfo(@NonNull TypeElement typeElement, @NonNull Validator.Mode mode) {
+    private ClassIR extractClassInfo(TypeElement typeElement, Validator.Mode mode) {
         ClassIR classIR = new ClassIR(typesUtils.erasure(typeElement.asType()));
         traverseInheritanceTree(typeElement, classIR);
         List<ExecutableElement> methodElements = new ImmutableList.Builder<ExecutableElement>()
@@ -193,16 +192,16 @@ public final class RaveProcessor extends AbstractProcessor {
     }
 
     private void addImplicitNullnessAnnotations(
-            @NonNull MethodIR methodIR,
-            @NonNull Validator.Mode mode,
-            @NonNull ExecutableElement executableElement) {
+            MethodIR methodIR,
+            Validator.Mode mode,
+            ExecutableElement executableElement) {
         if (methodIR.hasAnyAnnotation() || executableElement.getReturnType().getKind().isPrimitive()) {
             return;
         }
 
         switch (mode) {
             case DEFAULT:
-                methodIR.addAnnotation(() -> Nullable.class);
+                methodIR.addAnnotation(() -> android.support.annotation.Nullable.class);
                 break;
             case STRICT:
                 methodIR.addAnnotation(() -> NonNull.class);
@@ -239,7 +238,7 @@ public final class RaveProcessor extends AbstractProcessor {
      * @param typeElement the type element to check.
      * @param classIR the class IR that holds on to the inheritance information collected.
      */
-    private void traverseInheritanceTree(@NonNull TypeElement typeElement, @NonNull ClassIR classIR) {
+    private void traverseInheritanceTree(TypeElement typeElement, ClassIR classIR) {
         TypeMirror mirror = typeElement.getSuperclass();
         // Recurse on inherited parent class.
         if (!(mirror instanceof NoType)) {
@@ -267,8 +266,7 @@ public final class RaveProcessor extends AbstractProcessor {
      * @param types classes annotated with the {@link Validated} annotation.
      * @return {@link RaveIR} with initial parameters set.
      */
-    @NonNull
-    private RaveIR verify(@NonNull List<TypeElement> types) {
+    private RaveIR verify(List<TypeElement> types) {
         AnnotationVerifier verifier = new AnnotationVerifier(messager, elementUtils, typesUtils);
         for (TypeElement type : types) {
             verifier.verify(type);
@@ -290,7 +288,7 @@ public final class RaveProcessor extends AbstractProcessor {
      * @param msg the error message to show, optionally containing formatting characters.
      * @param args the arguments to the formatting characters.
      */
-    private void error(@Nullable Element e, @NonNull String msg, Object... args) {
+    private void error(@Nullable Element e, String msg, Object... args) {
         if (e == null) {
             messager.printMessage(Diagnostic.Kind.ERROR, String.format(msg, args));
         } else {

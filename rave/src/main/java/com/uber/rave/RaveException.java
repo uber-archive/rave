@@ -20,8 +20,6 @@
 
 package com.uber.rave;
 
-import android.support.annotation.NonNull;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -31,14 +29,14 @@ import java.util.ListIterator;
  */
 public abstract class RaveException extends Exception {
 
-    @NonNull final List<RaveError> errors;
+    final List<RaveError> errors;
 
     /**
      * Creates a Rave Exception with the input errors.
      *
      * @param errors the errors to add.
      */
-    RaveException(@NonNull List<RaveError> errors) {
+    RaveException(List<RaveError> errors) {
         super(getFirstString(errors));
         this.errors = errors;
     }
@@ -47,7 +45,6 @@ public abstract class RaveException extends Exception {
      * @return Returns the list of error messages as a single string message.
      */
     @Override
-    @NonNull
     public final String getMessage() {
         StringBuilder builder = new StringBuilder();
         ListIterator<RaveError> iterator = errors.listIterator(errors.size());
@@ -67,8 +64,7 @@ public abstract class RaveException extends Exception {
         return errors.iterator();
     }
 
-    @NonNull
-    private static String getFirstString(@NonNull List<RaveError> errors) {
+    private static String getFirstString(List<RaveError> errors) {
         return errors.isEmpty() ? "" : errors.get(0).toString();
     }
 }

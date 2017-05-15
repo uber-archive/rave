@@ -20,9 +20,6 @@
 
 package com.uber.rave;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.uber.rave.annotation.Validated;
 
 import java.util.Collections;
@@ -32,6 +29,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 /**
  * <p>
@@ -65,7 +64,6 @@ public class Rave {
      *
      * @return the singleton instance of the RAVE validator.
      */
-    @NonNull
     public static synchronized Rave getInstance() {
         return SingletonHolder.getInstance();
     }
@@ -77,7 +75,7 @@ public class Rave {
      * @param object the object to be validated.
      * @throws RaveException if validation fails.
      */
-    public void validate(@NonNull Object object) throws RaveException {
+    public void validate(Object object) throws RaveException {
         Class<?> clazz = object.getClass();
         Validated validated = clazz.getAnnotation(Validated.class);
         BaseValidator validator;
@@ -103,7 +101,7 @@ public class Rave {
      * @param validator the validator to add.
      * @param supportedModels the class types this validator supports.
      */
-    synchronized void registerValidator(@NonNull BaseValidator validator, @NonNull Set<Class<?>> supportedModels) {
+    synchronized void registerValidator(BaseValidator validator, Set<Class<?>> supportedModels) {
         for (Class<?> clazz : supportedModels) {
             BaseValidator base = classValidatorMap.put(clazz, validator);
             if (base != null) {
@@ -124,9 +122,7 @@ public class Rave {
      * validation.
      * @throws RaveException thrown if the validation process fails.
      */
-    void validateAs(
-            @NonNull Object obj,
-            @NonNull Class<?> clazz) throws RaveException {
+    void validateAs(Object obj, Class<?> clazz) throws RaveException {
         if (!clazz.isInstance(obj)) {
             throw new IllegalArgumentException("Trying to validate " + obj.getClass().getCanonicalName() + " as "
                     + clazz.getCanonicalName());
@@ -145,11 +141,11 @@ public class Rave {
         base.validateAs(obj, clazz);
     }
 
-    private void registerValidatorWithClass(@NonNull BaseValidator validator, @NonNull Class<?> supportedModel) {
+    private void registerValidatorWithClass(BaseValidator validator, Class<?> supportedModel) {
         classValidatorMap.put(supportedModel, validator);
     }
 
-    private void removeEntry(@NonNull Class<?> supportedModel) {
+    private void removeEntry(Class<?> supportedModel) {
         classValidatorMap.remove(supportedModel);
     }
 
@@ -161,7 +157,7 @@ public class Rave {
      * validator.
      */
     @Nullable
-    private BaseValidator getValidatorInstance(@NonNull Class<?> classToValidate) {
+    private BaseValidator getValidatorInstance(Class<?> classToValidate) {
         Validated validated = classToValidate.getAnnotation(Validated.class);
         if (validated == null) {
             return null;
@@ -211,8 +207,8 @@ public class Rave {
 
         @Override
         protected void validateAs(
-                @NonNull Object object,
-                @NonNull Class<?> clazz) throws RaveException {
+                Object object,
+                Class<?> clazz) throws RaveException {
             if (unsupportedClassesCache.containsKey(clazz)) {
                 throw new UnsupportedObjectException(Collections.singletonList(
                         new RaveError(clazz, "", RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR)));
@@ -236,7 +232,7 @@ public class Rave {
          *
          * @param clazz the {@link Class} to process.
          */
-        void processNonAnnotatedClasses(@NonNull Class<?> clazz) {
+        void processNonAnnotatedClasses(Class<?> clazz) {
             Validated validated = clazz.getAnnotation(Validated.class);
             if (validated != null) {
                 throw new IllegalArgumentException(
@@ -258,7 +254,7 @@ public class Rave {
          * @return true if any node in the inheritance tree is annotated with the {@link Validated} annotation. False
          * otherwise.
          */
-        private boolean traverseClassHierarchy(@NonNull Class<?> original, @NonNull Class<?> classToCheck) {
+        private boolean traverseClassHierarchy(Class<?> original, Class<?> classToCheck) {
             boolean returnValue = false;
             Class<?> parentClass = classToCheck.getSuperclass();
             if (parentClass != null) {
@@ -279,7 +275,7 @@ public class Rave {
          * @return true if any node in the inheritance tree is annotated with the {@link Validated} annotation. False
          * otherwise.
          */
-        private boolean evaluateInheritance(@NonNull Class<?> original, @NonNull Class<?> classToCheck) {
+        private boolean evaluateInheritance(Class<?> original, Class<?> classToCheck) {
             Validated validated = classToCheck.getAnnotation(Validated.class);
             if (validated != null) {
                 Set<Class<?>> set = supportedClassesCache.get(original);

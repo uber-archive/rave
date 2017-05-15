@@ -20,8 +20,6 @@
 
 package com.uber.rave.compiler;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,14 +50,13 @@ final class ClassIR {
      * Adds a {@link MethodIR} to this {@link ClassIR}.
      * @param methodIRs the {@link MethodIR} to add.
      */
-    void addMethodIR(@NonNull MethodIR methodIRs) {
+    void addMethodIR(MethodIR methodIRs) {
         this.methodIRs.add(methodIRs);
     }
 
     /**
      * @return Returns a list of all the methods added to this method.
      */
-    @NonNull
     List<MethodIR> getAllMethods() {
         return methodIRs;
     }

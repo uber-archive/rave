@@ -20,6 +20,10 @@
 
 package com.uber.rave;
 
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 
@@ -155,8 +159,8 @@ public final class AnnotationSpecs {
          * Sets the {@link Nullable} annotation flag. This method sets the boolean which
          * indicates the presents of the annotation.
          *
-         * @param isNullable should be true if this annotation has the {@link Nullable} annotation and false if
-         * {@link android.support.annotation.NonNull} is set.
+         * @param isNullable should be true if this annotation has the {@link Nullable}
+         * annotation and false if {@link NonNull} is set.
          * @return this {@link Builder}
          */
         public Builder setIsNullable(boolean isNullable) {
@@ -177,7 +181,7 @@ public final class AnnotationSpecs {
         }
 
         /**
-         * Set the valid values for the int in a {@link android.support.annotation.IntDef}.
+         * Set the valid values for the int in a {@link IntDef}.
          *
          * @param values the valid values.
          * @return this {@link Builder}
@@ -189,7 +193,7 @@ public final class AnnotationSpecs {
         }
 
         /**
-         * Set the valid range for the int in a {@link android.support.annotation.IntRange}.
+         * Set the valid range for the int in a {@link IntRange}.
          *
          * @param from the lower bound of the range inclusive.
          * @param to the upper bound of the rnage inclusive.
@@ -203,7 +207,7 @@ public final class AnnotationSpecs {
         }
 
         /**
-         * Set the valid values for the doubles in a {@link android.support.annotation.FloatRange}.
+         * Set the valid values for the doubles in a {@link FloatRange}.
          *
          * @param from the lower bound of the range inclusive.
          * @param to the upper bound of the rnage inclusive.

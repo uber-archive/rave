@@ -84,11 +84,11 @@ final class RaveWriter {
                     .addMember("comments", "$S", GENERATED_COMMENTS)
                     .build();
 
-    @NonNull private final Filer filer;
-    @NonNull private final Types typeUtils;
+    private final Filer filer;
+    private final Types typeUtils;
     private final boolean generatedAnnotationAvailable;
 
-    protected RaveWriter(@NonNull Filer filer, @NonNull Types typesUtils, Elements elements) {
+    protected RaveWriter(Filer filer, Types typesUtils, Elements elements) {
         this.filer = filer;
         this.typeUtils = typesUtils;
         generatedAnnotationAvailable = elements.getTypeElement("javax.annotation.Generated") != null;
@@ -100,7 +100,7 @@ final class RaveWriter {
      * @param raveIR the input IR
      * @throws IOException if writing fails.
      */
-    public void generateJava(@NonNull RaveIR raveIR) throws IOException {
+    public void generateJava(RaveIR raveIR) throws IOException {
         // Make the main method that calls the private methods of the different types.
         List<MethodSpec> allMethods = generateSubtypeValidationMethods(raveIR);
         allMethods.add(generateConstructor(raveIR));
@@ -116,8 +116,7 @@ final class RaveWriter {
         JavaFile.builder(raveIR.getPackageName(), validatorClass).build().writeTo(filer);
     }
 
-    @NonNull
-    private MethodSpec generateConstructor(@NonNull RaveIR raveIR) {
+    private MethodSpec generateConstructor(RaveIR raveIR) {
         MethodSpec.Builder builder = MethodSpec.constructorBuilder();
         for (ClassIR classIR : raveIR.getClassIRs()) {
             builder.addStatement("$L($T.class)", ADD_SUPPORTED_CLASS_METHOD_NAME, classIR.getTypeMirror());
@@ -133,8 +132,7 @@ final class RaveWriter {
      * @param raveIR all the classes that are annotated.
      * @return a {@link MethodSpec} for the main method.
      */
-    @NonNull
-    private List<MethodSpec> generateSubtypeValidationMethods(@NonNull RaveIR raveIR) {
+    private List<MethodSpec> generateSubtypeValidationMethods(RaveIR raveIR) {
 
         MethodSpec.Builder builder = MethodSpec.methodBuilder(VALIDATE_METHOD_NAME)
                 .addException(RAVE_INVALID_MODEL_EXCEPTION_CLASS)
@@ -178,8 +176,7 @@ final class RaveWriter {
      * @param classIR the type to generate a method for.
      * @return the {@link MethodSpec} to validate the given specific class.
      */
-    @NonNull
-    private MethodSpec generateConcreteMethodSpec(@NonNull ClassIR classIR) {
+    private MethodSpec generateConcreteMethodSpec(ClassIR classIR) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder(VALIDATE_METHOD_NAME)
                 .addException(RAVE_INVALID_MODEL_EXCEPTION_CLASS)
                 .addModifiers(Modifier.PRIVATE)
@@ -196,7 +193,7 @@ final class RaveWriter {
                     typeUtils.erasure(mirror), VALIDATE_METHOD_ARG_NAME);
         }
         for (MethodIR methodIR : classIR.getAllMethods()) {
-            buildAnnotationChecks(builder, methodIR, classIR.getTypeMirror());
+            buildAnnotationChecks(builder, methodIR);
         }
         builder.beginControlFlow("if ($L != null && !$L.isEmpty())", RAVE_ERROR_ARG_NAME,
                 RAVE_ERROR_ARG_NAME);
@@ -205,12 +202,11 @@ final class RaveWriter {
         return builder.build();
     }
 
-    private void buildAnnotationChecks(
-            @NonNull MethodSpec.Builder builder, @NonNull MethodIR methodIR, @NonNull TypeMirror typeMirror) {
+    private void buildAnnotationChecks(MethodSpec.Builder builder, MethodIR methodIR) {
         // No check needed for Nullable annotation.
         boolean isNullable = !methodIR.hasAnnotation(NonNull.class);
         boolean hasNonNullOrNullable = methodIR.hasAnnotation(NonNull.class) || methodIR.hasAnnotation(Nullable.class);
-        AnnotationWriter writer = new AnnotationWriter(typeMirror, builder,
+        AnnotationWriter writer = new AnnotationWriter(builder,
                 MethodSpec.methodBuilder(methodIR.getMethodGetterName()).build(), isNullable, hasNonNullOrNullable);
         if (hasNonNullOrNullable && !(methodIR.hasAnnotation(Size.class) || methodIR.hasAnnotation(StringDef.class))) {
             writer.writeNullable();

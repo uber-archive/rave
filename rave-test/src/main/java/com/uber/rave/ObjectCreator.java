@@ -20,11 +20,11 @@
 
 package com.uber.rave;
 
-import android.support.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 /**
  * This is the base class for object creators.
