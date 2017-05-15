@@ -56,63 +56,6 @@ public class RaveUnitTest {
         assertTrue(v.shouldIgnoreMethod("foo"));
     }
 
-    @Test
-    public void validateIgnoreBuilder_whenBuildingWithOneItem_shouldReturnCorrectlyPopulatedMap() {
-        ExclusionStrategy.Builder builder = new ExclusionStrategy.Builder();
-        builder.addMethod(String.class, "isEmpty");
-        builder.addMethod("java.lang.String", "length");
-        ExclusionStrategy exclusionStrategy = builder.build();
-        assertFalse(builder.hasErrors());
-        ValidationIgnore validationIgnore = exclusionStrategy.get(String.class);
-        assertNotNull(validationIgnore);
-        assertEquals(validationIgnore.getClazz(), String.class);
-        assertTrue(validationIgnore.shouldIgnoreMethod("length"));
-        assertTrue(validationIgnore.shouldIgnoreMethod("isEmpty"));
-        assertFalse(validationIgnore.shouldIgnoreMethod("someMethods"));
-    }
-
-    @Test
-    public void addAllClassIgnore_whenIgnoreClassAll_shouldIgnoreAllClass() {
-        ExclusionStrategy.Builder builder = new ExclusionStrategy.Builder();
-        builder.addClass("java.lang.String");
-        builder.addMethod("java.lang.String", "length");
-        builder.addClass("non.existant.class.Class");
-        ExclusionStrategy exclusionStrategy = builder.build();
-        assertTrue(builder.hasErrors());
-        assertNotNull(builder.getErrors());
-        assertEquals(1, builder.getErrors().size());
-        assertEquals(builder.getErrors().get(0), "non.existant.class.Class");
-        ValidationIgnore validationIgnore = exclusionStrategy.get(String.class);
-        assertNotNull(validationIgnore);
-        assertTrue(validationIgnore.isIgnoreClassAll());
-        assertEquals(validationIgnore.getClazz(), String.class);
-        assertTrue(validationIgnore.shouldIgnoreMethod("length"));
-        assertTrue(validationIgnore.shouldIgnoreMethod("isEmpty"));
-        assertTrue(validationIgnore.shouldIgnoreMethod("someMethods"));
-    }
-
-    @Test
-    public void validateIgnoreBuilder_whenBuildingWithMultipleItems_shouldReturnCorrectlyPopulatedMap() {
-        ExclusionStrategy.Builder builder = new ExclusionStrategy.Builder();
-        builder.addMethod(String.class, "isEmpty");
-        builder.addMethod("java.lang.String", "length");
-        builder.addMethod("java.lang.String", "length");
-        String fakeClassName = "fakeClassName";
-        builder.addMethod(fakeClassName, "length");
-        builder.addMethod("java.lang.String", "nonExistantMethod");
-        assertTrue(builder.hasErrors());
-        assertNotNull(builder.getErrors());
-        assertEquals(2, builder.getErrors().size());
-        assertEquals(fakeClassName, builder.getErrors().get(0));
-        assertEquals("java.lang.String:nonExistantMethod", builder.getErrors().get(1));
-        ExclusionStrategy exclusionStrategy = builder.build();
-        ValidationIgnore validationIgnore = exclusionStrategy.get(String.class);
-        assertNotNull(validationIgnore);
-        assertTrue(validationIgnore.shouldIgnoreMethod("length"));
-        assertTrue(validationIgnore.shouldIgnoreMethod("isEmpty"));
-        assertFalse(validationIgnore.shouldIgnoreMethod("someMethods"));
-    }
-
     @Test(expected = IllegalStateException.class)
     public void registerValidator_whenTwoValidatorsOnSameModel_shouldFailwithIllegalStateException() {
         TestValidator testValidator = new TestValidator();
