@@ -1,7 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'cobertura'
 apply plugin: 'checkstyle'
-apply plugin: 'nebula.provided-base'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -25,7 +24,7 @@ sourceSets {
 dependencies {
     compile project(':rave')
     compile deps.supportAnnotations
-    provided 'com.google.auto.service:auto-service:1.0-rc3'
+    compileOnly 'com.google.auto.service:auto-service:1.0-rc3'
 
     compile 'com.google.auto:auto-common:0.8'
     compile 'com.google.guava:guava:21.0'

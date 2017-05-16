@@ -1,7 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'cobertura'
 apply plugin: 'checkstyle'
-apply plugin: 'nebula.provided-base'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -15,8 +14,8 @@ for (File file : sdkHandler.sdkLoader.repositories) {
 }
 
 configurations {
-    provided
-    compile.extendsFrom provided
+    compileOnly
+    compile.extendsFrom compileOnly
 }
 
 dependencies {
