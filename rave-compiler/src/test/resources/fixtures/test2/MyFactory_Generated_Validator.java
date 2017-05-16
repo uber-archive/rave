@@ -1,6 +1,5 @@
 package com.uber.rave.compiler;
 
-import android.support.annotation.NonNull;
 import com.uber.rave.BaseValidator;
 import com.uber.rave.InvalidModelException;
 import com.uber.rave.RaveError;
@@ -39,7 +38,7 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
   }
 
   @Override
-  protected void validateAs(@NonNull Object object, @NonNull Class<?> clazz) throws
+  protected void validateAs(Object object, Class<?> clazz) throws
           InvalidModelException {
     if (!clazz.isInstance(object)) {
       throw new IllegalArgumentException(object.getClass().getCanonicalName() + "is not of type" + clazz.getCanonicalName());
