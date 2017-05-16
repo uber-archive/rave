@@ -13,18 +13,15 @@ for (File file : sdkHandler.sdkLoader.repositories) {
     }
 }
 
-configurations {
-    compileOnly
-    compile.extendsFrom compileOnly
-}
-
 dependencies {
     compileOnly deps.jsr305
-    compile deps.supportAnnotations
+    compileOnly deps.supportAnnotations
 
     testCompile project(":rave-test")
+    testCompile deps.jsr305
     testCompile deps.junit4
     testCompile deps.slf4japi
+    testCompile deps.supportAnnotations
 }
 
 cobertura {

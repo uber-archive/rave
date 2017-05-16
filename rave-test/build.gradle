@@ -12,14 +12,10 @@ for (File file : sdkHandler.sdkLoader.repositories) {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-configurations {
-    compileOnly
-    compile.extendsFrom compileOnly
-}
-
 dependencies {
     compileOnly deps.jsr305
-    compile deps.supportAnnotations
+    compileOnly deps.supportAnnotations
+    
     testCompile deps.slf4japi
 }
 
