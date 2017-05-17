@@ -20,8 +20,6 @@
 
 package com.uber.rave;
 
-import android.support.annotation.NonNull;
-
 /**
  * This class should be extended by one class in each library that uses RAVE.
  */
@@ -30,6 +28,5 @@ public interface ValidatorFactory {
     /**
      * @return should return the generated validator class.
      */
-    @NonNull
     BaseValidator generateValidator();
 }

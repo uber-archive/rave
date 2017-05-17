@@ -126,8 +126,9 @@ final class CompilerUtils {
      * @return true if the {@link TypeMirror} is found in the {@link Collection}.
      */
     static boolean typeMirrorInCollection(
-            @NonNull Collection<TypeMirror> typeCollection, @NonNull TypeMirror typeMirror,
-            @NonNull Types typesUtils) {
+            Collection<TypeMirror> typeCollection,
+            TypeMirror typeMirror,
+            Types typesUtils) {
         for (TypeMirror mirror : typeCollection) {
             if (typesUtils.isSameType(mirror, typeMirror)) {
                 return true;
@@ -140,7 +141,7 @@ final class CompilerUtils {
      * @param annotationName the annotation, by name, to check.
      * @return true if the annotation is supported false otherwise
      */
-    static boolean annotationsIsSupported(@NonNull String annotationName) {
+    static boolean annotationsIsSupported(String annotationName) {
         return sAnnotationMap.containsKey(annotationName);
     }
 
@@ -148,7 +149,7 @@ final class CompilerUtils {
      * @param annotationName the annotation (canonical name) to retrieve.
      * @return the {@link Class} of the annotation.
      */
-    static Class<? extends Annotation> getAnnotation(@NonNull String annotationName) {
+    static Class<? extends Annotation> getAnnotation(String annotationName) {
         return sAnnotationMap.get(annotationName);
     }
 
@@ -159,7 +160,7 @@ final class CompilerUtils {
      * @param a2 the second annotation to check.
      * @return true if the annotations are conflicting, false otherwise.
      */
-    static boolean areConflicting(@NonNull Class<? extends Annotation> a1, @NonNull Class<? extends Annotation> a2) {
+    static boolean areConflicting(Class<? extends Annotation> a1, Class<? extends Annotation> a2) {
         Set<Class<? extends Annotation>> set = sConflictingAnnotations.get(a1);
         return set.contains(a2);
     }
@@ -168,7 +169,7 @@ final class CompilerUtils {
      * Returns the name of the package that the given type is in. If the type is in the default
      * (unnamed) package then the name is the empty string.
      */
-    static String packageNameOf(@NonNull Element type) {
+    static String packageNameOf(Element type) {
         while (true) {
             Element enclosing = type.getEnclosingElement();
             if (enclosing instanceof PackageElement) {

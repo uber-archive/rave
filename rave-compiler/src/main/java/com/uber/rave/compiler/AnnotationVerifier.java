@@ -23,7 +23,6 @@ package com.uber.rave.compiler;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 
 import com.google.common.collect.ImmutableList;
@@ -57,13 +56,13 @@ class AnnotationVerifier {
     static final String FLOAT_RANGE_BAD_RETURN_TYPE_ERROR = " does not return an float or double value";
     static final String INT_RANGE_BAD_RETURN_TYPE_ERROR = " does not return an int or long value";
 
-    @NonNull protected final Messager messager;
-    @NonNull protected final Elements elements;
-    @NonNull protected final Types types;
+    protected final Messager messager;
+    protected final Elements elements;
+    protected final Types types;
 
     private TypeMirror seenFactoryTypeMirror = null;
 
-    AnnotationVerifier(@NonNull Messager messager, @NonNull Elements elements, @NonNull Types types) {
+    AnnotationVerifier(Messager messager, Elements elements, Types types) {
         this.messager = messager;
         this.types = types;
         this.elements = elements;
@@ -73,7 +72,6 @@ class AnnotationVerifier {
      * @return the {@link TypeMirror} for the {@link ValidatorFactory}that was seen during the
      * validation pass.
      */
-    @NonNull
     TypeMirror getSeenFactoryTypeMirror() {
         return seenFactoryTypeMirror;
     }
@@ -85,7 +83,7 @@ class AnnotationVerifier {
      *
      * @param type the {@link TypeElement} being validated.
      */
-    void verify(@NonNull TypeElement type) {
+    void verify(TypeElement type) {
         Validated validatedAnnotation = type.getAnnotation(Validated.class);
         if (validatedAnnotation == null) {
             abortWithError("Annotation processor for @" + Validated.class.getSimpleName()
@@ -172,7 +170,7 @@ class AnnotationVerifier {
      * @param factoryTypeMirror the {@link TypeMirror} of the {@link ValidatorFactory}.
      * @param type the {@link TypeElement} of the class that referenced the {@link ValidatorFactory}.
      */
-    private void checkFactoryClass(@NonNull TypeMirror factoryTypeMirror, @NonNull TypeElement type) {
+    private void checkFactoryClass(TypeMirror factoryTypeMirror, TypeElement type) {
         if (seenFactoryTypeMirror == null) {
             seenFactoryTypeMirror = factoryTypeMirror;
             return;
@@ -189,7 +187,7 @@ class AnnotationVerifier {
      *
      * @param typeElement the {@link TypeElement} of the model being verified.
      */
-    private void verifyAnnotationConflicts(@NonNull TypeElement typeElement) {
+    private void verifyAnnotationConflicts(TypeElement typeElement) {
         List<String> annotationList = new LinkedList<>();
         List<ExecutableElement> methodElements = new ImmutableList.Builder<ExecutableElement>()
                 .addAll(ElementFilter.methodsIn(typeElement.getEnclosedElements())).build();
@@ -217,7 +215,7 @@ class AnnotationVerifier {
      * @param msg The error message.
      * @param e The element at which the error occurred.
      */
-    private void abortWithError(@NonNull String msg, @NonNull Element e) {
+    private void abortWithError(String msg, Element e) {
         reportError(msg, e);
         throw new AbortProcessingException();
     }
@@ -228,7 +226,7 @@ class AnnotationVerifier {
      * @param msg The error message.
      * @param e The element at which the error occurred.
      */
-    private void reportError(@NonNull String msg, @NonNull Element e) {
+    private void reportError(String msg, Element e) {
         messager.printMessage(Diagnostic.Kind.ERROR, msg, e);
     }
 
@@ -238,7 +236,7 @@ class AnnotationVerifier {
      * @param type The type.
      * @return {@code true} if given type implements {@link java.lang.annotation.Annotation}, {@code false} otherwise.
      */
-    private boolean implementsAnnotation(@NonNull TypeElement type) {
+    private boolean implementsAnnotation(TypeElement type) {
         return types.isAssignable(type.asType(), getTypeMirror(Annotation.class));
     }
 
@@ -248,7 +246,7 @@ class AnnotationVerifier {
      * @param cls The class.
      * @return The {@link TypeMirror} for given class.
      */
-    private TypeMirror getTypeMirror(@NonNull Class<?> cls) {
+    private TypeMirror getTypeMirror(Class<?> cls) {
         return elements.getTypeElement(cls.getName()).asType();
     }
 
@@ -261,8 +259,8 @@ class AnnotationVerifier {
      * @param type the TypeElement which is used only for error logging.
      * @return the TypeMirror.
      */
-    @NonNull
-    private TypeMirror getTypeMirrorFromAnnotation(@NonNull Validated validated, @NonNull TypeElement type) {
+
+    private TypeMirror getTypeMirrorFromAnnotation(Validated validated, TypeElement type) {
         try {
             // This should always throw an exception
             validated.factory();

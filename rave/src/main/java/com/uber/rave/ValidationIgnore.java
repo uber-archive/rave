@@ -20,8 +20,6 @@
 
 package com.uber.rave;
 
-import android.support.annotation.NonNull;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,9 +27,9 @@ import java.util.Set;
  * A container that represents the class or class+method to ignore during Rave validation.
  */
 final class ValidationIgnore {
-    @NonNull private final Set<String> ignoreMethods;
+    private final Set<String> ignoreMethods;
 
-    @NonNull private final Class<?> clazz;
+    private final Class<?> clazz;
 
     private boolean ignoreClassAll = false;
 
@@ -39,7 +37,7 @@ final class ValidationIgnore {
      * Constructor for this ignore bundle.
      * @param clazz the class to ignore.
      */
-    ValidationIgnore(@NonNull Class<?> clazz) {
+    ValidationIgnore(Class<?> clazz) {
         ignoreMethods = new HashSet<>();
         this.clazz = clazz;
     }
@@ -62,7 +60,6 @@ final class ValidationIgnore {
         return ignoreClassAll;
     }
 
-    @NonNull
     Class<?> getClazz() {
         return clazz;
     }
@@ -97,7 +94,7 @@ final class ValidationIgnore {
      * @return Will return true if the method is in the list of methods to ignore OR the entire class is set to be
      * ignored.
      */
-    boolean shouldIgnoreMethod(@NonNull String methodName) {
+    boolean shouldIgnoreMethod(String methodName) {
         return ignoreClassAll || ignoreMethods.contains(methodName);
     }
 }

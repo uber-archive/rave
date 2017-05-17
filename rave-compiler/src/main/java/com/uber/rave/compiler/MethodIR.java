@@ -20,26 +20,25 @@
 
 package com.uber.rave.compiler;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 /**
  * Represents the intermediate representation (IR) of a method within a particular data model class. This class holds
  * all the required information to generate a method which verifies a particular field in a data model.
  */
 final class MethodIR {
-    @NonNull private final Map<Class<? extends Annotation>, Annotation> annotations;
-    @NonNull private final String getterName;
+    private final Map<Class<? extends Annotation>, Annotation> annotations;
+    private final String getterName;
 
     /**
      * Create a new methodir object.
      * @param getterName the name of the method getter that this IR represents.
      */
-    MethodIR(@NonNull String getterName) {
+    MethodIR(String getterName) {
         annotations = new HashMap<>();
         this.getterName = getterName;
     }
@@ -48,7 +47,7 @@ final class MethodIR {
      * Adds a annotation to the method.
      * @param annotation the annotation to add.
      */
-    void addAnnotation(@NonNull Annotation annotation) {
+    void addAnnotation(Annotation annotation) {
         annotations.put(annotation.annotationType(), annotation);
     }
 
@@ -63,7 +62,6 @@ final class MethodIR {
      * Returns the method name. This is generally the getter method name for some field in the data model class.
      * @return the string representation of the name.
      */
-    @NonNull
     String getMethodGetterName() {
         return getterName;
     }
@@ -73,7 +71,7 @@ final class MethodIR {
      * @param cls the annoation {@link Class}.
      * @return true if this method was annotated with the input annotation, false otherwise.
      */
-    boolean hasAnnotation(@NonNull Class<? extends Annotation> cls) {
+    boolean hasAnnotation(Class<? extends Annotation> cls) {
         return annotations.containsKey(cls);
     }
 
@@ -84,7 +82,7 @@ final class MethodIR {
      * @return the annotation or null if the method wasn't annotated with it.
      */
     @Nullable
-    <A extends Annotation> A getAnnotation(@NonNull Class<A> cls) {
+    <A extends Annotation> A getAnnotation(Class<A> cls) {
         return (A) annotations.get(cls);
     }
 }

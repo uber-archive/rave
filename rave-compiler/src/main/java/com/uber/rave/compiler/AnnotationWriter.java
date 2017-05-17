@@ -24,7 +24,6 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.annotation.StringDef;
 
@@ -36,7 +35,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.lang.model.type.TypeMirror;
+import javax.annotation.Nullable;
 
 /**
  * A helper class that understands how to write out the various supported {@link Rave} annotations.
@@ -62,27 +61,23 @@ final class AnnotationWriter {
     private static final String NAMES = "$N";
     private static final String STRING_LITERAL = "$S";
 
-    @NonNull private final TypeMirror typeMirror;
-    @NonNull private final MethodSpec.Builder builder;
-    @NonNull private final MethodSpec getter;
+    private final MethodSpec.Builder builder;
+    private final MethodSpec getter;
     private final boolean isNullable;
     private final boolean hasNonNullOrNullable;
 
     /**
-     * @param typeMirror the {@link TypeMirror} of the class being evaluated.
      * @param builder the {@link MethodSpec.Builder} that is used to generate the code.
      * @param getter the {@link MethodSpec} for the getter method being evaluated.
      * @param isNullable true if the method DOES NOT have have a {@link NonNull} annotation.
-     * @param hasNonNullOrNullable true if either {@link NonNull} or {@link Nullable} annotations are present on the
-     * method.
+     * @param hasNonNullOrNullable true if either {@link NonNull} or {@link android.support.annotation.Nullable}
+     * annotations are present on the method.
      */
     AnnotationWriter(
-            @NonNull TypeMirror typeMirror,
-            @NonNull MethodSpec.Builder builder,
-            @NonNull MethodSpec getter,
+            MethodSpec.Builder builder,
+            MethodSpec getter,
             boolean isNullable,
             boolean hasNonNullOrNullable) {
-        this.typeMirror = typeMirror;
         this.builder = builder;
         this.getter = getter;
         this.isNullable = isNullable;
@@ -185,7 +180,7 @@ final class AnnotationWriter {
         buildStatements(baseWriter.getFormattedString(), baseWriter.getArgs());
     }
 
-    private void checkAnnotationNotNull(Annotation annotation) {
+    private void checkAnnotationNotNull(@Nullable Annotation annotation) {
         if (annotation == null) {
             throw new RuntimeException("For method " + getter.name + " annotation is empty");
         }
@@ -194,7 +189,7 @@ final class AnnotationWriter {
     /**
      * Adds the ignore if statement check to the method and then the check statement itself.
      */
-    private void buildStatements(@NonNull String statementFormat, Object... objects) {
+    private void buildStatements(String statementFormat, Object... objects) {
         builder.addStatement("$L.$L($S)", RaveWriter.VALIDATION_CONTEXT_ARG_NAME, SET_VALIDATION_ITEM_METHOD_NAME,
                 getter.name + "()");
         builder.addStatement(statementFormat, objects);
@@ -206,8 +201,8 @@ final class AnnotationWriter {
      */
     private static final class BaseAnnotationWriter {
 
-        @NonNull private final StringBuilder builder = new StringBuilder();
-        @NonNull private final List<Object> args = new ArrayList<>();
+        private final StringBuilder builder = new StringBuilder();
+        private final List<Object> args = new ArrayList<>();
 
         /**
          * Use this constructor if you want to auto generate the getter function call as one of the first params. If the
@@ -219,9 +214,7 @@ final class AnnotationWriter {
          * @param contextFirst if true this will insert the {@link BaseValidator.ValidationContext}
          * parameter as the first parameter otherwise it won't be inserted at all.
          */
-        private BaseAnnotationWriter(
-                @NonNull MethodSpec getter, @NonNull String checkMethodName,
-                boolean contextFirst) {
+        private BaseAnnotationWriter(MethodSpec getter, String checkMethodName, boolean contextFirst) {
             addArg(LITERAL + " = ", RaveWriter.RAVE_ERROR_ARG_NAME, false);
             addArg(LITERAL + "(", MERGE_ERROR_METHOD_NAME, false);
             addArg(LITERAL, RaveWriter.RAVE_ERROR_ARG_NAME, false);
@@ -237,7 +230,7 @@ final class AnnotationWriter {
          * The basic constructor. This gives you the first few args for the checks.
          * @param checkMethodName the name of the checker method.
          */
-        private BaseAnnotationWriter(@NonNull String checkMethodName) {
+        private BaseAnnotationWriter(String checkMethodName) {
             addArg(LITERAL + " = ", RaveWriter.RAVE_ERROR_ARG_NAME, false);
             addArg(LITERAL + "(", MERGE_ERROR_METHOD_NAME, false);
             addArg(LITERAL, RaveWriter.RAVE_ERROR_ARG_NAME, false);
@@ -249,7 +242,7 @@ final class AnnotationWriter {
          * @param getter the {@link MethodSpec} of the getter.
          * @param format the format of the item returned from the getter.
          */
-        private void addGetterCall(@NonNull MethodSpec getter, @NonNull String format) {
+        private void addGetterCall(MethodSpec getter, String format) {
             addArg(format + ".", RaveWriter.VALIDATE_METHOD_ARG_NAME, true);
             addArg(NAMES + "()", getter, false);
         }
@@ -260,7 +253,7 @@ final class AnnotationWriter {
          * @param arg this can either be an object or a null item.
          * @param addSeparatorBefore add a comma separator BEFORE this argument.
          */
-        void addArg(@NonNull String format, @Nullable Object arg, boolean addSeparatorBefore) {
+        void addArg(String format, @Nullable Object arg, boolean addSeparatorBefore) {
             if (addSeparatorBefore) {
                 builder.append(", ");
             }

@@ -24,7 +24,9 @@ sourceSets {
 dependencies {
     compile project(':rave')
     compile deps.supportAnnotations
+
     compileOnly 'com.google.auto.service:auto-service:1.0-rc3'
+    compileOnly deps.jsr305
 
     compile 'com.google.auto:auto-common:0.8'
     compile 'com.google.guava:guava:21.0'
