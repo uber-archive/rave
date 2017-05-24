@@ -133,16 +133,14 @@ final class RaveWriter {
      * @return a {@link MethodSpec} for the main method.
      */
     private List<MethodSpec> generateSubtypeValidationMethods(RaveIR raveIR) {
-
         MethodSpec.Builder builder = MethodSpec.methodBuilder(VALIDATE_METHOD_NAME)
                 .addException(RAVE_INVALID_MODEL_EXCEPTION_CLASS)
                 .addModifiers(Modifier.PROTECTED)
                 .returns(void.class)
                 .addAnnotation(Override.class)
-                .addParameter(ParameterSpec.builder(Object.class, VALIDATE_METHOD_ARG_NAME)
-                        .addAnnotation(NonNull.class).build())
+                .addParameter(ParameterSpec.builder(Object.class, VALIDATE_METHOD_ARG_NAME).build())
                 .addParameter(ParameterSpec.builder(CLASS_PARAMETERIZED_TYPE_NAME, VALIDATE_METHOD_CLAZZ_ARG_NAME)
-                        .addAnnotation(NonNull.class).build());
+                    .build());
         builder.beginControlFlow("if (!$L.isInstance($L))", VALIDATE_METHOD_CLAZZ_ARG_NAME, VALIDATE_METHOD_ARG_NAME);
         builder.addStatement("throw new $T($L.getClass().getCanonicalName() + $S + $L.getCanonicalName())",
                 IllegalArgumentException.class, VALIDATE_METHOD_ARG_NAME, "is not of type",

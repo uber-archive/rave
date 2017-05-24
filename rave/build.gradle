@@ -5,18 +5,15 @@ apply plugin: 'checkstyle'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-configurations {
-    compileOnly
-    compile.extendsFrom compileOnly
-}
-
 dependencies {
     compileOnly deps.jsr305
-    compile deps.supportAnnotations
+    compileOnly deps.supportAnnotations
 
     testCompile project(":rave-test")
+    testCompile deps.jsr305
     testCompile deps.junit4
     testCompile deps.slf4japi
+    testCompile deps.supportAnnotations
 }
 
 cobertura {
