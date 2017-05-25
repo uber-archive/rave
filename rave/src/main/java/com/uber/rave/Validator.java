@@ -1,8 +1,5 @@
 package com.uber.rave;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -28,11 +25,11 @@ public @interface Validator {
      */
     enum Mode {
         /**
-         * RAVE will assume if a method is not annotated its return type is {@link Nullable}.
+         * RAVE will assume if a method is not annotated its return type is nullable.
          */
         DEFAULT,
         /**
-         * RAVE will assume if a method is not annotated, its return type is {@link NonNull}.
+         * RAVE will assume if a method is not annotated, its return type is non null.
          */
         STRICT
     }
