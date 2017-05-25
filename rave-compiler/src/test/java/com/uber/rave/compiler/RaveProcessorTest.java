@@ -417,6 +417,31 @@ public class RaveProcessorTest {
                         "fixtures/voidreturn/SampleFactory_Generated_Validator.java"));
     }
 
+    @Test
+    public void testJSR305AnnotatedMethods_shouldValidate() {
+        sources.add(JavaFileObjects.forResource("fixtures/jsr305/UseOfJSR305.java"));
+        sources.add(myValidator);
+
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError()
+                .and()
+                .generatesSources(JavaFileObjects.forResource(
+                        "fixtures/jsr305/SampleFactory_Generated_Validator.java"));
+    }
+
+    @Test
+    public void testJSR305ConflictingAnnotations_shouldFailCompile() {
+        sources.add(JavaFileObjects.forResource("fixtures/jsr305/JSR305Conflict.java"));
+        sources.add(myValidator);
+
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .failsToCompile()
+                .withErrorContaining("Annotations javax.annotation.Nullable cannot be used with javax.annotation"
+                + ".Nonnull");
+    }
+
     static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded);

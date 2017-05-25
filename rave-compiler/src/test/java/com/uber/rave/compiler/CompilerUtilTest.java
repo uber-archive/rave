@@ -20,9 +20,6 @@
 
 package com.uber.rave.compiler;
 
-import com.uber.rave.annotation.MustBeFalse;
-import com.uber.rave.annotation.MustBeTrue;
-
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -31,7 +28,9 @@ public class CompilerUtilTest {
 
     @Test
     public void areConflicting_whenTrueAndFalseConflict_shouldReturnTrue() {
-        assertTrue(CompilerUtils.areConflicting(MustBeFalse.class, MustBeTrue.class));
-        assertTrue(CompilerUtils.areConflicting(MustBeTrue.class, MustBeFalse.class));
+        assertTrue(CompilerUtils.areConflicting("com.uber.rave.annotation.MustBeFalse",
+            "com.uber.rave.annotation.MustBeTrue"));
+        assertTrue(CompilerUtils.areConflicting("com.uber.rave.annotation.MustBeTrue",
+            "com.uber.rave.annotation.MustBeFalse"));
     }
 }

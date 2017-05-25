@@ -47,11 +47,11 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 
 /**
- * Utitlies class for annotations.
+ * Utilities class for annotations.
  */
 final class CompilerUtils {
 
-    private static final List<Class<? extends Annotation>> SUPPORTED_ANNOTATIONS = ImmutableList.of(
+    private static final List<Class<? extends Annotation>> SUPPORT_ANNOTATIONS = ImmutableList.of(
             NonNull.class,
             Nullable.class,
             Size.class,
@@ -63,13 +63,11 @@ final class CompilerUtils {
             FloatRange.class
     );
 
-    private static final List<Pair<Class<? extends Annotation>, Class<? extends Annotation>>> CONFLICTING_ANNOTATIONS =
-            ImmutableList.of(
+    private static final List<Pair<Class<? extends Annotation>, Class<? extends Annotation>>>
+        CONFLICTING_SUPPORT_ANNOTATIONS = ImmutableList.of(
                     new Pair<Class<? extends Annotation>, Class<? extends Annotation>>(MustBeTrue.class,
                             MustBeFalse.class),
-                    new Pair<Class<? extends Annotation>, Class<? extends Annotation>>(NonNull.class, Nullable.class),
-                    new Pair<Class<? extends Annotation>, Class<? extends Annotation>>(IntRange.class, IntDef.class)
-            );
+                    new Pair<Class<? extends Annotation>, Class<? extends Annotation>>(IntRange.class, IntDef.class));
     private static Map<Class<? extends Annotation>, Set<Class<? extends Annotation>>> sConflictingAnnotations;
     private static Map<String, Class<? extends Annotation>> sAnnotationMap;
 
@@ -92,21 +90,21 @@ final class CompilerUtils {
 
     private static void init() {
         ImmutableMap.Builder<String, Class<? extends Annotation>> annotationBuilder = ImmutableMap.builder();
-        for (Class<? extends Annotation> cls : SUPPORTED_ANNOTATIONS) {
+        for (Class<? extends Annotation> cls : SUPPORT_ANNOTATIONS) {
             annotationBuilder.put(cls.getCanonicalName(), cls);
         }
         sAnnotationMap = annotationBuilder.build();
 
         Map<Class<? extends Annotation>, ImmutableSet.Builder<Class<? extends Annotation>>> mapBuilder =
                 new HashMap<>();
-        for (Pair<Class<? extends Annotation>, Class<? extends Annotation>> pair : CONFLICTING_ANNOTATIONS) {
+        for (Pair<Class<? extends Annotation>, Class<? extends Annotation>> pair : CONFLICTING_SUPPORT_ANNOTATIONS) {
             build(mapBuilder, pair.first, pair.second);
             build(mapBuilder, pair.second, pair.first);
         }
 
         ImmutableMap.Builder<Class<? extends Annotation>, Set<Class<? extends Annotation>>> builder = ImmutableMap
                 .builder();
-        for (Class<? extends Annotation> annotation : SUPPORTED_ANNOTATIONS) {
+        for (Class<? extends Annotation> annotation : SUPPORT_ANNOTATIONS) {
             ImmutableSet.Builder<Class<? extends Annotation>> conflicting = mapBuilder.get(annotation);
             if (conflicting == null) {
                 conflicting = new ImmutableSet.Builder<>();
@@ -138,31 +136,47 @@ final class CompilerUtils {
     }
 
     /**
-     * @param annotationName the annotation, by name, to check.
-     * @return true if the annotation is supported false otherwise
+     * @param annotationName the annotation, by fully qualified name, to check.
+     * @return true if the annotation is an Android support annotation, false otherwise.
      */
-    static boolean annotationsIsSupported(String annotationName) {
+    static boolean isSupportAnnotation(String annotationName) {
         return sAnnotationMap.containsKey(annotationName);
     }
 
     /**
-     * @param annotationName the annotation (canonical name) to retrieve.
-     * @return the {@link Class} of the annotation.
+     * @param annotationName the annotation, by fully qualified name, to check.
+     * @return true if the annotation is an supported by RAVE, false otherwise.
      */
-    static Class<? extends Annotation> getAnnotation(String annotationName) {
+    static boolean isSupportedAnnotation(String annotationName) {
+        return annotationName.toLowerCase().contains("nullable")
+            || annotationName.toLowerCase().contains("nonnull")
+            || isSupportAnnotation(annotationName);
+    }
+
+    /**
+     * @param annotationName the annotation (canonical name) to retrieve.
+     * @return the {@link Class} of the Android support annotation.
+     */
+    static Class<? extends Annotation> getSupportAnnotation(String annotationName) {
         return sAnnotationMap.get(annotationName);
     }
 
     /**
      * This method checks to see if two annotations are conflicting or not.
      *
-     * @param a1 the first annotation to check.
-     * @param a2 the second annotation to check.
+     * @param annotation1 the first annotation, by fully qualified name to check.
+     * @param annotation2 the second annotation by fully qualified name to check.
      * @return true if the annotations are conflicting, false otherwise.
      */
-    static boolean areConflicting(Class<? extends Annotation> a1, Class<? extends Annotation> a2) {
-        Set<Class<? extends Annotation>> set = sConflictingAnnotations.get(a1);
-        return set.contains(a2);
+    static boolean areConflicting(String annotation1, String annotation2) {
+        String a1 = annotation1.toLowerCase();
+        String a2 = annotation2.toLowerCase();
+        if ((a1.contains("nullable") && a2.contains("nonnull"))
+                || (a1.contains("nonnull") && a2.contains("nullable"))) {
+            return true;
+        }
+        Set<Class<? extends Annotation>> set = sConflictingAnnotations.get(getSupportAnnotation(annotation1));
+        return set.contains(getSupportAnnotation(annotation2));
     }
 
     /**

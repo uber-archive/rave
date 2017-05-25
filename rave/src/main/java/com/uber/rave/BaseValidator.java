@@ -20,9 +20,6 @@
 
 package com.uber.rave;
 
-import android.support.annotation.IntDef;
-import android.support.annotation.Size;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -137,7 +134,7 @@ public abstract class BaseValidator {
      * @param isNullable if true than null is a valid value for the input string regardless of min and max.
      * @param min The string must be at least this long.
      * @param max The string must not exceed this length.
-     * @param multiple The multiple constraint on the {@link Size}. If less than zero it is
+     * @param multiple The multiple constraint on the Size. If less than zero it is
      * ignored.
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
      * @return {@link List} of {@link RaveError}s which list the validation violations. Null otherwise.
@@ -166,7 +163,7 @@ public abstract class BaseValidator {
      * @param isNullable if true than null is a valid value for the input string regardless of min and max.
      * @param min The collection must have least this many elements in it.
      * @param max The collection can have at most this many elements in it.
-     * @param multiple The multiple constraint on the {@link Size}. If less than zero it is
+     * @param multiple The multiple constraint on the Size. If less than zero it is
      * ignored.
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
      * @return {@link List} of {@link RaveError}s which list the validation violations. Null otherwise.
@@ -200,7 +197,7 @@ public abstract class BaseValidator {
      * @param isNullable if true than null is a valid value for the input string regardless of min and max.
      * @param min The Array must have least this many elements in it.
      * @param max The Array can have at most this many elements in it.
-     * @param multiple The multiple constraint on the {@link Size}. If less than zero it is
+     * @param multiple The multiple constraint on the Size. If less than zero it is
      * ignored.
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
      * @param <T> can be anytype.
@@ -229,7 +226,7 @@ public abstract class BaseValidator {
      * @param isNullable if true than null is a valid value for the input string regardless of min and max.
      * @param min the Array must have least this many elements in it.
      * @param max the Array can have at most this many elements in it.
-     * @param multiple the multiple constraint on the {@link Size}. If less than zero it is
+     * @param multiple the multiple constraint on the Size. If less than zero it is
      * ignored.
      * @param validationContext the context of the item in the class being validated. This is used in case of an error.
      * @param <K> key type of the map and can be any type.
@@ -513,12 +510,12 @@ public abstract class BaseValidator {
 
     /**
      * Check the value of an input long to see if it matches the acceptable values. This is the check that is run for
-     * the {@link IntDef} annotation. Note the flag value for this is currently unused but
+     * the IntDef annotation. Note the flag value for this is currently unused but
      * we may add support later.
      *
      * @param validationContext The context of the item in the class being validated. This is used in case of an error.
      * @param value The long value to check.
-     * @param flag the is the flag value from {@link IntDef} it is currently unsupported.
+     * @param flag the is the flag value from IntDef it is currently unsupported.
      * @param acceptableValues the values that the value parameter can take on.
      * @return an error if value is not present in list of acceptable values. Otherwise returns an empty list.
      */

@@ -15,10 +15,15 @@ Android apps consume data from a variety of sources (network, disk, etc.) that y
 
 ## Installation
 #### Gradle
-To integrate RAVE into your project add the following to your dependencies in your 'build.gradle' file:
+To integrate RAVE into your project add the following to your 'build.gradle' file:
 
 ```
-// Add RAVE dependencies
+buildscript {
+    repositories {
+        maven { url 'https://maven.google.com' }
+    }
+}
+
 dependencies {
   annotationProcessor 'com.uber:rave-compiler:1.0.1'
   compile 'com.uber:rave:1.0.1'

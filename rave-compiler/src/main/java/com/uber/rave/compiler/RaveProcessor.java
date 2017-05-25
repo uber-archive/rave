@@ -174,10 +174,16 @@ public final class RaveProcessor extends AbstractProcessor {
             MethodIR methodIR = new MethodIR(executableElement.getSimpleName().toString());
             for (AnnotationMirror mirror : elementUtils.getAllAnnotationMirrors(executableElement)) {
                 String annotationName = mirror.getAnnotationType().toString();
-                if (CompilerUtils.annotationsIsSupported(mirror.getAnnotationType().toString())) {
+                if (CompilerUtils.isSupportAnnotation(mirror.getAnnotationType().toString())) {
                     Annotation annotation =
-                            executableElement.getAnnotation(CompilerUtils.getAnnotation(annotationName));
+                            executableElement.getAnnotation(CompilerUtils.getSupportAnnotation(annotationName));
                     methodIR.addAnnotation(annotation);
+                } else if (mirror.getAnnotationType().asElement()
+                        .getSimpleName().toString().toLowerCase().equals("nullable")) {
+                    methodIR.addAnnotation(() -> android.support.annotation.Nullable.class);
+                } else if (mirror.getAnnotationType().asElement()
+                        .getSimpleName().toString().toLowerCase().equals("nonnull")) {
+                    methodIR.addAnnotation(() -> android.support.annotation.NonNull.class);
                 } else {
                     Annotation annotation = extractDefTypeAnnotations(mirror.getAnnotationType().asElement());
                     if (annotation != null) {

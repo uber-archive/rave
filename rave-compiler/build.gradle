@@ -19,10 +19,10 @@ dependencies {
     compile 'com.google.auto:auto-common:0.8'
     compile 'com.google.guava:guava:21.0'
     compile 'com.squareup:javapoet:1.8.0'
+    compile deps.supportAnnotations
 
     compileOnly 'com.google.auto.service:auto-service:1.0-rc3'
     compileOnly deps.jsr305
-    compileOnly deps.supportAnnotations
 
     testCompile project(":rave-test")
     testCompile deps.jsr305
@@ -32,7 +32,7 @@ dependencies {
     testCompile 'com.google.testing.compile:compile-testing:0.10'
     testCompile 'org.slf4j:slf4j-api:1.7.24'
     testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
-    testCompile "org.mockito:mockito-core:2.7.12"
+    testCompile 'org.mockito:mockito-core:2.7.12'
 }
 
 cobertura {
