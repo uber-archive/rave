@@ -101,12 +101,12 @@ public class Rave {
      * @param object the object to be validated.
      * @throws InvalidModelException if validation fails.
      */
-    private void validateIgnoreUnsupported(Object object) throws InvalidModelException {
+    public void validateIgnoreUnsupported(Object object) throws InvalidModelException {
         try {
             validate(object);
         } catch (InvalidModelException e) {
             throw e;
-        } catch (RaveException e) {}
+        } catch (RaveException e) { }
     }
     /**
      * This method is used to inject new validator objects in the global RAVE validation registry.

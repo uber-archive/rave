@@ -384,6 +384,12 @@ public class RaveUnitTest {
         Rave.getInstance().validateAs(new Object(), Object.class);
     }
 
+    @Test
+    public void validateIgnoreUnsupported_whenTypeIsNotSupported_shouldNotFailWithRaveUnsupportedException()
+            throws RaveException {
+        Rave.getInstance().validateIgnoreUnsupported(new Object());
+    }
+
     @Test(expected = UnsupportedObjectException.class)
     public void validate_whenTypeIsNotSupported_shouldFailWithRaveUnsupportedException() throws RaveException {
         Rave.getInstance().validate(new Object());
@@ -417,6 +423,12 @@ public class RaveUnitTest {
     }
 
     @Test
+    public void unAnnotateValidatorHandlerValidateAs_whenUnValidateUnsupportedClass_shouldNotThrowException()
+            throws RaveException {
+        Rave.getInstance().validateIgnoreUnsupported(new NonAnnotated.UnAnnotatedEvenWithInheritance());
+    }
+
+    @Test
     public void unAnnotateValidatorHandlerValidateAs_whenInheritenceIsUsed_shouldValidateFine() throws RaveException {
         Rave.getInstance().validate(new NonAnnotated(""));
         Rave.getInstance().validate(new NonAnnotated(""));
@@ -431,6 +443,11 @@ public class RaveUnitTest {
     @Test(expected = UnsupportedObjectException.class)
     public void validate_whenNonSupportedClass_shouldThrowException() throws RaveException {
         Rave.getInstance().validate(Collections.emptyList());
+    }
+
+    @Test
+    public void validate_whenNonSupportedClass_shouldNotThrowException() throws RaveException {
+        Rave.getInstance().validateIgnoreUnsupported(Collections.emptyList());
     }
 
     @Test(expected = UnsupportedObjectException.class)
