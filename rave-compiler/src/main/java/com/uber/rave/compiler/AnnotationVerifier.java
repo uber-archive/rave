@@ -195,10 +195,9 @@ class AnnotationVerifier {
             annotationList.clear();
             for (AnnotationMirror mirror : elements.getAllAnnotationMirrors(executableElement)) {
                 String annotationName = mirror.getAnnotationType().toString();
-                if (CompilerUtils.annotationsIsSupported(mirror.getAnnotationType().toString())) {
+                if (CompilerUtils.isSupportedAnnotation(mirror.getAnnotationType().toString())) {
                     for (String a : annotationList) {
-                        if (CompilerUtils.areConflicting(CompilerUtils.getAnnotation(a), CompilerUtils
-                                .getAnnotation(annotationName))) {
+                        if (CompilerUtils.areConflicting(a, annotationName)) {
                             abortWithError("Annotations " + annotationName + " cannot be used with " + a, typeElement);
                         }
                     }

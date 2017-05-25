@@ -32,7 +32,7 @@ dependencies {
     testCompile 'com.google.testing.compile:compile-testing:0.10'
     testCompile 'org.slf4j:slf4j-api:1.7.24'
     testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
-    testCompile "org.mockito:mockito-core:2.7.12"
+    testCompile 'org.mockito:mockito-core:2.7.12'
 }
 
 cobertura {

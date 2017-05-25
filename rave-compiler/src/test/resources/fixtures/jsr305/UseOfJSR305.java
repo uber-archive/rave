@@ -1,26 +1,24 @@
-package fixtures.test1;
+package fixtures.jsr305;
 
 import fixtures.SampleFactory;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import com.uber.rave.annotation.Excluded;
 import com.uber.rave.annotation.Validated;
 
 @Validated(factory = SampleFactory.class)
-public class UseOfExcluded {
+public class UseOfJSR305 {
     String notNullField;
     String canBeNullField;
 
-    public UseOfExcluded (
+    public UseOfJSR305 (
             String notNullField,
             String canBeNullField) {
         this.notNullField = notNullField;
         this.canBeNullField = canBeNullField;
     }
 
-    @Excluded
-    @NonNull
+    @Nonnull
     public String getNotNullField() {
         return notNullField;
     }
