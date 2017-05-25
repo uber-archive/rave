@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 2.0.0
+----------------------------
+2017-05-25
+
+- New: Supports any `@NonNull` and `@Nullable` annotations in addition to Android support annotations.
+- New: Adds `Rave.validateIgnoreUnsupported()` API to ignore `UnsupportedObjectException` when performing validation.
+- Use Google's Maven for support library artifacts and require consumers do the same.
+- RAVE is now annotated with JSR-305 nullability annotations.
+
 Version 1.0.1
 ----------------------------
 2017-05-04

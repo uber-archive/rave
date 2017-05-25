@@ -25,8 +25,8 @@ buildscript {
 }
 
 dependencies {
-  annotationProcessor 'com.uber:rave-compiler:1.0.1'
-  compile 'com.uber:rave:1.0.1'
+  annotationProcessor 'com.uber:rave-compiler:2.0.0'
+  compile 'com.uber:rave:2.0.0'
 }
 ```
 
