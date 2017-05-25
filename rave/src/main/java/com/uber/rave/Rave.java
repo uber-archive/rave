@@ -69,8 +69,7 @@ public class Rave {
     }
 
     /**
-     * Validate an object. If the object is not supported, nothing will happen. Otherwise the object will be routed to
-     * the correct sub-validator which knows how to validate it.
+     * Validate an object.
      *
      * @param object the object to be validated.
      * @throws RaveException if validation fails.
@@ -95,6 +94,20 @@ public class Rave {
         validator.validate(object);
     }
 
+    /**
+     * Validate an object. If the object is not supported, nothing will happen. Otherwise the object will be routed to
+     * the correct sub-validator which knows how to validate it.
+     *
+     * @param object the object to be validated.
+     * @throws InvalidModelException if validation fails.
+     */
+    public void validateIgnoreUnsupported(Object object) throws InvalidModelException {
+        try {
+            validate(object);
+        } catch (InvalidModelException e) {
+            throw e;
+        } catch (RaveException e) { }
+    }
     /**
      * This method is used to inject new validator objects in the global RAVE validation registry.
      *
