@@ -29,6 +29,11 @@ dependencies {
   compile 'com.uber:rave:2.0.0'
 }
 ```
+#### Proguard Settings
+To ensure validators are not removed by Proguard, add the following to your proguard configuration:
+```
+-keep class * implements com.uber.rave.ValidatorFactory
+```
 
 If you're using a version of the Android gradle plugin below `2.2` you need to use the [apt](https://bitbucket.org/hvisser/android-apt) plugin.
 
