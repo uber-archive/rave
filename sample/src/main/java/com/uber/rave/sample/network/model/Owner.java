@@ -8,6 +8,7 @@ import com.uber.rave.annotation.Validated;
 import com.uber.rave.sample.network.RaveValidatorFactory;
 import com.uber.rave.sample.network.RaveValidatorFactory_Generated_Validator;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -59,6 +60,8 @@ public class Owner implements Serializable {
         return result;
     }
 
+    // This is an example of how you can check inner fields that are protected or private. We will soon eliminat the
+    // need to even do this in later RAVE releases.
     @MustBeTrue
     public boolean validateFields() throws InvalidModelException {
         RaveValidatorFactory_Generated_Validator.validateInternalFor_com_uber_rave_sample_network_model_Owner(login,
