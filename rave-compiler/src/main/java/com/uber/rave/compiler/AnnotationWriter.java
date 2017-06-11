@@ -254,12 +254,12 @@ final class AnnotationWriter {
          * @param elementName the name of the item to by written.
          * @param format the format of the item returned from the getter.
          */
-        private void addGetterCall(String elementName, String format, WriterType writerType, boolean contextFirst) {
+        private void addGetterCall(String elementName, String format, WriterType writerType, boolean prependComma) {
             if (writerType == WriterType.METHOD) {
-                addArg(format + ".", RaveWriter.VALIDATE_METHOD_ARG_NAME, contextFirst);
+                addArg(format + ".", RaveWriter.VALIDATE_METHOD_ARG_NAME, prependComma);
                 addArg(format + "()", elementName, false);
             } else if (writerType == WriterType.FIELD) {
-                addArg(format, elementName, false);
+                addArg(format, elementName, prependComma);
             }
         }
 
