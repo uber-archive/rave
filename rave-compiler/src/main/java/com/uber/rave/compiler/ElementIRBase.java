@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
- * Created by beh on 6/9/17.
+ * This is the IR base class that is shared by the {@link MethodIR} and {@link FieldIR}
  */
 abstract class ElementIRBase {
     private final String name;

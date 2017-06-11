@@ -193,7 +193,6 @@ public final class RaveProcessor extends AbstractProcessor {
             if (variableElement.getModifiers().contains(Modifier.STATIC)) {
                 continue;
             }
-            System.out.println(typeElement.getSimpleName().toString() + " Behrooz " + variableElement.asType());
             FieldIR fieldIR = new FieldIR(variableElement.getSimpleName().toString(),
                     TypeName.get(variableElement.asType()));
             extractAnnotation(fieldIR, variableElement, mode, !variableElement.asType().getKind().isPrimitive());

@@ -23,7 +23,6 @@ package com.uber.rave.compiler;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 import android.support.annotation.StringDef;
 
@@ -62,7 +61,6 @@ final class AnnotationWriter {
     private static final String STRING_LITERAL = "$S";
 
     private final MethodSpec.Builder builder;
-//    private final MethodSpec getter;
     private final boolean isNullable;
     private final boolean hasNonNullOrNullable;
     private final String elementName;
@@ -71,9 +69,9 @@ final class AnnotationWriter {
     /**
      * @param builder the {@link MethodSpec.Builder} that is used to generate the code.
      * @param elementName the name for the item being evaluated.
-     * @param isNullable true if the method DOES NOT have have a {@link NonNull} annotation.
-     * @param hasNonNullOrNullable true if either {@link NonNull} or {@link android.support.annotation.Nullable}
-     * annotations are present on the method.
+     * @param isNullable true if the element DOES NOT have have a NonNull annotation.
+     * @param hasNonNullOrNullable true if either NonNull or Nullable annotations are present on the element.
+     * @param writeType the type of write this writer is addressing (method or field).
      */
     AnnotationWriter(
             MethodSpec.Builder builder,
@@ -143,7 +141,7 @@ final class AnnotationWriter {
         BaseAnnotationWriter baseWriter = new BaseAnnotationWriter(CHECK_MUST_BE_STRING_DEF_VALUE);
         baseWriter.addArg(LITERAL, isStringDefNullable, false);
         baseWriter.addArg(LITERAL, RaveWriter.VALIDATION_CONTEXT_ARG_NAME, true);
-        baseWriter.addGetterCall(elementName, LITERAL, writeType, true);
+        baseWriter.addElementReference(elementName, LITERAL, writeType, true);
         for (String string : acceptableStrings) {
             baseWriter.addArg(STRING_LITERAL, string, true);
         }
@@ -235,7 +233,7 @@ final class AnnotationWriter {
             if (contextFirst) {
                 addArg(LITERAL, RaveWriter.VALIDATION_CONTEXT_ARG_NAME, false);
             }
-            addGetterCall(elementName, LITERAL, writeType, contextFirst);
+            addElementReference(elementName, LITERAL, writeType, contextFirst);
         }
 
         /**
@@ -254,7 +252,7 @@ final class AnnotationWriter {
          * @param elementName the name of the item to by written.
          * @param format the format of the item returned from the getter.
          */
-        private void addGetterCall(String elementName, String format, WriteType writeType, boolean prependComma) {
+        private void addElementReference(String elementName, String format, WriteType writeType, boolean prependComma) {
             if (writeType == WriteType.METHOD) {
                 addArg(format + ".", RaveWriter.VALIDATE_METHOD_ARG_NAME, prependComma);
                 addArg(format + "()", elementName, false);
