@@ -32,8 +32,9 @@ import javax.lang.model.util.Types;
  */
 final class ClassIR {
 
-    private final List<MethodIR> methodIRs;
-    private final List<TypeMirror> inheritedTypes;
+    private final List<MethodIR> methodIRs = new ArrayList<>();
+    private final List<FieldIR> fieldIRs = new ArrayList<>();
+    private final List<TypeMirror> inheritedTypes = new ArrayList<>();
     private final TypeMirror typeMirror;
 
     /**
@@ -41,8 +42,6 @@ final class ClassIR {
      * @param typeMirror the type mirror of the class this ir represents.
      */
     ClassIR(TypeMirror typeMirror) {
-        methodIRs = new ArrayList<>();
-        inheritedTypes = new ArrayList<>();
         this.typeMirror = typeMirror;
     }
 
@@ -84,5 +83,26 @@ final class ClassIR {
      */
     List<TypeMirror> getInheritedTypes() {
         return inheritedTypes;
+    }
+
+    /**
+     *  Adds a {@link FieldIR} to this {@link ClassIR}.
+     * @param fieldIR the {@link FieldIR} to add.
+     */
+    void addFieldIR(FieldIR fieldIR) {
+        fieldIRs.add(fieldIR);
+    }
+
+    List<FieldIR> getFieldIRs() {
+        return fieldIRs;
+    }
+
+    public boolean hasValidatableFields() {
+        for (FieldIR fieldIR : fieldIRs) {
+            if (fieldIR.hasAnyAnnotation()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -2,16 +2,25 @@ package com.uber.rave.sample.network.model;
 
 import android.support.annotation.NonNull;
 
+import com.uber.rave.annotation.MustBeTrue;
 import com.uber.rave.annotation.Validated;
 import com.uber.rave.sample.network.RaveValidatorFactory;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Validated(factory = RaveValidatorFactory.class)
 public class Owner implements Serializable {
-
+    private static final String finalstring = "";
     @NonNull private String login;
+    @MustBeTrue private boolean field2;
+    private final List<Owner> list = null;
     private int id;
+
+    public Owner() {
+        login = "";
+        field2 = false;
+    }
 
     @NonNull
     public String getLogin() {

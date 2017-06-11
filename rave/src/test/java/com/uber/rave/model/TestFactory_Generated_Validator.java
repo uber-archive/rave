@@ -3,9 +3,10 @@ package com.uber.rave.model;
 import android.support.annotation.NonNull;
 
 import com.uber.rave.BaseValidator;
-import com.uber.rave.RaveError;
 import com.uber.rave.InvalidModelException;
+import com.uber.rave.RaveError;
 
+import java.util.Collection;
 import java.util.List;
 
 public final class TestFactory_Generated_Validator extends BaseValidator {
@@ -185,6 +186,63 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
         List<RaveError> raveErrors = null;
         context.setValidatedItemName("getValue()");
         raveErrors = mergeErrors(raveErrors, checkFloatRange(context, object.getValue(), -15.5d, 1000.9d));
+        if (raveErrors != null && !raveErrors.isEmpty()) {
+            throw new InvalidModelException(raveErrors);
+        }
+    }
+
+    public static void validateInternalFor_com_uber_rave_model_InheritFrom(String nonNullString)
+            throws InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(InheritFrom.class);
+        List<RaveError> raveErrors = null;
+        context.setValidatedItemName("nonNullString");
+        raveErrors = mergeErrors(raveErrors, checkNullable(nonNullString, true, context));
+        if (raveErrors != null && !raveErrors.isEmpty()) {
+            throw new InvalidModelException(raveErrors);
+        }
+    }
+
+    public static void validateInternalFor_com_uber_rave_model_MultiMethodSampleModel(NonAnnotated annotatedObject,
+            String notNullField, String canBeNullField, String betweenOneAndFive,
+            Collection<String> names) throws InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(MultiMethodSampleModel.class);
+        List<RaveError> raveErrors = null;
+        context.setValidatedItemName("annotatedObject");
+        raveErrors = mergeErrors(raveErrors, checkNullable(annotatedObject, true, context));
+        context.setValidatedItemName("notNullField");
+        raveErrors = mergeErrors(raveErrors, checkNullable(notNullField, true, context));
+        context.setValidatedItemName("canBeNullField");
+        raveErrors = mergeErrors(raveErrors, checkNullable(canBeNullField, true, context));
+        context.setValidatedItemName("betweenOneAndFive");
+        raveErrors = mergeErrors(raveErrors, checkNullable(betweenOneAndFive, true, context));
+        context.setValidatedItemName("names");
+        raveErrors = mergeErrors(raveErrors, checkNullable(names, true, context));
+        if (raveErrors != null && !raveErrors.isEmpty()) {
+            throw new InvalidModelException(raveErrors);
+        }
+    }
+
+    public static void validateInternalFor_com_uber_rave_model_SingleMethodSampleModel(String notNullField,
+            String matchStringDef) throws InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(SingleMethodSampleModel.class);
+        List<RaveError> raveErrors = null;
+        context.setValidatedItemName("notNullField");
+        raveErrors = mergeErrors(raveErrors, checkNullable(notNullField, true, context));
+        context.setValidatedItemName("matchStringDef");
+        raveErrors = mergeErrors(raveErrors, checkNullable(matchStringDef, true, context));
+        if (raveErrors != null && !raveErrors.isEmpty()) {
+            throw new InvalidModelException(raveErrors);
+        }
+    }
+
+    public static void validateInternalFor_com_uber_rave_model_ArrayNotNull(String[] strings,
+            Collection<SingleMethodSampleModel> singles) throws InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(ArrayNotNull.class);
+        List<RaveError> raveErrors = null;
+        context.setValidatedItemName("strings");
+        raveErrors = mergeErrors(raveErrors, checkNullable(strings, true, context));
+        context.setValidatedItemName("singles");
+        raveErrors = mergeErrors(raveErrors, checkNullable(singles, true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

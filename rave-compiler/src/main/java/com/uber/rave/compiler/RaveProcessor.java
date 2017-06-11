@@ -26,6 +26,7 @@ import android.support.annotation.StringDef;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableList;
+import com.squareup.javapoet.TypeName;
 import com.uber.rave.BaseValidator;
 import com.uber.rave.Validator;
 import com.uber.rave.annotation.Excluded;
@@ -51,6 +52,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -154,6 +156,12 @@ public final class RaveProcessor extends AbstractProcessor {
     private ClassIR extractClassInfo(TypeElement typeElement, Validator.Mode mode) {
         ClassIR classIR = new ClassIR(typesUtils.erasure(typeElement.asType()));
         traverseInheritanceTree(typeElement, classIR);
+        buildMethodIR(classIR, typeElement, mode);
+        buildFieldIR(classIR, typeElement, mode);
+        return classIR;
+    }
+
+    private void buildMethodIR(ClassIR classIR, TypeElement typeElement, Validator.Mode mode) {
         List<ExecutableElement> methodElements = new ImmutableList.Builder<ExecutableElement>()
                 .addAll(ElementFilter.methodsIn(typeElement.getEnclosedElements())).build();
         String classPackage = CompilerUtils.packageNameOf(typeElement);
@@ -172,48 +180,69 @@ public final class RaveProcessor extends AbstractProcessor {
                 continue;
             }
             MethodIR methodIR = new MethodIR(executableElement.getSimpleName().toString());
-            for (AnnotationMirror mirror : elementUtils.getAllAnnotationMirrors(executableElement)) {
-                String annotationName = mirror.getAnnotationType().toString();
-                if (CompilerUtils.isSupportAnnotation(mirror.getAnnotationType().toString())) {
-                    Annotation annotation =
-                            executableElement.getAnnotation(CompilerUtils.getSupportAnnotation(annotationName));
-                    methodIR.addAnnotation(annotation);
-                } else if (mirror.getAnnotationType().asElement()
-                        .getSimpleName().toString().toLowerCase().equals("nullable")) {
-                    methodIR.addAnnotation(() -> android.support.annotation.Nullable.class);
-                } else if (mirror.getAnnotationType().asElement()
-                        .getSimpleName().toString().toLowerCase().equals("nonnull")) {
-                    methodIR.addAnnotation(() -> android.support.annotation.NonNull.class);
-                } else {
-                    Annotation annotation = extractDefTypeAnnotations(mirror.getAnnotationType().asElement());
-                    if (annotation != null) {
-                        methodIR.addAnnotation(annotation);
-                    }
-                }
-            }
-            addImplicitNullnessAnnotations(methodIR, mode, executableElement);
+            extractAnnotation(methodIR, executableElement, mode,
+                    !executableElement.getReturnType().getKind().isPrimitive());
             classIR.addMethodIR(methodIR);
         }
-        return classIR;
+    }
+
+    private void buildFieldIR(ClassIR classIR, TypeElement typeElement, Validator.Mode mode) {
+        List<VariableElement> fields = new ImmutableList.Builder<VariableElement>().addAll(
+                ElementFilter.fieldsIn(typeElement.getEnclosedElements())).build();
+        for (VariableElement variableElement : fields) {
+            if (variableElement.getModifiers().contains(Modifier.STATIC)) {
+                continue;
+            }
+            System.out.println(typeElement.getSimpleName().toString() + " Behrooz " + variableElement.asType());
+            FieldIR fieldIR = new FieldIR(variableElement.getSimpleName().toString(),
+                    TypeName.get(variableElement.asType()));
+            extractAnnotation(fieldIR, variableElement, mode, !variableElement.asType().getKind().isPrimitive());
+            classIR.addFieldIR(fieldIR);
+        }
+    }
+
+    private void extractAnnotation(ElementIRBase elementIRBase, Element element, Validator.Mode mode,
+            boolean okToAddNull) {
+        for (AnnotationMirror mirror : elementUtils.getAllAnnotationMirrors(element)) {
+            String annotationName = mirror.getAnnotationType().toString();
+            if (CompilerUtils.isSupportAnnotation(mirror.getAnnotationType().toString())) {
+                Annotation annotation =
+                        element.getAnnotation(CompilerUtils.getSupportAnnotation(annotationName));
+                elementIRBase.addAnnotation(annotation);
+            } else if (mirror.getAnnotationType().asElement()
+                    .getSimpleName().toString().toLowerCase().equals("nullable")) {
+                elementIRBase.addAnnotation(() -> android.support.annotation.Nullable.class);
+            } else if (mirror.getAnnotationType().asElement()
+                    .getSimpleName().toString().toLowerCase().equals("nonnull")) {
+                elementIRBase.addAnnotation(() -> android.support.annotation.NonNull.class);
+            } else {
+                Annotation annotation = extractDefTypeAnnotations(mirror.getAnnotationType().asElement());
+                if (annotation != null) {
+                    elementIRBase.addAnnotation(annotation);
+                }
+            }
+        }
+        addImplicitNullnessAnnotations(elementIRBase, mode, element, okToAddNull);
     }
 
     private void addImplicitNullnessAnnotations(
-            MethodIR methodIR,
+            ElementIRBase elementIRBase,
             Validator.Mode mode,
-            ExecutableElement executableElement) {
-        if (methodIR.hasAnyAnnotation() || executableElement.getReturnType().getKind().isPrimitive()) {
+            Element executableElement,
+            boolean okToAddNull) {
+        if (elementIRBase.hasAnyAnnotation() || !okToAddNull) {
             return;
         }
 
         switch (mode) {
             case DEFAULT:
-                methodIR.addAnnotation(() -> android.support.annotation.Nullable.class);
+                elementIRBase.addAnnotation(() -> android.support.annotation.Nullable.class);
                 break;
             case STRICT:
-                methodIR.addAnnotation(() -> NonNull.class);
+                elementIRBase.addAnnotation(() -> NonNull.class);
                 break;
             default:
-                error(executableElement, "Unhandled validation mode for method: %s", methodIR.getMethodGetterName());
+                error(executableElement, "Unhandled validation mode for method: %s", elementIRBase.getElementName());
         }
     }
 
