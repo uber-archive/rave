@@ -20,7 +20,6 @@ import javax.annotation.Generated;
 public final class NotStrictFieldsOnlyFactory_Generated_Validator extends BaseValidator {
     NotStrictFieldsOnlyFactory_Generated_Validator() {
         addSupportedClass(NoGen.class);
-        addSupportedClass(NoGen.SomeInnerClass.class);
         registerSelf();
     }
 
@@ -33,28 +32,14 @@ public final class NotStrictFieldsOnlyFactory_Generated_Validator extends BaseVa
             validateAs((NoGen) object);
             return;
         }
-        if (clazz.equals(NoGen.SomeInnerClass.class)) {
-            validateAs((NoGen.SomeInnerClass) object);
-            return;
-        }
         throw new IllegalArgumentException(object.getClass().getCanonicalName() + " is not supported by validator " + this.getClass().getCanonicalName());
     }
 
     private void validateAs(NoGen object) throws InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(NoGen.class);
         List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getUberPoolState()");
-        raveErrors = mergeErrors(raveErrors, checkStringDef(false, context, object.getUberPoolState(), "Matched", "Matching", "NotMatched"));
-        if (raveErrors != null && !raveErrors.isEmpty()) {
-            throw new InvalidModelException(raveErrors);
-        }
-    }
-
-    private void validateAs(NoGen.SomeInnerClass object) throws InvalidModelException {
-        BaseValidator.ValidationContext context = getValidationContext(NoGen.SomeInnerClass.class);
-        List<RaveError> raveErrors = null;
-        context.setValidatedItemName("getString()");
-        raveErrors = mergeErrors(raveErrors, checkNullable(object.getString(), false, context));
+        context.setValidatedItemName("getState()");
+        raveErrors = mergeErrors(raveErrors, checkNullable(object.getState(), true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }
@@ -75,17 +60,6 @@ public final class NotStrictFieldsOnlyFactory_Generated_Validator extends BaseVa
         raveErrors = mergeErrors(raveErrors, checkNullable(names, false, context));
         context.setValidatedItemName("map");
         raveErrors = mergeErrors(raveErrors, checkNullable(map, true, context));
-        if (raveErrors != null && !raveErrors.isEmpty()) {
-            throw new InvalidModelException(raveErrors);
-        }
-    }
-
-    public static void validateInternalFor_fixtures_fields_comprehensive_NoGen_SomeInnerClass(String someString)
-            throws InvalidModelException {
-        BaseValidator.ValidationContext context = getValidationContext(NoGen.SomeInnerClass.class);
-        List<RaveError> raveErrors = null;
-        context.setValidatedItemName("someString");
-        raveErrors = mergeErrors(raveErrors, checkNullable(someString, false, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

@@ -93,10 +93,16 @@ final class ClassIR {
         fieldIRs.add(fieldIR);
     }
 
-    List<FieldIR> getFieldIRs() {
+    /**
+     * @return Returns a list of all the field added to this method IR.
+     */
+    List<FieldIR> getAllFieldIRs() {
         return fieldIRs;
     }
 
+    /**
+     * @return true if any field has an annotation, false otherwise.
+     */
     public boolean hasValidatableFields() {
         for (FieldIR fieldIR : fieldIRs) {
             if (fieldIR.hasAnyAnnotation()) {

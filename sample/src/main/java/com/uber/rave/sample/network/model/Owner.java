@@ -2,9 +2,11 @@ package com.uber.rave.sample.network.model;
 
 import android.support.annotation.NonNull;
 
+import com.uber.rave.InvalidModelException;
 import com.uber.rave.annotation.MustBeTrue;
 import com.uber.rave.annotation.Validated;
 import com.uber.rave.sample.network.RaveValidatorFactory;
+import com.uber.rave.sample.network.RaveValidatorFactory_Generated_Validator;
 
 import java.io.Serializable;
 import java.util.List;
@@ -55,5 +57,12 @@ public class Owner implements Serializable {
         int result = login != null ? login.hashCode() : 0;
         result = 31 * result + id;
         return result;
+    }
+
+    @MustBeTrue
+    public boolean validateFields() throws InvalidModelException {
+        RaveValidatorFactory_Generated_Validator.validateInternalFor_com_uber_rave_sample_network_model_Owner(login,
+                field2, list);
+        return true;
     }
 }

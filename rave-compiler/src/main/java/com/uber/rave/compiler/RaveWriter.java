@@ -186,12 +186,12 @@ final class RaveWriter {
             builder.addStatement("$T $L = getValidationContext($T.class)", BaseValidator.ValidationContext.class,
                     VALIDATION_CONTEXT_ARG_NAME, classIR.getTypeMirror());
             builder.addStatement("$T<$T> $L = null", List.class, RaveError.class, RAVE_ERROR_ARG_NAME);
-            for (FieldIR fieldIR : classIR.getFieldIRs()) {
+            for (FieldIR fieldIR : classIR.getAllFieldIRs()) {
                 if (!fieldIR.hasAnyAnnotation()) {
                     continue;
                 }
                 builder.addParameter(fieldIR.getTypeName(), fieldIR.getElementName());
-                buildAnnotationChecks(builder, fieldIR, AnnotationWriter.WriterType.FIELD);
+                buildAnnotationChecks(builder, fieldIR, AnnotationWriter.WriteType.FIELD);
             }
             builder.beginControlFlow("if ($L != null && !$L.isEmpty())", RAVE_ERROR_ARG_NAME,
                     RAVE_ERROR_ARG_NAME);
@@ -226,7 +226,7 @@ final class RaveWriter {
                     typeUtils.erasure(mirror), VALIDATE_METHOD_ARG_NAME);
         }
         for (MethodIR methodIR : classIR.getAllMethods()) {
-            buildAnnotationChecks(builder, methodIR, AnnotationWriter.WriterType.METHOD);
+            buildAnnotationChecks(builder, methodIR, AnnotationWriter.WriteType.METHOD);
         }
         builder.beginControlFlow("if ($L != null && !$L.isEmpty())", RAVE_ERROR_ARG_NAME,
                 RAVE_ERROR_ARG_NAME);
@@ -236,13 +236,13 @@ final class RaveWriter {
     }
 
     private void buildAnnotationChecks(MethodSpec.Builder builder, ElementIRBase elementIRBase,
-            AnnotationWriter.WriterType writerType) {
+            AnnotationWriter.WriteType writeType) {
         // No check needed for Nullable annotation.
         boolean isNullable = !elementIRBase.hasAnnotation(NonNull.class);
         boolean hasNonNullOrNullable = elementIRBase.hasAnnotation(NonNull.class)
                 || elementIRBase.hasAnnotation(Nullable.class);
         AnnotationWriter writer = new AnnotationWriter(builder, elementIRBase.getElementName(), isNullable,
-                hasNonNullOrNullable, writerType);
+                hasNonNullOrNullable, writeType);
         if (hasNonNullOrNullable && !(elementIRBase.hasAnnotation(Size.class)
                 || elementIRBase.hasAnnotation(StringDef.class))) {
             writer.writeNullable();

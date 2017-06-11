@@ -3,7 +3,8 @@ package com.uber.rave.compiler;
 import com.squareup.javapoet.TypeName;
 
 /**
- * Todo Behrooz.
+ * Represents the intermediate representation (IR) of a field within a particular data model class. This class holds
+ * all the required information to generate a method which verifies the inner fields in a data model.
  */
 public class FieldIR extends ElementIRBase {
 

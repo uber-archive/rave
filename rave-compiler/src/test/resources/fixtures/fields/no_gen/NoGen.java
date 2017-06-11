@@ -26,7 +26,7 @@ public class NoGen {
     // These map should trigger code gen validation code
     private Map<String, NoGen> map;
 
-    public String getUberPoolState() {
+    public String getState() {
         return "Hey now";
     }
 }
