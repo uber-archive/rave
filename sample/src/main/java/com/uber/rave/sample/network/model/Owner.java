@@ -8,7 +8,6 @@ import com.uber.rave.annotation.Validated;
 import com.uber.rave.sample.network.RaveValidatorFactory;
 import com.uber.rave.sample.network.RaveValidatorFactory_Generated_Validator;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 

@@ -70,7 +70,6 @@ final class RaveWriter {
 
     // Arg names.
     static final String VALIDATE_METHOD_ARG_NAME = "object";
-    static final String THIS_ARG_NAME = "this";
     static final String GENERATED_CLASS_POSTFIX = "_Generated_Validator";
     static final Class<? extends Exception> RAVE_INVALID_MODEL_EXCEPTION_CLASS = InvalidModelException.class;
     static final String RAVE_ERROR_ARG_NAME = "raveErrors";
