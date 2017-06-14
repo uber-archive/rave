@@ -63,8 +63,7 @@ final class AnnotationWriter {
     private final MethodSpec.Builder builder;
     private final boolean isNullable;
     private final boolean hasNonNullOrNullable;
-    private final String elementName;
-    private final WriteType writeType;
+    private final ElementInfo elementInfo;
 
     /**
      * @param builder the {@link MethodSpec.Builder} that is used to generate the code.
@@ -82,14 +81,13 @@ final class AnnotationWriter {
         this.builder = builder;
         this.isNullable = isNullable;
         this.hasNonNullOrNullable = hasNonNullOrNullable;
-        this.elementName = elementName;
-        this.writeType = writeType;
+        this.elementInfo = new ElementInfo(elementName, writeType);
     }
 
     void writeNullable() {
         // Args: value, isNullable, validationContext
         BaseAnnotationWriter baseWriter =
-                new BaseAnnotationWriter(elementName, CHECK_NULL_METHOD_NAME, false, writeType);
+                new BaseAnnotationWriter(elementInfo, CHECK_NULL_METHOD_NAME, false);
         baseWriter.addArg(LITERAL, isNullable, true);
         baseWriter.addArg(LITERAL, RaveWriter.VALIDATION_CONTEXT_ARG_NAME, true);
         buildStatements(baseWriter.getFormattedString(), baseWriter.getArgs());
@@ -97,16 +95,14 @@ final class AnnotationWriter {
 
     void writeMustBeFalse() {
         // Args: value, validationContext
-        BaseAnnotationWriter baseWriter = new BaseAnnotationWriter(elementName, CHECK_MUST_BE_FALSE_METHOD_NAME,
-                false, writeType);
+        BaseAnnotationWriter baseWriter = new BaseAnnotationWriter(elementInfo, CHECK_MUST_BE_FALSE_METHOD_NAME, false);
         baseWriter.addArg(LITERAL, RaveWriter.VALIDATION_CONTEXT_ARG_NAME, true);
         buildStatements(baseWriter.getFormattedString(), baseWriter.getArgs());
     }
 
     void writeMustBeTrue() {
         // Args: value, validationContext
-        BaseAnnotationWriter baseWriter = new BaseAnnotationWriter(elementName, CHECK_MUST_BE_TRUE_METHOD_NAME, false,
-                writeType);
+        BaseAnnotationWriter baseWriter = new BaseAnnotationWriter(elementInfo, CHECK_MUST_BE_TRUE_METHOD_NAME, false);
         baseWriter.addArg(LITERAL, RaveWriter.VALIDATION_CONTEXT_ARG_NAME, true);
         buildStatements(baseWriter.getFormattedString(), baseWriter.getArgs());
     }
@@ -124,7 +120,7 @@ final class AnnotationWriter {
         }
         // Args: value, isNullable, min, max, multiple, validationContext
         BaseAnnotationWriter baseWriter =
-                new BaseAnnotationWriter(elementName, CHECK_SIZE_METHOD_NAME, false, writeType);
+                new BaseAnnotationWriter(elementInfo, CHECK_SIZE_METHOD_NAME, false);
         baseWriter.addArg(LITERAL, isNullable, true);
         baseWriter.addArg(LITERAL_LONG, min, true);
         baseWriter.addArg(LITERAL_LONG, max, true);
@@ -141,7 +137,7 @@ final class AnnotationWriter {
         BaseAnnotationWriter baseWriter = new BaseAnnotationWriter(CHECK_MUST_BE_STRING_DEF_VALUE);
         baseWriter.addArg(LITERAL, isStringDefNullable, false);
         baseWriter.addArg(LITERAL, RaveWriter.VALIDATION_CONTEXT_ARG_NAME, true);
-        baseWriter.addElementReference(elementName, LITERAL, writeType, true);
+        baseWriter.addElementReference(elementInfo, LITERAL, true);
         for (String string : acceptableStrings) {
             baseWriter.addArg(STRING_LITERAL, string, true);
         }
@@ -152,7 +148,7 @@ final class AnnotationWriter {
         checkAnnotationNotNull(intDef);
         // Args: validationContext, value, flag, acceptableValues
         BaseAnnotationWriter baseWriter =
-                new BaseAnnotationWriter(elementName, CHECK_MUST_BE_INT_DEF_VALUE, true, writeType);
+                new BaseAnnotationWriter(elementInfo, CHECK_MUST_BE_INT_DEF_VALUE, true);
         baseWriter.addArg(LITERAL, intDef.flag(), true);
         long[] acceptableInts = intDef.value();
         for (long intVale : acceptableInts) {
@@ -165,7 +161,7 @@ final class AnnotationWriter {
         checkAnnotationNotNull(intRange);
         // Args: validationContext, value, from, to
         BaseAnnotationWriter baseWriter =
-                new BaseAnnotationWriter(elementName, CHECK_INT_RANGE_METHOD_NAME, true, writeType);
+                new BaseAnnotationWriter(elementInfo, CHECK_INT_RANGE_METHOD_NAME, true);
         baseWriter.addArg(LITERAL_LONG, intRange.from(), true);
         baseWriter.addArg(LITERAL_LONG, intRange.to(), true);
         buildStatements(baseWriter.getFormattedString(), baseWriter.getArgs());
@@ -175,7 +171,7 @@ final class AnnotationWriter {
         checkAnnotationNotNull(floatRange);
         // Args: validationContext, value, from, to
         BaseAnnotationWriter baseWriter =
-                new BaseAnnotationWriter(elementName, CHECK_FLOAT_RANGE_METHOD_NAME, true, writeType);
+                new BaseAnnotationWriter(elementInfo, CHECK_FLOAT_RANGE_METHOD_NAME, true);
         if (Double.isInfinite(floatRange.from())) {
             baseWriter.addArg("Double.NEGATIVE_INFINITY", null, true);
         } else {
@@ -191,7 +187,7 @@ final class AnnotationWriter {
 
     private void checkAnnotationNotNull(@Nullable Annotation annotation) {
         if (annotation == null) {
-            throw new RuntimeException("For method " + elementName + " annotation is empty");
+            throw new RuntimeException("For " + elementInfo.errorString() + " annotation is empty");
         }
     }
 
@@ -199,9 +195,8 @@ final class AnnotationWriter {
      * Adds the ignore if statement check to the method and then the check statement itself.
      */
     private void buildStatements(String statementFormat, Object... objects) {
-        String elementPostFix = writeType == WriteType.METHOD ? "()" : "";
         builder.addStatement("$L.$L($S)", RaveWriter.VALIDATION_CONTEXT_ARG_NAME, SET_VALIDATION_ITEM_METHOD_NAME,
-                elementName + elementPostFix);
+                elementInfo.formatString());
         builder.addStatement(statementFormat, objects);
     }
 
@@ -219,13 +214,12 @@ final class AnnotationWriter {
          * boolean parameter is set to true then the {@link BaseValidator.ValidationContext} object
          * is inserted first otherwise it is not.  This is a convenience method for the
          * {@link BaseValidator} methods that start with either the getter method or the context.
-         * @param elementName the {@link MethodSpec} for the getter.
+         * @param elementInfo the {@link MethodSpec} for the getter.
          * @param checkMethodName the name of the checker method being called.
          * @param contextFirst if true this will insert the {@link BaseValidator.ValidationContext}
          * parameter as the first parameter otherwise it won't be inserted at all.
          */
-        private BaseAnnotationWriter(String elementName, String checkMethodName, boolean contextFirst,
-                WriteType writeType) {
+        private BaseAnnotationWriter(ElementInfo elementInfo, String checkMethodName, boolean contextFirst) {
             addArg(LITERAL + " = ", RaveWriter.RAVE_ERROR_ARG_NAME, false);
             addArg(LITERAL + "(", MERGE_ERROR_METHOD_NAME, false);
             addArg(LITERAL, RaveWriter.RAVE_ERROR_ARG_NAME, false);
@@ -233,7 +227,7 @@ final class AnnotationWriter {
             if (contextFirst) {
                 addArg(LITERAL, RaveWriter.VALIDATION_CONTEXT_ARG_NAME, false);
             }
-            addElementReference(elementName, LITERAL, writeType, contextFirst);
+            addElementReference(elementInfo, LITERAL, contextFirst);
         }
 
         /**
@@ -249,16 +243,15 @@ final class AnnotationWriter {
 
         /**
          * Add the getter arg to the string format.
-         * @param elementName the name of the item to by written.
+         * @param elementInfo the name of the item to by written.
          * @param format the format of the item returned from the getter.
          */
-        private void addElementReference(String elementName, String format, WriteType writeType, boolean prependComma) {
-            if (writeType == WriteType.METHOD) {
+        private void addElementReference(ElementInfo elementInfo, String format, boolean prependComma) {
+            if (elementInfo.writeType == WriteType.METHOD) {
                 addArg(format + ".", RaveWriter.VALIDATE_METHOD_ARG_NAME, prependComma);
-                addArg(format + "()", elementName, false);
-            } else if (writeType == WriteType.FIELD) {
-                addArg(format, elementName, prependComma);
+                prependComma = false;
             }
+            addArg(format, elementInfo.formatString(), prependComma);
         }
 
         /**
@@ -290,6 +283,29 @@ final class AnnotationWriter {
          */
         Object[] getArgs() {
             return args.toArray(new Object[args.size()]);
+        }
+    }
+
+    /**
+     * A simple class that holds the element information.
+     */
+    private static final class ElementInfo {
+
+        private final WriteType writeType;
+        private final String elementName;
+
+        ElementInfo(String elementName, WriteType writeType) {
+            this.elementName = elementName;
+            this.writeType = writeType;
+        }
+
+        String formatString() {
+            String elementPostFix = writeType == WriteType.METHOD ? "()" : "";
+            return elementName + elementPostFix;
+        }
+
+        public String errorString() {
+            return writeType + " " + elementName;
         }
     }
 

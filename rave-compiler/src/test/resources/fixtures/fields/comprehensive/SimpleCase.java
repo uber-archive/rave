@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.annotation.StringDef;
 
+import com.uber.rave.annotation.Excluded;
 import com.uber.rave.annotation.MustBeFalse;
 import com.uber.rave.annotation.MustBeTrue;
 import com.uber.rave.annotation.Validated;
@@ -36,6 +37,9 @@ public class SimpleCase {
     @FloatRange(from = .1, to = .5)
     private float testFloatDef;
     private Map<String, SimpleCase> map;
+    @FloatRange(from = .1, to = .5)
+    @Excluded
+    private float shouldExclude;
 
     private static final String MATCHED = "Matched";
     private static final String MATCHING = "Matching";

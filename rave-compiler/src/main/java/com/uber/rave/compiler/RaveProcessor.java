@@ -190,7 +190,8 @@ public final class RaveProcessor extends AbstractProcessor {
         List<VariableElement> fields = new ImmutableList.Builder<VariableElement>().addAll(
                 ElementFilter.fieldsIn(typeElement.getEnclosedElements())).build();
         for (VariableElement variableElement : fields) {
-            if (variableElement.getModifiers().contains(Modifier.STATIC)) {
+            if (variableElement.getModifiers().contains(Modifier.STATIC)
+                    || variableElement.getAnnotation(Excluded.class) != null) {
                 continue;
             }
             FieldIR fieldIR = new FieldIR(variableElement.getSimpleName().toString(),
