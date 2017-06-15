@@ -696,7 +696,7 @@ public abstract class BaseValidator {
     public static final class ValidationContext {
 
         private final Class<?> clazz;
-        private String validatedItemName = "";
+        private String validatedjItemName = "";
 
         private ValidationContext(Class<?> clazz) {
             this.clazz = clazz;

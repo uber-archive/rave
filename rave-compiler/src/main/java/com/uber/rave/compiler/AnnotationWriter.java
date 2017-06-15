@@ -187,7 +187,7 @@ final class AnnotationWriter {
 
     private void checkAnnotationNotNull(@Nullable Annotation annotation) {
         if (annotation == null) {
-            throw new RuntimeException("For " + elementInfo.errorString() + " annotation is empty");
+            throw new RuntimeException("For " + elementInfo.typeInfoString() + " annotation is empty");
         }
     }
 
@@ -299,12 +299,18 @@ final class AnnotationWriter {
             this.writeType = writeType;
         }
 
+        /**
+         * @return the string format when outputting this element.
+         */
         String formatString() {
             String elementPostFix = writeType == WriteType.METHOD ? "()" : "";
             return elementName + elementPostFix;
         }
 
-        public String errorString() {
+        /**
+         * @return the a string which describes the info for this element.
+         */
+        String typeInfoString() {
             return writeType + " " + elementName;
         }
     }

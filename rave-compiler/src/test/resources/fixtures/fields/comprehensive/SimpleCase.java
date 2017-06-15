@@ -38,8 +38,7 @@ public class SimpleCase {
     private float testFloatDef;
     private Map<String, SimpleCase> map;
     @FloatRange(from = .1, to = .5)
-    @Excluded
-    private float shouldExclude;
+    @Excluded private float shouldExclude;
 
     private static final String MATCHED = "Matched";
     private static final String MATCHING = "Matching";

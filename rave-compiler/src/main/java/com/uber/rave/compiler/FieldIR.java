@@ -6,7 +6,7 @@ import com.squareup.javapoet.TypeName;
  * Represents the intermediate representation (IR) of a field within a particular data model class. This class holds
  * all the required information to generate a method which verifies the inner fields in a data model.
  */
-public class FieldIR extends ElementIRBase {
+final class FieldIR extends ElementIRBase {
 
     private final TypeName typeName;
 
@@ -23,7 +23,7 @@ public class FieldIR extends ElementIRBase {
     /**
      * @return get the {@link TypeName} for this field.
      */
-    public TypeName getTypeName() {
+    TypeName getTypeName() {
         return typeName;
     }
 }
