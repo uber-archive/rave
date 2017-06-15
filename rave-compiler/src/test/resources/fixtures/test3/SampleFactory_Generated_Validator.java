@@ -12,6 +12,7 @@ import java.lang.Class;
 import java.lang.IllegalArgumentException;
 import java.lang.Object;
 import java.lang.Override;
+import java.lang.String;
 import java.util.List;
 import javax.annotation.Generated;
 
@@ -115,6 +116,35 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
         List<RaveError> raveErrors = null;
         context.setValidatedItemName("getNotNullField()");
         raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNotNullField(), true, 1L, 5L, 1L, context));
+        if (raveErrors != null && !raveErrors.isEmpty()) {
+            throw new InvalidModelException(raveErrors);
+        }
+    }
+
+    public static void validateInternalFor_fixtures_test3_ValidateSample(String notNullField,
+            String canBeNullField, String betweenOneAndFive, List<String> names) throws
+            InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(ValidateSample.class);
+        List<RaveError> raveErrors = null;
+        context.setValidatedItemName("notNullField");
+        raveErrors = mergeErrors(raveErrors, checkNullable(notNullField, true, context));
+        context.setValidatedItemName("canBeNullField");
+        raveErrors = mergeErrors(raveErrors, checkNullable(canBeNullField, true, context));
+        context.setValidatedItemName("betweenOneAndFive");
+        raveErrors = mergeErrors(raveErrors, checkNullable(betweenOneAndFive, true, context));
+        context.setValidatedItemName("names");
+        raveErrors = mergeErrors(raveErrors, checkNullable(names, true, context));
+        if (raveErrors != null && !raveErrors.isEmpty()) {
+            throw new InvalidModelException(raveErrors);
+        }
+    }
+
+    public static void validateInternalFor_fixtures_test3_ValidateSample2(String notNullField) throws
+            InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(ValidateSample2.class);
+        List<RaveError> raveErrors = null;
+        context.setValidatedItemName("notNullField");
+        raveErrors = mergeErrors(raveErrors, checkNullable(notNullField, true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

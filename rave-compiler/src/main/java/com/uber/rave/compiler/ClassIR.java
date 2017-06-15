@@ -20,7 +20,11 @@
 
 package com.uber.rave.compiler;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.lang.model.type.TypeMirror;
@@ -32,8 +36,9 @@ import javax.lang.model.util.Types;
  */
 final class ClassIR {
 
-    private final List<MethodIR> methodIRs;
-    private final List<TypeMirror> inheritedTypes;
+    private final List<MethodIR> methodIRs = new LinkedList<>();
+    private final List<FieldIR> fieldIRs = new LinkedList<>();
+    private final List<TypeMirror> inheritedTypes = new ArrayList<>();
     private final TypeMirror typeMirror;
 
     /**
@@ -41,8 +46,6 @@ final class ClassIR {
      * @param typeMirror the type mirror of the class this ir represents.
      */
     ClassIR(TypeMirror typeMirror) {
-        methodIRs = new ArrayList<>();
-        inheritedTypes = new ArrayList<>();
         this.typeMirror = typeMirror;
     }
 
@@ -58,7 +61,7 @@ final class ClassIR {
      * @return Returns a list of all the methods added to this method.
      */
     List<MethodIR> getAllMethods() {
-        return methodIRs;
+        return new ImmutableList.Builder<MethodIR>().addAll(methodIRs).build();
     }
 
     /**
@@ -84,5 +87,29 @@ final class ClassIR {
      */
     List<TypeMirror> getInheritedTypes() {
         return inheritedTypes;
+    }
+
+    /**
+     *  Adds a {@link FieldIR} to this {@link ClassIR}.
+     * @param fieldIR the {@link FieldIR} to add.
+     */
+    void addFieldIR(FieldIR fieldIR) {
+        fieldIRs.add(fieldIR);
+    }
+
+    /**
+     * @return Returns a list of all the field added to this method IR.
+     */
+    List<FieldIR> getAllFieldIRs() {
+        return new ImmutableList.Builder<FieldIR>().addAll(fieldIRs).build();
+    }
+
+    /**
+     * @return true if any field has an annotation, false otherwise.
+     */
+    public boolean hasValidatableFields() {
+        return fieldIRs.stream()
+                .anyMatch((Predicate<FieldIR>) fieldIR -> fieldIR != null ? fieldIR.hasAnyAnnotation() : false);
+
     }
 }

@@ -9,6 +9,7 @@ import java.lang.IllegalArgumentException;
 import java.lang.Object;
 import java.lang.Override;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Generated;
 
 @Generated(
@@ -38,6 +39,17 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
         List<RaveError> raveErrors = null;
         context.setValidatedItemName("getMap()");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.getMap(), true, context));
+        if (raveErrors != null && !raveErrors.isEmpty()) {
+            throw new InvalidModelException(raveErrors);
+        }
+    }
+
+    public static void validateInternalFor_fixtures_maps_ModelWithMap(Map<Object, Object> map) throws
+            InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(ModelWithMap.class);
+        List<RaveError> raveErrors = null;
+        context.setValidatedItemName("map");
+        raveErrors = mergeErrors(raveErrors, checkNullable(map, true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

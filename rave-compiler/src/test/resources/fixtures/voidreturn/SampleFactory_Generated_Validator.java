@@ -8,6 +8,7 @@ import java.lang.Class;
 import java.lang.IllegalArgumentException;
 import java.lang.Object;
 import java.lang.Override;
+import java.lang.String;
 import java.util.List;
 import javax.annotation.Generated;
 
@@ -36,6 +37,17 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
     private void validateAs(VoidReturn object) throws InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(VoidReturn.class);
         List<RaveError> raveErrors = null;
+        if (raveErrors != null && !raveErrors.isEmpty()) {
+            throw new InvalidModelException(raveErrors);
+        }
+    }
+
+    public static void validateInternalFor_fixtures_voidreturn_VoidReturn(String test) throws
+            InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(VoidReturn.class);
+        List<RaveError> raveErrors = null;
+        context.setValidatedItemName("test");
+        raveErrors = mergeErrors(raveErrors, checkNullable(test, true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }
