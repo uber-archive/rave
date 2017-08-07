@@ -181,4 +181,4 @@ We'd love for you to contribute to our open source projects. Before we can accep
 
 
 ## License
-RAVE is released under a MIT license. See the LICENSE file for more information.
+RAVE is released under the Apache License, Version 2.0. See the LICENSE file for more information.
