@@ -22,6 +22,7 @@ package com.uber.rave;
 
 import com.uber.rave.annotation.Validated;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,6 +70,34 @@ public class Rave {
     }
 
     /**
+     * Validate elements in a collection.
+     * @param collection the collection to validate
+     * @param <T> the type of the collection
+     * @throws RaveException if validation fails.
+     */
+    public <T> void validate(Collection<T> collection) throws RaveException {
+        for (T thing : collection) {
+            validate(thing);
+        }
+    }
+
+    /**
+     * Validate elements in a map.
+     * @param map the map to validate
+     * @param <K> key types
+     * @param <V> values types
+     * @throws RaveException if validation fails.
+     */
+    public <K,V> void validate(Map<K,V> map) throws RaveException {
+        for (V values : map.values()) {
+            validate(values);
+        }
+        for (K key : map.keySet()) {
+            validate(key);
+        }
+    }
+
+    /**
      * Validate an object.
      *
      * @param object the object to be validated.
@@ -108,6 +137,35 @@ public class Rave {
             throw e;
         } catch (RaveException e) { }
     }
+
+    /**
+     * Validate an collection.
+     *
+     * @param collection the object to be validated.
+     * @throws InvalidModelException if validation fails.
+     */
+    public <T> void validateIgnoreUnsupported(Collection<T> collection) throws InvalidModelException {
+        try {
+            validate(collection);
+        } catch (InvalidModelException e) {
+            throw e;
+        } catch (RaveException e) { }
+    }
+
+    /**
+     * Validate a map.
+     *
+     * @param map the map to be validated.
+     * @throws InvalidModelException if validation fails.
+     */
+    public <K, V> void validateIgnoreUnsupported(Map<K, V> map) throws InvalidModelException {
+        try {
+            validate(map);
+        } catch (InvalidModelException e) {
+            throw e;
+        } catch (RaveException e) { }
+    }
+
     /**
      * This method is used to inject new validator objects in the global RAVE validation registry.
      *
