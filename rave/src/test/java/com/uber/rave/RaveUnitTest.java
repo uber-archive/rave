@@ -38,22 +38,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
 
 public class RaveUnitTest {
 
     @Test
     public void validateIgnore_whenUsingConstructor_shouldHaveExpectedBehavior() {
         ValidationIgnore v = new ValidationIgnore(String.class);
-        assertFalse(v.hasIgnoreMethods());
-        assertFalse(v.shouldIgnoreMethod("foo"));
+        assertThat(v.hasIgnoreMethods()).isFalse();
+        assertThat(v.shouldIgnoreMethod("foo")).isFalse();
         v.addMethod("foo");
-        assertTrue(v.hasIgnoreMethods());
-        assertTrue(v.shouldIgnoreMethod("foo"));
+        assertThat(v.hasIgnoreMethods()).isTrue();
+        assertThat(v.shouldIgnoreMethod("foo")).isTrue();
     }
 
     @Test(expected = IllegalStateException.class)
@@ -67,7 +63,7 @@ public class RaveUnitTest {
     public void checkMustBeFalse_whenValidBoolean_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Object.class);
         List<RaveError> errors = BaseValidator.mustBeFalse(false, context);
-        assertNull(errors);
+        assertThat(errors).isNull();
     }
 
     @Test
@@ -76,42 +72,42 @@ public class RaveUnitTest {
         objects[0] = null;
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Object.class);
         List<RaveError> errors = BaseValidator.isSizeOk(objects, true, 1, 1, 1, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkNullableArray_whenCollectionIsNull_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Integer[].class);
         List<RaveError> errors = BaseValidator.checkNullable((Integer[]) null, true, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkNullableArray_whenCollectionIsNotNull_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Integer[].class);
         List<RaveError> errors = BaseValidator.checkNullable(new Integer[0], false, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkNullableArray_whenCollectionIsNotNullAndIsNullable_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Integer.class);
         List<RaveError> errors = BaseValidator.checkNullable(new Integer[0], true, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkNullableArray_whenCollectionIsNullButShouldntBe_shouldProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Integer.class);
         List<RaveError> errors = BaseValidator.checkNullable((Integer[]) null, false, context);
-        assertNotNull(errors);
+        assertThat(errors).isNotNull();
         RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
-        assertTrue(errors.size() == 1);
-        assertEquals(expectedError.toString(), errors.get(0).toString());
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).toString()).isEqualTo(expectedError.toString());
     }
 
     @Test
@@ -121,10 +117,10 @@ public class RaveUnitTest {
         SingleMethodSampleModel[] array = new SingleMethodSampleModel[1];
         array[0] = new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1);
         List<RaveError> errors = BaseValidator.checkNullable(array, false, context);
-        assertNotNull(errors);
-        assertTrue(errors.size() == 1);
+        assertThat(errors).isNotNull();
+        assertThat(errors).hasSize(1);
         RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
-        assertEquals(expectedError.toString(), errors.get(0).toString());
+        assertThat(errors.get(0).toString()).isEqualTo(expectedError.toString());
     }
 
     @Test
@@ -134,42 +130,42 @@ public class RaveUnitTest {
         array[0] = new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1);
         array[1] = new SingleMethodSampleModel("lengthiseven", "Not matching the specified string defs");
         List<RaveError> errors = BaseValidator.checkNullable(array, false, context);
-        assertNotNull(errors);
-        assertEquals(2, errors.size());
+        assertThat(errors).isNotNull();
+        assertThat(errors).hasSize(2);
     }
 
     @Test
     public void checkNullableMap_whenMapIsNull_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(HashMap.class);
         List<RaveError> errors = BaseValidator.checkNullable((Map<Object, Object>) null, true, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkMapCollection_whenMapIsNotNull_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(HashMap.class);
         List<RaveError> errors = BaseValidator.checkNullable(new HashMap<>(), false, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkNullableMap_whenMapIsNotNullAndIsNullable_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(HashMap.class);
         List<RaveError> errors = BaseValidator.checkNullable(new HashMap<>(), true, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkNullableMap_whenMapIsNullButShouldntBe_shouldProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Map.class);
         List<RaveError> errors = BaseValidator.checkNullable((Map<Object, Object>) null, false, context);
-        assertNotNull(errors);
+        assertThat(errors).isNotNull();
         RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
-        assertTrue(errors.size() == 1);
-        assertEquals(expectedError.toString(), errors.get(0).toString());
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).toString()).isEqualTo(expectedError.toString());
     }
 
     @Test
@@ -179,10 +175,10 @@ public class RaveUnitTest {
         Map<SingleMethodSampleModel, Object> map = new HashMap<>();
         map.put(new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1), new Object());
         List<RaveError> errors = BaseValidator.checkNullable(map, false, context);
-        assertNotNull(errors);
-        assertTrue(errors.size() == 1);
+        assertThat(errors).isNotNull();
+        assertThat(errors).hasSize(1);
         RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
-        assertEquals(expectedError.toString(), errors.get(0).toString());
+        assertThat(errors.get(0).toString()).isEqualTo(expectedError.toString());
     }
 
     @Test
@@ -192,10 +188,10 @@ public class RaveUnitTest {
         Map<Object, SingleMethodSampleModel> map = new HashMap<>();
         map.put(new Object(), new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1));
         List<RaveError> errors = BaseValidator.checkNullable(map, false, context);
-        assertNotNull(errors);
-        assertTrue(errors.size() == 1);
+        assertThat(errors).isNotNull();
+        assertThat(errors).hasSize(1);
         RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
-        assertEquals(expectedError.toString(), errors.get(0).toString());
+        assertThat(errors.get(0).toString()).isEqualTo(expectedError.toString());
     }
 
     @Test
@@ -207,42 +203,42 @@ public class RaveUnitTest {
         map.put(validSingle, new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1));
         map.put(new SingleMethodSampleModel("lengthiseven", "Not matching the specified string defs"), validSingle);
         List<RaveError> errors = BaseValidator.checkNullable(map, false, context);
-        assertNotNull(errors);
-        assertTrue(errors.size() == 2);
+        assertThat(errors).isNotNull();
+        assertThat(errors).hasSize(2);
     }
 
     @Test
     public void checkNullableCollection_whenCollectionIsNull_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Collection.class);
         List<RaveError> errors = BaseValidator.checkNullable((Collection<Object>) null, true, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkNullableCollection_whenCollectionIsNotNull_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Collection.class);
         List<RaveError> errors = BaseValidator.checkNullable(new LinkedList<>(), false, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkNullableCollection_whenCollectionIsNotNullAndIsNullable_shouldNotProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Collection.class);
         List<RaveError> errors = BaseValidator.checkNullable(new LinkedList<>(), true, context);
-        assertNotNull(errors);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isNotNull();
+        assertThat(errors).isEmpty();
     }
 
     @Test
     public void checkNullableCollection_whenCollectionIsNullButShouldntBe_shouldProduceErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Collection.class);
         List<RaveError> errors = BaseValidator.checkNullable((Collection<Object>) null, false, context);
-        assertNotNull(errors);
+        assertThat(errors).isNotNull();
         RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
-        assertTrue(errors.size() == 1);
-        assertEquals(expectedError.toString(), errors.get(0).toString());
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).toString()).isEqualTo(expectedError.toString());
     }
 
     @Test
@@ -252,10 +248,10 @@ public class RaveUnitTest {
         List<SingleMethodSampleModel> list = new LinkedList<>();
         list.add(new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1));
         List<RaveError> errors = BaseValidator.checkNullable(list, false, context);
-        assertNotNull(errors);
-        assertTrue(errors.size() == 1);
+        assertThat(errors).isNotNull();
+        assertThat(errors).hasSize(1);
         RaveError expectedError = new RaveError(context, RaveErrorStrings.NON_NULL_ERROR);
-        assertEquals(expectedError.toString(), errors.get(0).toString());
+        assertThat(errors.get(0).toString()).isEqualTo(expectedError.toString());
     }
 
     @Test
@@ -265,8 +261,8 @@ public class RaveUnitTest {
         list.add(new SingleMethodSampleModel(null, SingleMethodSampleModel.MATCHED1));
         list.add(new SingleMethodSampleModel("lengthiseven", "Not matching the specified string defs"));
         List<RaveError> errors = BaseValidator.checkNullable(list, false, context);
-        assertNotNull(errors);
-        assertEquals(2, errors.size());
+        assertThat(errors).isNotNull();
+        assertThat(errors).hasSize(2);
     }
 
     @Test
@@ -274,10 +270,10 @@ public class RaveUnitTest {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Object.class);
         context.setValidatedItemName("someMethodName");
         List<RaveError> errors = BaseValidator.mustBeFalse(true, context);
-        assertNotNull(errors);
+        assertThat(errors).isNotNull();
         RaveError expectedError = new RaveError(context, RaveErrorStrings.MUST_BE_FALSE_ERROR);
-        assertTrue(errors.size() == 1);
-        assertEquals(expectedError.toString(), errors.get(0).toString());
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).toString()).isEqualTo(expectedError.toString());
     }
 
     @Test
@@ -288,9 +284,9 @@ public class RaveUnitTest {
         strings.add("Valid2");
         strings.add("Valid3");
         List<RaveError> errors = BaseValidator.checkStringDef(true, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
         errors = BaseValidator.checkStringDef(false, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
     }
 
     @Test
@@ -302,11 +298,11 @@ public class RaveUnitTest {
         strings.add("Valid3");
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Object.class);
         List<RaveError> errors = BaseValidator.checkStringDef(false, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.size() == 1);
-        assertTrue(errors.get(0).getErrorMsg().contains(RaveErrorStrings.STRING_DEF_ERROR));
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).getErrorMsg()).contains(RaveErrorStrings.STRING_DEF_ERROR);
         errors = BaseValidator.checkStringDef(true, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.size() == 1);
-        assertTrue(errors.get(0).getErrorMsg().contains(RaveErrorStrings.STRING_DEF_ERROR));
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).getErrorMsg()).contains(RaveErrorStrings.STRING_DEF_ERROR);
     }
 
     @Test
@@ -314,11 +310,11 @@ public class RaveUnitTest {
         Collection<String> strings = new ArrayList<>();
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Object.class);
         List<RaveError> errors = BaseValidator.checkStringDef(false, context, strings);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
         errors = BaseValidator.checkStringDef(true, context, (Collection<String>) null);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
         errors = BaseValidator.checkStringDef(true, context, (Collection<String>) null, "Valid");
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
     }
 
     @Test
@@ -326,9 +322,9 @@ public class RaveUnitTest {
         String[] strings = new String[] {"Valid1", "Valid2", "Valid3"};
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(Object.class);
         List<RaveError> errors = BaseValidator.checkStringDef(true, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
         errors = BaseValidator.checkStringDef(false, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
     }
 
     @Test
@@ -336,13 +332,13 @@ public class RaveUnitTest {
         String[] strings = new String[0];
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
         List<RaveError> errors = BaseValidator.checkStringDef(false, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
         errors = BaseValidator.checkStringDef(true, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
         errors = BaseValidator.checkStringDef(true, context, (String[]) null, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
         errors = BaseValidator.checkStringDef(true, context, (String[]) null);
-        assertTrue(errors.isEmpty());
+        assertThat(errors).isEmpty();
     }
 
     @Test
@@ -350,8 +346,8 @@ public class RaveUnitTest {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
         List<RaveError> errors = BaseValidator.checkStringDef(false, context, (String) null, "Valid1", "Valid2",
                 "Valid3");
-        assertTrue(errors.size() == 1);
-        assertTrue(errors.get(0).toString().contains(RaveErrorStrings.NON_NULL_ERROR));
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).toString().contains(RaveErrorStrings.NON_NULL_ERROR)).isTrue();
     }
 
     @Test
@@ -359,7 +355,8 @@ public class RaveUnitTest {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
         List<RaveError> errors = BaseValidator.checkStringDef(true, context, (String) null,
                 "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.size() == 0);
+        assertThat(errors).hasSize(0);
+
     }
 
     @Test
@@ -367,11 +364,11 @@ public class RaveUnitTest {
         String[] strings = new String[] {"Valid1", "Invalid2", "Valid3"};
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
         List<RaveError> errors = BaseValidator.checkStringDef(true, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.size() == 1);
-        assertTrue(errors.get(0).toString().contains(RaveErrorStrings.STRING_DEF_ERROR));
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).toString()).contains(RaveErrorStrings.STRING_DEF_ERROR);
         errors = BaseValidator.checkStringDef(false, context, strings, "Valid1", "Valid2", "Valid3");
-        assertTrue(errors.size() == 1);
-        assertTrue(errors.get(0).toString().contains(RaveErrorStrings.STRING_DEF_ERROR));
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).toString()).contains(RaveErrorStrings.STRING_DEF_ERROR);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -401,12 +398,12 @@ public class RaveUnitTest {
             Rave.getInstance().validate(new Object());
         } catch (UnsupportedObjectException e) {
             RaveError er = new RaveError(Object.class, "", RaveErrorStrings.CLASS_NOT_SUPPORTED_ERROR);
-            assertEquals(er.toString() + "\n", e.getMessage());
+            assertThat(er.toString() + "\n").isEqualTo(e.getMessage());
             Iterator<RaveError> iter = e.getRaveErrorIterator();
-            assertTrue(iter.hasNext());
+            assertThat(iter.hasNext()).isTrue();
             RaveError error = iter.next();
-            assertEquals(er.toString(), error.toString());
-            assertFalse(iter.hasNext());
+            assertThat(er.toString()).isEqualTo(error.toString());
+            assertThat(iter.hasNext()).isFalse();
         }
     }
 
@@ -489,23 +486,23 @@ public class RaveUnitTest {
     @Test
     public void checkIntDef_whenValueIsCorrect_shouldProduceNoErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
-        assertTrue(BaseValidator.checkIntDef(context, 10, false, 10).isEmpty());
+        assertThat(BaseValidator.checkIntDef(context, 10, false, 10).isEmpty());
     }
 
     @Test
     public void checkIntDef_whenValueMatchesSet_shouldProduceNoErrors() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
-        assertTrue(BaseValidator.checkIntDef(context, 10, false, 10, 11, 12, 13).isEmpty());
+        assertThat(BaseValidator.checkIntDef(context, 10, false, 10, 11, 12, 13).isEmpty());
     }
 
     @Test
     public void checkIntDef_whenValueDoesNotMatch_shouldProduceError() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
         List<RaveError> errors = BaseValidator.checkIntDef(context, 9, false, 10, 11, 12, 13);
-        assertFalse(errors.isEmpty());
-        assertEquals(1, errors.size());
+        assertThat(errors).isNotEmpty();
+        assertThat(errors).hasSize(1);
         RaveError error = errors.get(0);
-        assertTrue(error.getErrorMsg().contains(RaveErrorStrings.INT_DEF_ERROR));
+        assertThat(error.getErrorMsg()).contains(RaveErrorStrings.INT_DEF_ERROR);
     }
 
     @Test
@@ -517,45 +514,45 @@ public class RaveUnitTest {
     @Test
     public void checkIntRange_whenValuesInRange_shouldReturnEmptyList() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
-        assertTrue(BaseValidator.checkIntRange(context, 10, -1, 10).isEmpty());
-        assertTrue(BaseValidator.checkIntRange(context, 10, -1, 11).isEmpty());
-        assertTrue(BaseValidator.checkIntRange(context, -1, -1, 11).isEmpty());
+        assertThat(BaseValidator.checkIntRange(context, 10, -1, 10).isEmpty()).isTrue();
+        assertThat(BaseValidator.checkIntRange(context, 10, -1, 11).isEmpty()).isTrue();
+        assertThat(BaseValidator.checkIntRange(context, -1, -1, 11).isEmpty()).isTrue();
     }
 
     @Test
     public void checkIntRange_whenValuesNotInRange_shouldReturnError() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
-        assertFalse(BaseValidator.checkIntRange(context, -10, -1, 10).isEmpty());
-        assertFalse(BaseValidator.checkIntRange(context, 12, -1, 11).isEmpty());
+        assertThat(BaseValidator.checkIntRange(context, -10, -1, 10)).isNotEmpty();
+        assertThat(BaseValidator.checkIntRange(context, 12, -1, 11)).isNotEmpty();
         List<RaveError> errors = BaseValidator.checkIntRange(context, 12, -1, 11);
-        assertEquals(1, errors.size());
-        assertTrue(errors.get(0).getErrorMsg().contains(RaveErrorStrings.INT_RANGE_ERROR));
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).getErrorMsg()).contains(RaveErrorStrings.INT_RANGE_ERROR);
     }
 
     @Test
     public void checkIntRange_whenValuesInFloatRange_shouldReturnEmptyList() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
-        assertTrue(BaseValidator.checkFloatRange(context, 10d, -1.0d, 10d).isEmpty());
-        assertTrue(BaseValidator.checkFloatRange(context, 10d, -1.0d, 11d).isEmpty());
-        assertTrue(BaseValidator.checkFloatRange(context, -1d, -1d, 11d).isEmpty());
-        assertTrue(BaseValidator.checkFloatRange(context, -1d, Double.NEGATIVE_INFINITY, 11d).isEmpty());
-        assertTrue(BaseValidator.checkFloatRange(context, -1d, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
-                .isEmpty());
-        assertTrue(BaseValidator.checkFloatRange(context, -1d, -10d, Double.POSITIVE_INFINITY).isEmpty());
-        assertTrue(BaseValidator.checkFloatRange(context, Double.POSITIVE_INFINITY, -10d, Double.POSITIVE_INFINITY)
-                .isEmpty());
-        assertTrue(BaseValidator.checkFloatRange(context, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY,
-                Double.POSITIVE_INFINITY).isEmpty());
+        assertThat(BaseValidator.checkFloatRange(context, 10d, -1.0d, 10d)).isEmpty();
+        assertThat(BaseValidator.checkFloatRange(context, 10d, -1.0d, 11d)).isEmpty();
+        assertThat(BaseValidator.checkFloatRange(context, -1d, -1d, 11d)).isEmpty();
+        assertThat(BaseValidator.checkFloatRange(context, -1d, Double.NEGATIVE_INFINITY, 11d)).isEmpty();
+        assertThat(BaseValidator.checkFloatRange(context, -1d, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY))
+                .isEmpty();
+        assertThat(BaseValidator.checkFloatRange(context, -1d, -10d, Double.POSITIVE_INFINITY)).isEmpty();
+        assertThat(BaseValidator.checkFloatRange(context, Double.POSITIVE_INFINITY, -10d, Double.POSITIVE_INFINITY))
+                .isEmpty();
+        assertThat(BaseValidator.checkFloatRange(context, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY)).isEmpty();
     }
 
     @Test
     public void checkIntRange_whenValuesNotInFloatRange_shouldReturnError() {
         BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
-        assertFalse(BaseValidator.checkFloatRange(context, -10d, -1d, 10d).isEmpty());
-        assertFalse(BaseValidator.checkFloatRange(context, 12d, -1d, 11d).isEmpty());
+        assertThat(BaseValidator.checkFloatRange(context, -10d, -1d, 10d)).isNotEmpty();
+        assertThat(BaseValidator.checkFloatRange(context, 12d, -1d, 11d)).isNotEmpty();
         List<RaveError> errors = BaseValidator.checkFloatRange(context, 12d, -1d, 11d);
-        assertEquals(1, errors.size());
-        assertTrue(errors.get(0).getErrorMsg().contains(RaveErrorStrings.FLOAT_RANGE_ERROR));
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0).getErrorMsg()).contains(RaveErrorStrings.FLOAT_RANGE_ERROR);
     }
 
     @Test(expected = InvalidModelException.class)

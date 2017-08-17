@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-import static org.junit.Assert.assertFalse;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class RaveParameterizedUnitTest {
@@ -42,7 +42,7 @@ public class RaveParameterizedUnitTest {
         SingleMethodSampleModel.Builder builder = new SingleMethodSampleModel.Builder();
         Rave rave = Rave.getInstance();
         Collection<SingleMethodSampleModel> valid = builder.getValidCases();
-        assertFalse(valid.isEmpty());
+        assertThat(valid).isNotEmpty();
         for (SingleMethodSampleModel model : valid) {
             rave.validate(model);
         }
@@ -53,7 +53,7 @@ public class RaveParameterizedUnitTest {
         SingleMethodSampleModel.Builder builder = new SingleMethodSampleModel.Builder();
         Rave rave = Rave.getInstance();
         Collection<SingleMethodSampleModel> invalid = builder.getInvalidCases();
-        assertFalse(invalid.isEmpty());
+        assertThat(invalid).isNotEmpty();
         for (SingleMethodSampleModel model : invalid) {
             try {
                 rave.validate(model);
@@ -68,7 +68,7 @@ public class RaveParameterizedUnitTest {
     public void allValidMultiMethodSampleModels_shouldSucceed() throws RaveException {
         MultiMethodSampleModel.Builder builder = new MultiMethodSampleModel.Builder();
         Collection<MultiMethodSampleModel> validCases = builder.getValidCases();
-        assertFalse(validCases.isEmpty());
+        assertThat(validCases).isNotEmpty();
         Rave rave = Rave.getInstance();
         for (MultiMethodSampleModel model : validCases) {
             rave.validate(model);
@@ -79,7 +79,7 @@ public class RaveParameterizedUnitTest {
     public void allValidIntDefModel_shouldSucceed() throws RaveException {
         IntDefModel.Builder builder = new IntDefModel.Builder();
         Collection<IntDefModel> validCases = builder.getValidCases();
-        assertFalse(validCases.isEmpty());
+        assertThat(validCases).isNotEmpty();
         Rave rave = Rave.getInstance();
         for (IntDefModel model : validCases) {
             rave.validate(model);
@@ -90,7 +90,7 @@ public class RaveParameterizedUnitTest {
     public void allInvalidIntDefModel_shouldFail() throws RaveException {
         IntDefModel.Builder builder = new IntDefModel.Builder();
         Collection<IntDefModel> validCases = builder.getInvalidCases();
-        assertFalse(validCases.isEmpty());
+        assertThat(validCases).isNotEmpty();
         Rave rave = Rave.getInstance();
         for (IntDefModel model : validCases) {
             try {
@@ -106,7 +106,7 @@ public class RaveParameterizedUnitTest {
     public void allInvalidMultiMethodSampleModels_shouldFail() throws RaveException {
         MultiMethodSampleModel.Builder builder = new MultiMethodSampleModel.Builder();
         Collection<MultiMethodSampleModel> invalid = builder.getInvalidCases();
-        assertFalse(invalid.isEmpty());
+        assertThat(invalid).isNotEmpty();
         Rave rave = Rave.getInstance();
         for (MultiMethodSampleModel model : invalid) {
             try {
@@ -124,7 +124,7 @@ public class RaveParameterizedUnitTest {
         InheritFrom.Builder builder = new InheritFrom.Builder();
         Rave rave = Rave.getInstance();
         Collection<InheritFrom> validCases = builder.getValidCases();
-        assertFalse(validCases.isEmpty());
+        assertThat(validCases).isNotEmpty();
         for (InheritFrom model : validCases) {
             rave.validate(model);
         }
@@ -135,7 +135,7 @@ public class RaveParameterizedUnitTest {
         InheritFrom.Builder builder = new InheritFrom.Builder();
         Rave rave = Rave.getInstance();
         Collection<InheritFrom> invalidCases = builder.getInvalidCases();
-        assertFalse(invalidCases.isEmpty());
+        assertThat(invalidCases).isNotEmpty();
         for (InheritFrom model : invalidCases) {
             try {
                 rave.validate(model);
@@ -151,7 +151,7 @@ public class RaveParameterizedUnitTest {
         ArrayNotNull.Builder builder = new ArrayNotNull.Builder();
         Rave rave = Rave.getInstance();
         Collection<ArrayNotNull> valid = builder.getValidCases();
-        assertFalse(valid.isEmpty());
+        assertThat(valid).isNotEmpty();
         for (ArrayNotNull model : valid) {
             rave.validate(model);
         }
@@ -162,7 +162,7 @@ public class RaveParameterizedUnitTest {
         ArrayNotNull.Builder builder = new ArrayNotNull.Builder();
         Rave rave = Rave.getInstance();
         Collection<ArrayNotNull> invalid = builder.getInvalidCases();
-        assertFalse(invalid.isEmpty());
+        assertThat(invalid).isNotEmpty();
         for (ArrayNotNull model : invalid) {
             try {
                 rave.validate(model);
@@ -177,7 +177,7 @@ public class RaveParameterizedUnitTest {
     public void allValidIntRangeModel_shouldSucceed() throws RaveException {
         IntRangeTestModel.Builder builder = new IntRangeTestModel.Builder();
         Collection<IntRangeTestModel> validCases = builder.getValidCases();
-        assertFalse(validCases.isEmpty());
+        assertThat(validCases).isNotEmpty();
         Rave rave = Rave.getInstance();
         for (IntRangeTestModel model : validCases) {
             rave.validate(model);
@@ -188,7 +188,7 @@ public class RaveParameterizedUnitTest {
     public void allInvalidIntRangeModel_shouldFail() throws RaveException {
         IntRangeTestModel.Builder builder = new IntRangeTestModel.Builder();
         Collection<IntRangeTestModel> validCases = builder.getInvalidCases();
-        assertFalse(validCases.isEmpty());
+        assertThat(validCases).isNotEmpty();
         Rave rave = Rave.getInstance();
         for (IntRangeTestModel model : validCases) {
             try {
@@ -204,7 +204,7 @@ public class RaveParameterizedUnitTest {
     public void allValidFloatRangeModel_shouldSucceed() throws RaveException {
         FloatRangeTestModel.Builder builder = new FloatRangeTestModel.Builder();
         Collection<FloatRangeTestModel> validCases = builder.getValidCases();
-        assertFalse(validCases.isEmpty());
+        assertThat(validCases).isNotEmpty();
         Rave rave = Rave.getInstance();
         for (FloatRangeTestModel model : validCases) {
             rave.validate(model);
@@ -215,7 +215,7 @@ public class RaveParameterizedUnitTest {
     public void allInvalidFloatRangeModel_shouldFail() throws RaveException {
         FloatRangeTestModel.Builder builder = new FloatRangeTestModel.Builder();
         Collection<FloatRangeTestModel> validCases = builder.getInvalidCases();
-        assertFalse(validCases.isEmpty());
+        assertThat(validCases).isNotEmpty();
         Rave rave = Rave.getInstance();
         for (FloatRangeTestModel model : validCases) {
             try {
