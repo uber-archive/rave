@@ -437,11 +437,6 @@ public class RaveUnitTest {
         Rave.getInstance().validate(new NonAnnotated(null));
     }
 
-    @Test(expected = UnsupportedObjectException.class)
-    public void validate_whenNonSupportedClass_shouldThrowException() throws RaveException {
-        Rave.getInstance().validate(Collections.emptyList());
-    }
-
     @Test
     public void validate_whenNonSupportedClass_shouldNotThrowException() throws RaveException {
         Rave.getInstance().validateIgnoreUnsupported(Collections.emptyList());
@@ -559,6 +554,32 @@ public class RaveUnitTest {
     public void intDefModel_whenModelIsInvalid_shouldThrowException() throws RaveException {
         IntDefModel model = new IntDefModel(1111111111);
         Rave.getInstance().validate(model);
+    }
+
+    @Test
+    public void validate_whenModelIsValidInCollection_shouldValidateAndPass() throws RaveException {
+        SingleMethodSampleModel model = new SingleMethodSampleModel("not null", SingleMethodSampleModel.MATCHED1);
+        List<SingleMethodSampleModel> list = new LinkedList<>();
+        list.add(model);
+        Rave.getInstance().validate(list);
+        Rave.getInstance().validateIgnoreUnsupported(list);
+    }
+
+    @Test(expected = InvalidModelException.class)
+    public void validate_whenModelIsValidInCollection_shouldNotValidateAndPassAndNotThrowUnsuppported()
+            throws RaveException {
+        SingleMethodSampleModel model = new SingleMethodSampleModel("not null", "non stringdef match");
+        List<SingleMethodSampleModel> list = new LinkedList<>();
+        list.add(model);
+        Rave.getInstance().validateIgnoreUnsupported(list);
+    }
+
+    @Test(expected = InvalidModelException.class)
+    public void validate_whenModelIsInValidInCollection_shouldValidateAndPass() throws RaveException {
+        SingleMethodSampleModel model = new SingleMethodSampleModel("not null", "non Matching");
+        List<SingleMethodSampleModel> list = new LinkedList<>();
+        list.add(model);
+        Rave.getInstance().validateIgnoreUnsupported(list);
     }
 
     public static class TestValidator extends BaseValidator {
