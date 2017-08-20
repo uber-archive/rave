@@ -2,9 +2,7 @@ package com.uber.rave;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Test Validation Ignore
@@ -15,38 +13,38 @@ public class ValidationIgnoreTest {
     public void shouldIgnore_whenRaveErrorMatches_shouldReturnTrue() {
         String methodName = "method";
         ValidationIgnore ignore = new ValidationIgnore(String.class);
-        assertFalse(ignore.isIgnoreClassAll());
+        assertThat(ignore.isIgnoreClassAll()).isFalse();
         ignore.setAsIgnoreClassAll();
-        assertTrue(ignore.isIgnoreClassAll());
+        assertThat(ignore.isIgnoreClassAll()).isTrue();
         RaveError error = new RaveError(String.class, methodName, RaveErrorStrings.NON_NULL_ERROR);
-        assertTrue(ignore.shouldIgnore(error));
+        assertThat(ignore.shouldIgnore(error)).isTrue();
         ignore = new ValidationIgnore(String.class);
         ignore.addMethod(methodName);
-        assertTrue(ignore.shouldIgnore(error));
+        assertThat(ignore.shouldIgnore(error)).isTrue();
         error = new RaveError(String.class, methodName + "()", RaveErrorStrings.NON_NULL_ERROR);
         ignore.shouldIgnoreMethod(methodName);
-        assertTrue(ignore.shouldIgnore(error));
+        assertThat(ignore.shouldIgnore(error)).isTrue();
     }
 
     @Test
     public void getClazz_whenClassIsSet_shouldReturnStringClass_whenStringIsSet() throws Exception {
         ValidationIgnore ignore = new ValidationIgnore(String.class);
-        assertEquals(String.class, ignore.getClazz());
+        assertThat(String.class).isEqualTo(ignore.getClazz());
     }
 
     @Test
     public void setAsIgnoreClassAll() throws Exception {
         ValidationIgnore ignore = new ValidationIgnore(String.class);
         ignore.setAsIgnoreClassAll();
-        assertTrue(ignore.isIgnoreClassAll());
+        assertThat(ignore.isIgnoreClassAll()).isTrue();
     }
 
     @Test
     public void hasIgnoreMethods_shouldReturnAppropriateValue_whenMethodisSet() throws Exception {
         ValidationIgnore ignore = new ValidationIgnore(String.class);
-        assertFalse(ignore.hasIgnoreMethods());
+        assertThat(ignore.hasIgnoreMethods()).isFalse();
         ignore.addMethod("method");
-        assertTrue(ignore.hasIgnoreMethods());
+        assertThat(ignore.hasIgnoreMethods()).isTrue();
     }
 
     @Test
@@ -54,21 +52,21 @@ public class ValidationIgnoreTest {
         ValidationIgnore ignore = new ValidationIgnore(String.class);
         ignore.setAsIgnoreClassAll();
         RaveError error = new RaveError(String.class, "", "");
-        assertTrue(ignore.shouldIgnore(error));
+        assertThat(ignore.shouldIgnore(error)).isTrue();
     }
 
     @Test
     public void shouldIgnore_whenIgnoreAllNotSet_shouldReturnFalse() {
         ValidationIgnore ignore = new ValidationIgnore(String.class);
         RaveError error = new RaveError(String.class, "", "");
-        assertFalse(ignore.shouldIgnore(error));
+        assertThat(ignore.shouldIgnore(error)).isFalse();
     }
 
     @Test
     public void shouldIgnore_whenClassDifferent_shouldReturnFalse() {
         ValidationIgnore ignore = new ValidationIgnore(Object.class);
         RaveError error = new RaveError(String.class, "", "");
-        assertFalse(ignore.shouldIgnore(error));
+        assertThat(ignore.shouldIgnore(error)).isFalse();
     }
 
     @Test
@@ -76,7 +74,7 @@ public class ValidationIgnoreTest {
         ValidationIgnore ignore = new ValidationIgnore(String.class);
         ignore.addMethod("method");
         RaveError error = new RaveError(String.class, "method()", "");
-        assertTrue(ignore.shouldIgnore(error));
+        assertThat(ignore.shouldIgnore(error)).isTrue();
     }
 
     @Test
@@ -84,6 +82,6 @@ public class ValidationIgnoreTest {
         ValidationIgnore ignore = new ValidationIgnore(String.class);
         ignore.addMethod("method");
         RaveError error = new RaveError(String.class, "method", "");
-        assertTrue(ignore.shouldIgnore(error));
+        assertThat(ignore.shouldIgnore(error)).isTrue();
     }
 }

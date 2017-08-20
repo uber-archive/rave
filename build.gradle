@@ -20,4 +20,5 @@ ext.deps = [
         slf4japi: 'org.slf4j:slf4j-api:1.7.24',
         jsr305: 'com.google.code.findbugs:jsr305:3.0.2',
         junit4: 'junit:junit:4.10',
+        googleTruth: "com.google.truth:truth:0.34",
 ]
