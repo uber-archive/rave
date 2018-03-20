@@ -11,14 +11,19 @@ buildscript {
 subprojects {
     repositories {
         jcenter()
-        maven { url 'https://maven.google.com' }
+        google()
     }
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
 ext.deps = [
-        supportAnnotations: 'com.android.support:support-annotations:23.0.0',
+        supportAnnotations: 'com.android.support:support-annotations:27.1.0',
         slf4japi: 'org.slf4j:slf4j-api:1.7.24',
         jsr305: 'com.google.code.findbugs:jsr305:3.0.2',
-        junit4: 'junit:junit:4.10',
+        junit4: 'junit:junit:4.12',
         googleTruth: "com.google.truth:truth:0.34",
 ]
