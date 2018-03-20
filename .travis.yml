@@ -4,23 +4,32 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-25.0.2
-    - android-25
-    - extra-google-m2repository
-    - extra-android-support
-
-# https://github.com/travis-ci/docs-travis-ci-com/issues/779
-install:
-  - echo y | android update sdk -u -a -t tools
-  - echo y | android update sdk -u -a -t platform-tools
-  - echo y | android update sdk -u -a -t build-tools-25.0.2
-  - echo y | android update sdk -u -a -t android-25
-  - echo y | android update sdk -u -a -t extra-google-m2repository
-  - echo y | android update sdk -u -a -t extra-android-m2repository
-  - echo y | android update sdk -u -a -t extra-android-support
 
 jdk:
   - oraclejdk8
 
+before_install:
+  # Install SDK license so Android Gradle plugin can install deps.
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo "$LICENSES_HASH" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo "$LICENSES_HASH_TWO" >> "$ANDROID_HOME/licenses/android-sdk-license"
+  # Install the rest of tools (e.g., avdmanager)
+  - sdkmanager tools
+
+install: ./gradlew build --stacktrace
+
 script:
-  - ./gradlew build
+  - ./gradlew check --stacktrace
+
+branches:
+  except:
+    - gh-pages
+
+notifications:
+  email: false
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle
