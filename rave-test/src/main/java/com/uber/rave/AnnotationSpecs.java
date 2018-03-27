@@ -41,10 +41,10 @@ public final class AnnotationSpecs {
     private boolean hasStringDef = false;
     private String[] validStrings = new String[0];
     private boolean hasIntDef = false;
-    private long[] validLongValues = new long[0];
+    private int[] validIntValues = new int[0];
     private boolean hasIntRange = false;
-    private long rangeTo = Long.MAX_VALUE;
-    private long rangeFrom = Long.MIN_VALUE;
+    private int rangeTo = Integer.MAX_VALUE;
+    private int rangeFrom = Integer.MIN_VALUE;
     private boolean hasFloatRange = false;
     private double rangeFloatTo = Double.MAX_VALUE;
     private double rangeFloatFrom = Double.MIN_VALUE;
@@ -67,11 +67,11 @@ public final class AnnotationSpecs {
         return hasIntRange;
     }
 
-    public long getRangeTo() {
+    public int getRangeTo() {
         return rangeTo;
     }
 
-    public long getRangeFrom() {
+    public int getRangeFrom() {
         return rangeFrom;
     }
 
@@ -107,8 +107,8 @@ public final class AnnotationSpecs {
         return hasIntDef;
     }
 
-    public long[] getValidLongValues() {
-        return validLongValues;
+    public int[] getValidIntValues() {
+        return validIntValues;
     }
 
     /**
@@ -186,9 +186,9 @@ public final class AnnotationSpecs {
          * @param values the valid values.
          * @return this {@link Builder}
          */
-        public Builder setIntDef(long... values) {
+        public Builder setIntDef(int... values) {
             annotationSpecs.hasIntDef = true;
-            annotationSpecs.validLongValues = values;
+            annotationSpecs.validIntValues = values;
             return this;
         }
 
@@ -199,7 +199,7 @@ public final class AnnotationSpecs {
          * @param to the upper bound of the rnage inclusive.
          * @return this {@link Builder}
          */
-        public Builder setIntRange(long from, long to) {
+        public Builder setIntRange(int from, int to) {
             annotationSpecs.hasIntRange = true;
             annotationSpecs.rangeTo = to;
             annotationSpecs.rangeFrom = from;

@@ -27,16 +27,16 @@ import java.util.Set;
  * This class is creates valid and invalid permutations of a long argument based on the annotation
  * restrictions.
  */
-public final class LongCreator extends ObjectCreator<Long> {
+public final class IntCreator extends ObjectCreator<Integer> {
 
-    Set<Long> validValues;
+    Set<Integer> validValues;
 
-    public LongCreator(long... validValues) {
+    public IntCreator(int... validValues) {
         this(new AnnotationSpecs.Builder().setIntDef(validValues).build());
     }
 
-    public LongCreator(AnnotationSpecs spec) {
-        validValues = new HashSet<>(spec.getValidLongValues().length);
+    public IntCreator(AnnotationSpecs spec) {
+        validValues = new HashSet<>(spec.getValidIntValues().length);
         createValues(spec);
     }
 
@@ -70,13 +70,13 @@ public final class LongCreator extends ObjectCreator<Long> {
     }
 
     private void createDefValues(AnnotationSpecs spec) {
-        for (long value : spec.getValidLongValues()) {
+        for (int value : spec.getValidIntValues()) {
             addValidType(value);
             validValues.add(value);
         }
         int invalidValues = 0;
         boolean plusMinus = true;
-        for (long value : spec.getValidLongValues()) {
+        for (int value : spec.getValidIntValues()) {
             value += (plusMinus) ? -1 : 1;
             plusMinus = !plusMinus;
             if (!validValues.contains(value)) {
@@ -84,7 +84,7 @@ public final class LongCreator extends ObjectCreator<Long> {
                 invalidValues++;
             }
         }
-        long badValue = -1;
+        int badValue = -1;
         if (invalidValues == 0) {
             while (invalidValues < 1) {
                 if (!validValues.contains(badValue)) {

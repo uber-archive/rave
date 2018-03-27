@@ -3,7 +3,7 @@ package com.uber.rave.model;
 import android.support.annotation.IntDef;
 
 import com.uber.rave.AnnotationSpecs;
-import com.uber.rave.LongCreator;
+import com.uber.rave.IntCreator;
 import com.uber.rave.ObjectCreator;
 import com.uber.rave.ObjectCreatorIncrementer;
 import com.uber.rave.annotation.Validated;
@@ -19,24 +19,24 @@ public class IntDefModel {
     public static final int NAVIGATION_MODE_LIST = 1;
     public static final int NAVIGATION_MODE_TABS = 2;
 
-    private final long value;
+    private final int value;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS})
     public @interface NavigationMode { }
 
-    public IntDefModel(long value) {
+    public IntDefModel(int value) {
         this.value = value;
     }
 
     @NavigationMode
-    public long getStandard() {
+    public int getStandard() {
         return value;
     }
 
     public static class Builder extends ObjectCreator<com.uber.rave.model.IntDefModel> {
 
-        private final LongCreator matchIntDefCreator;
+        private final IntCreator matchIntDefCreator;
         private final ObjectCreatorIncrementer incrementer;
 
         public Builder() {
@@ -44,7 +44,7 @@ public class IntDefModel {
                     .setIsNullable(false)
                     .setIntDef(NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS)
                     .build();
-            matchIntDefCreator = new LongCreator(spec);
+            matchIntDefCreator = new IntCreator(spec);
             incrementer = new ObjectCreatorIncrementer(matchIntDefCreator);
             buildValidCases();
             buildInvalidCases();

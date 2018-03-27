@@ -14,8 +14,8 @@ public class IntDefTestClass {
     public static final int NAVIGATION_MODE_STANDARD = 0;
     public static final int NAVIGATION_MODE_LIST = 1;
     public static final int NAVIGATION_MODE_TABS = 2;
-    public static final long MAX = Long.MAX_VALUE;
-    public static final long MIN = Long.MIN_VALUE;
+    public static final int MAX = Integer.MAX_VALUE;
+    public static final int MIN = Integer.MIN_VALUE;
 
     @NavigationMode
     public int getStandard() {

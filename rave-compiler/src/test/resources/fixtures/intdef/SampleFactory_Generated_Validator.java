@@ -37,7 +37,7 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
         BaseValidator.ValidationContext context = getValidationContext(IntDefTestClass.class);
         List<RaveError> raveErrors = null;
         context.setValidatedItemName("getStandard()");
-        raveErrors = mergeErrors(raveErrors, checkIntDef(context, object.getStandard(), false, 0L, 1L, 2L, 9223372036854775807L, -9223372036854775808L));
+        raveErrors = mergeErrors(raveErrors, checkIntDef(context, object.getStandard(), false, 0, 1, 2, 2147483647, -2147483648));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

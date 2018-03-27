@@ -150,9 +150,9 @@ final class AnnotationWriter {
         BaseAnnotationWriter baseWriter =
                 new BaseAnnotationWriter(elementInfo, CHECK_MUST_BE_INT_DEF_VALUE, true);
         baseWriter.addArg(LITERAL, intDef.flag(), true);
-        long[] acceptableInts = intDef.value();
-        for (long intVale : acceptableInts) {
-            baseWriter.addArg(LITERAL_LONG, intVale, true);
+        int[] acceptableInts = intDef.value();
+        for (int intVal : acceptableInts) {
+            baseWriter.addArg(LITERAL, intVal, true);
         }
         buildStatements(baseWriter.getFormattedString(), baseWriter.getArgs());
     }

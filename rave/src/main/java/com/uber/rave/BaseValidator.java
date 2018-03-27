@@ -520,8 +520,8 @@ public abstract class BaseValidator {
      * @return an error if value is not present in list of acceptable values. Otherwise returns an empty list.
      */
     protected static List<RaveError> checkIntDef(
-            ValidationContext validationContext, long value, boolean flag,
-            long... acceptableValues) {
+            ValidationContext validationContext, int value, boolean flag,
+            int... acceptableValues) {
 
         for (long acceptable : acceptableValues) {
             if (value == acceptable) {
@@ -669,7 +669,7 @@ public abstract class BaseValidator {
 
     private static List<RaveError> createIntDefError(
             long value,
-            long[] acceptableValues,
+            int[] acceptableValues,
             ValidationContext validationContext) {
         StringBuilder stringBuilder = new StringBuilder();
         boolean first = true;

@@ -76,9 +76,9 @@ public final class FieldsOnlyFactory_Generated_Validator extends BaseValidator {
         context.setValidatedItemName("names");
         raveErrors = mergeErrors(raveErrors, checkNullable(names, false, context));
         context.setValidatedItemName("testIntdef1");
-        raveErrors = mergeErrors(raveErrors, checkIntDef(context, testIntdef1, false, 1L, 2L, 3L));
+        raveErrors = mergeErrors(raveErrors, checkIntDef(context, testIntdef1, false, 1, 2, 3));
         context.setValidatedItemName("testIntdef2");
-        raveErrors = mergeErrors(raveErrors, checkIntDef(context, testIntdef2, false, 1L, 2L, 3L));
+        raveErrors = mergeErrors(raveErrors, checkIntDef(context, testIntdef2, false, 1, 2, 3));
         context.setValidatedItemName("testFloatDef");
         raveErrors = mergeErrors(raveErrors, checkFloatRange(context, testFloatDef, 0.1D, 0.5D));
         context.setValidatedItemName("map");

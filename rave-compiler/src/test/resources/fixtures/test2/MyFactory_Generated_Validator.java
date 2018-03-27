@@ -175,7 +175,7 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     BaseValidator.ValidationContext context = getValidationContext(IntDefModel.class);
     List<RaveError> raveErrors = null;
     context.setValidatedItemName("getStandard()");
-    raveErrors = mergeErrors(raveErrors, checkIntDef(context, object.getStandard(), false, 0L, 1L, 2L));
+    raveErrors = mergeErrors(raveErrors, checkIntDef(context, object.getStandard(), false, 0, 1, 2));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }

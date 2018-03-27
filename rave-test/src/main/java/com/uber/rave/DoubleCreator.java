@@ -26,11 +26,6 @@ package com.uber.rave;
  */
 public class DoubleCreator extends ObjectCreator<Double> {
 
-
-    public DoubleCreator(long... validValues) {
-        this(new AnnotationSpecs.Builder().setIntDef(validValues).build());
-    }
-
     public DoubleCreator(AnnotationSpecs spec) {
         createValues(spec);
     }

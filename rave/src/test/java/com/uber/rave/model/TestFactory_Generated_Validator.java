@@ -174,7 +174,7 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
         BaseValidator.ValidationContext context = getValidationContext(IntRangeTestModel.class);
         List<RaveError> raveErrors = null;
         context.setValidatedItemName("getValue()");
-        raveErrors = mergeErrors(raveErrors, checkIntRange(context, object.getValue(), -15L, 1000L));
+        raveErrors = mergeErrors(raveErrors, checkIntRange(context, object.getValue(), -15, 1000));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }
