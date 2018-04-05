@@ -25,8 +25,8 @@ buildscript {
 }
 
 dependencies {
-    annotationProcessor 'com.uber:rave-compiler:2.0.0'
-    compile 'com.uber:rave:2.0.0'
+  annotationProcessor 'com.uber:rave-compiler:2.0.0'
+  compile 'com.uber:rave:2.0.0'
 }
 ```
 #### Proguard Settings
