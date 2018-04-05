@@ -25,8 +25,8 @@ buildscript {
 }
 
 dependencies {
-  annotationProcessor 'com.uber:rave-compiler:2.0.0'
-  compile 'com.uber:rave:2.0.0'
+    annotationProcessor 'com.uber:rave-compiler:2.0.0'
+    compile 'com.uber:rave:2.0.0'
 }
 ```
 #### Proguard Settings
@@ -46,6 +46,7 @@ Example:
 ```java
 
 public final class SampleFactory implements ValidatorFactory {
+
     @NonNull
     @Override
     public BaseValidator generateValidator() {
@@ -107,6 +108,7 @@ public class SimpleModel {
 ### Step 3: Start Validating
 
 ```java
+
 public void validateMyModel(SimpleModel myModel) {
     try {
         Rave.getInstance().validate(myModel);
@@ -123,6 +125,7 @@ public void validateMyModel(SimpleModel myModel) {
 Here's a simple recipe to use Rave with [Retrofit 2](https://github.com/square/retrofit). This is documented and included in the RAVE sample app.
 
 ```java
+
 final class RaveConverterFactory extends Converter.Factory {
 
     static RaveConverterFactory create() {
@@ -176,7 +179,7 @@ Rave currently does not validate fields in a model. Rave only validates model me
 We'd love for you to contribute to our open source projects. Before we can accept your contributions, we kindly ask you to sign our [Uber Contributor License Agreement](https://docs.google.com/a/uber.com/forms/d/1pAwS_-dA1KhPlfxzYLBqK6rsSWwRwH95OCCZrcsY5rk/viewform).
 
 - If you **find a bug**, open an issue or submit a fix via a pull request.
-- If you **have a feature request**, open an issue or submit an implementation via a pull request
+- If you **have a feature request**, open an issue or submit an implementation via a pull request.
 - If you **want to contribute**, submit a pull request.
 
 
