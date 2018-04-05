@@ -108,7 +108,6 @@ public class SimpleModel {
 ### Step 3: Start Validating
 
 ```java
-
 public void validateMyModel(SimpleModel myModel) {
     try {
         Rave.getInstance().validate(myModel);
