@@ -125,7 +125,6 @@ public void validateMyModel(SimpleModel myModel) {
 Here's a simple recipe to use Rave with [Retrofit 2](https://github.com/square/retrofit). This is documented and included in the RAVE sample app.
 
 ```java
-
 final class RaveConverterFactory extends Converter.Factory {
 
     static RaveConverterFactory create() {
