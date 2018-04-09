@@ -9,6 +9,7 @@ import com.uber.rave.model.FloatRangeTestModel;
 import com.uber.rave.model.InheritFrom;
 import com.uber.rave.model.IntDefModel;
 import com.uber.rave.model.IntRangeTestModel;
+import com.uber.rave.model.LongDefModel;
 import com.uber.rave.model.MultiMethodSampleModel;
 import com.uber.rave.model.NonAnnotated;
 import com.uber.rave.model.SingleMethodSampleModel;
@@ -35,6 +36,7 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     addSupportedClass(ArrayNotNull.class);
     addSupportedClass(AbstractAnnotated.class);
     addSupportedClass(IntDefModel.class);
+    addSupportedClass(LongDefModel.class);
     addSupportedClass(IntRangeTestModel.class);
     addSupportedClass(FloatRangeTestModel.class);
     registerSelf();
@@ -72,6 +74,10 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     }
     if (clazz.equals(IntDefModel.class)) {
       validateAs((IntDefModel) object);
+      return;
+    }
+    if (clazz.equals(LongDefModel.class)) {
+      validateAs((LongDefModel) object);
       return;
     }
     if (clazz.equals(IntRangeTestModel.class)) {
@@ -176,6 +182,16 @@ public final class MyFactory_Generated_Validator extends BaseValidator {
     List<RaveError> raveErrors = null;
     context.setValidatedItemName("getStandard()");
     raveErrors = mergeErrors(raveErrors, checkIntDef(context, object.getStandard(), false, 0, 1, 2));
+    if (raveErrors != null && !raveErrors.isEmpty()) {
+      throw new InvalidModelException(raveErrors);
+    }
+  }
+
+  private void validateAs(LongDefModel object) throws InvalidModelException {
+    BaseValidator.ValidationContext context = getValidationContext(LongDefModel.class);
+    List<RaveError> raveErrors = null;
+    context.setValidatedItemName("getStandard()");
+    raveErrors = mergeErrors(raveErrors, checkLongDef(context, object.getStandard(), false, 0L, 1L, 2L));
     if (raveErrors != null && !raveErrors.isEmpty()) {
       throw new InvalidModelException(raveErrors);
     }

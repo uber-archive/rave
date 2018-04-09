@@ -23,6 +23,7 @@ package com.uber.rave;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
+import android.support.annotation.LongDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
@@ -42,6 +43,8 @@ public final class AnnotationSpecs {
     private String[] validStrings = new String[0];
     private boolean hasIntDef = false;
     private int[] validIntValues = new int[0];
+    private boolean hasLongDef = false;
+    private long[] validLongValues = new long[0];
     private boolean hasIntRange = false;
     private int rangeTo = Integer.MAX_VALUE;
     private int rangeFrom = Integer.MIN_VALUE;
@@ -109,6 +112,14 @@ public final class AnnotationSpecs {
 
     public int[] getValidIntValues() {
         return validIntValues;
+    }
+
+    public boolean hasLongDef() {
+        return hasLongDef;
+    }
+
+    public long[] getValidLongValues() {
+        return validLongValues;
     }
 
     /**
@@ -189,6 +200,18 @@ public final class AnnotationSpecs {
         public Builder setIntDef(int... values) {
             annotationSpecs.hasIntDef = true;
             annotationSpecs.validIntValues = values;
+            return this;
+        }
+
+        /**
+         * Set the valid values for the long in a {@link LongDef}.
+         *
+         * @param values the valid values.
+         * @return this {@link Builder}
+         */
+        public Builder setLongDef(long ... values) {
+            annotationSpecs.hasLongDef= true;
+            annotationSpecs.validLongValues= values;
             return this;
         }
 

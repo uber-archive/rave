@@ -23,6 +23,7 @@ package com.uber.rave.compiler;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
+import android.support.annotation.LongDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Size;
@@ -266,6 +267,9 @@ final class RaveWriter {
         }
         if (elementIRBase.hasAnnotation(FloatRange.class)) {
             writer.write(elementIRBase.getAnnotation(FloatRange.class));
+        }
+        if (elementIRBase.hasAnnotation(LongDef.class)) {
+            writer.write(elementIRBase.getAnnotation(LongDef.class));
         }
     }
 }

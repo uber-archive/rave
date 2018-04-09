@@ -23,6 +23,7 @@ package com.uber.rave;
 import android.support.annotation.NonNull;
 
 import com.uber.rave.model.IntDefModel;
+import com.uber.rave.model.LongDefModel;
 import com.uber.rave.model.NonAnnotated;
 import com.uber.rave.model.SingleMethodSampleModel;
 
@@ -508,6 +509,34 @@ public class RaveUnitTest {
     @Test
     public void intDefModel_whenModelIsValid_shouldNotThrowException() throws RaveException {
         IntDefModel model = new IntDefModel(IntDefModel.NAVIGATION_MODE_LIST);
+        Rave.getInstance().validate(model);
+    }
+
+    @Test
+    public void checkLongDef_whenValueIsCorrect_shouldProduceNoErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
+        assertThat(BaseValidator.checkLongDef(context, 10L, false, 10L).isEmpty());
+    }
+
+    @Test
+    public void checkLongDef_whenValueMatchesSet_shouldProduceNoErrors() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
+        assertThat(BaseValidator.checkLongDef(context, 10L, false, 10L, 11L, 12L, 13L).isEmpty());
+    }
+
+    @Test
+    public void checkLongDef_whenValueDoesNotMatch_shouldProduceError() {
+        BaseValidator.ValidationContext context = BaseValidator.getValidationContext(String.class);
+        List<RaveError> errors = BaseValidator.checkLongDef(context, 9L, false, 10L, 11L, 12L, 13L);
+        assertThat(errors).isNotEmpty();
+        assertThat(errors).hasSize(1);
+        RaveError error = errors.get(0);
+        assertThat(error.getErrorMsg()).contains(RaveErrorStrings.LONG_DEF_ERROR);
+    }
+
+    @Test
+    public void longDefModel_whenModelIsValid_shouldNotThrowException() throws RaveException {
+        LongDefModel model = new LongDefModel(LongDefModel.NAVIGATION_MODE_LIST);
         Rave.getInstance().validate(model);
     }
 

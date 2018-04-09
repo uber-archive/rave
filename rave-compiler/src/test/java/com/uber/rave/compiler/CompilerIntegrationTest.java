@@ -21,14 +21,15 @@
 package com.uber.rave.compiler;
 
 import com.uber.rave.InvalidModelException;
+import com.uber.rave.Rave;
+import com.uber.rave.RaveException;
 import com.uber.rave.model.ArrayNotNull;
 import com.uber.rave.model.FloatRangeTestModel;
 import com.uber.rave.model.InheritFrom;
 import com.uber.rave.model.IntDefModel;
 import com.uber.rave.model.IntRangeTestModel;
+import com.uber.rave.model.LongDefModel;
 import com.uber.rave.model.MultiMethodSampleModel;
-import com.uber.rave.Rave;
-import com.uber.rave.RaveException;
 import com.uber.rave.model.SingleMethodSampleModel;
 
 import org.junit.Test;
@@ -167,6 +168,33 @@ public class CompilerIntegrationTest {
         assertFalse(validCases.isEmpty());
         Rave rave = Rave.getInstance();
         for (IntDefModel model : validCases) {
+            try {
+                rave.validate(model);
+            } catch (InvalidModelException e) {
+                continue;
+            }
+            assertTrue("Model should have failed with int: " + model.getStandard() + "\n", false);
+        }
+    }
+
+    @Test
+    public void allValidLongDefModel_shouldSucceed() throws RaveException {
+        LongDefModel.Builder builder = new LongDefModel.Builder();
+        Collection<LongDefModel> validCases = builder.getValidCases();
+        assertFalse(validCases.isEmpty());
+        Rave rave = Rave.getInstance();
+        for (LongDefModel model : validCases) {
+            rave.validate(model);
+        }
+    }
+
+    @Test
+    public void allInvalidLongDefModel_shouldFail() throws RaveException {
+        LongDefModel.Builder builder = new LongDefModel.Builder();
+        Collection<LongDefModel> validCases = builder.getInvalidCases();
+        assertFalse(validCases.isEmpty());
+        Rave rave = Rave.getInstance();
+        for (LongDefModel model : validCases) {
             try {
                 rave.validate(model);
             } catch (InvalidModelException e) {

@@ -103,6 +103,25 @@ public class RaveProcessorTest {
     }
 
     @Test
+    public void testLongDef_whenUsingLongDef_shouldMatchOutput() {
+        JavaFileObject source = JavaFileObjects.forResource("fixtures/longdef/LongDefTestClass.java");
+        String fileContents;
+        String filePath = "build/resources/test/fixtures/longdef/SampleFactory_Generated_Validator.java";
+        try {
+            fileContents = readFile(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't read input file: " + filePath);
+        }
+        JavaFileObject fileObject = JavaFileObjects.forSourceString("fixtures.SampleFactory_Generated_Validator",
+                fileContents);
+        sources.add(source);
+        sources.add(myValidator);
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .compilesWithoutError().and().generatesSources(fileObject);
+    }
+
+    @Test
     public void testFloatRange_whenUsingFloatRange_shouldMatchOutput() {
         JavaFileObject source = JavaFileObjects.forResource("fixtures/floatrange/FloatRangeTestClass.java");
         String fileContents = null;
@@ -138,6 +157,16 @@ public class RaveProcessorTest {
         assertAbout(javaSources()).that(sources)
                 .processedWith(raveProcessor)
                 .failsToCompile().withErrorContaining(AnnotationVerifier.INTDEF_BAD_RETURN_TYPE_ERROR);
+    }
+
+    @Test
+    public void testLongDef_whenUsingBadLongDef_shouldReturnAnError() {
+        JavaFileObject source = JavaFileObjects.forResource("fixtures/longdef/BadLongDefUse.java");
+        sources.add(source);
+        sources.add(myValidator);
+        assertAbout(javaSources()).that(sources)
+                .processedWith(raveProcessor)
+                .failsToCompile().withErrorContaining(AnnotationVerifier.LONGDEF_BAD_RETURN_TYPE_ERROR);
     }
 
     @Test
@@ -197,6 +226,7 @@ public class RaveProcessorTest {
         sources.add(JavaFileObjects.forResource("fixtures/test2/AbstractAnnotated.java"));
         sources.add(JavaFileObjects.forResource("fixtures/test2/NonAnnotated.java"));
         sources.add(JavaFileObjects.forResource("fixtures/test2/IntDefModel.java"));
+        sources.add(JavaFileObjects.forResource("fixtures/test2/LongDefModel.java"));
         sources.add(JavaFileObjects.forResource("fixtures/test2/IntRangeTestModel.java"));
         sources.add(JavaFileObjects.forResource("fixtures/test2/FloatRangeTestModel.java"));
         JavaFileObject myValidator = JavaFileObjects.forResource("fixtures/test2/MyFactory.java");

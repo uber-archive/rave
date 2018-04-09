@@ -23,6 +23,7 @@ package com.uber.rave.compiler;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
+import android.support.annotation.LongDef;
 import android.support.annotation.Size;
 
 import com.google.common.collect.ImmutableList;
@@ -52,7 +53,8 @@ import javax.tools.Diagnostic;
  */
 class AnnotationVerifier {
 
-    static final String INTDEF_BAD_RETURN_TYPE_ERROR = " does not return an integer or long value";
+    static final String LONGDEF_BAD_RETURN_TYPE_ERROR = " does not return a long value";
+    static final String INTDEF_BAD_RETURN_TYPE_ERROR = " does not return an integer value";
     static final String FLOAT_RANGE_BAD_RETURN_TYPE_ERROR = " does not return an float or double value";
     static final String INT_RANGE_BAD_RETURN_TYPE_ERROR = " does not return an int or long value";
 
@@ -157,8 +159,16 @@ class AnnotationVerifier {
             for (AnnotationMirror mirror : elements.getAllAnnotationMirrors(executableElement)) {
                 IntDef annotation = mirror.getAnnotationType().asElement().getAnnotation(IntDef.class);
                 TypeKind kind = executableElement.getReturnType().getKind();
-                if (annotation != null && !(kind == TypeKind.INT || kind == TypeKind.LONG)) {
+                if (annotation != null && !(kind == TypeKind.INT)) {
                     abortWithError(executableElement.getSimpleName().toString() + INTDEF_BAD_RETURN_TYPE_ERROR, type);
+                }
+            }
+            // Make sure any @LongDef annotation is only on a method that returns an long
+            for (AnnotationMirror mirror : elements.getAllAnnotationMirrors(executableElement)) {
+                LongDef annotation = mirror.getAnnotationType().asElement().getAnnotation(LongDef.class);
+                TypeKind kind = executableElement.getReturnType().getKind();
+                if (annotation != null && !(kind == TypeKind.LONG)) {
+                    abortWithError(executableElement.getSimpleName().toString() + LONGDEF_BAD_RETURN_TYPE_ERROR, type);
                 }
             }
         }
