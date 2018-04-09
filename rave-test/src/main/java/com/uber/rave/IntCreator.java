@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This class is creates valid and invalid permutations of a long argument based on the annotation
+ * This class is creates valid and invalid permutations of a int argument based on the annotation
  * restrictions.
  */
 public final class IntCreator extends ObjectCreator<Integer> {
