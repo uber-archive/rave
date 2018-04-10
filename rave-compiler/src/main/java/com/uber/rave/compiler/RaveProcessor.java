@@ -248,7 +248,7 @@ public final class RaveProcessor extends AbstractProcessor {
     }
 
     /**
-     * This method extracts Def type annotations. These include {@link StringDef}, {@link IntDef} and {@link LongDef}.
+     * This method extracts Def type annotations. These include {@link StringDef}, {@link IntDef}, and {@link LongDef}.
      * These annotations are extended so there is a extra level of annotation hierarchy traversal that is required.
 
      * @param element The {@link Element} to check.
