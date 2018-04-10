@@ -200,7 +200,7 @@ public class CompilerIntegrationTest {
             } catch (InvalidModelException e) {
                 continue;
             }
-            assertTrue("Model should have failed with int: " + model.getStandard() + "\n", false);
+            assertTrue("Model should have failed with long: " + model.getStandard() + "\n", false);
         }
     }
 
