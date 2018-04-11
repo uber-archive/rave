@@ -731,9 +731,9 @@ public abstract class BaseValidator {
         }
         stringBuilder.append("}");
 
-        return createNewList(
-                new RaveError(validationContext, value + " " + RaveErrorStrings.LONG_DEF_ERROR
-                        + stringBuilder.toString()));
+        return createNewList(new RaveError(
+                validationContext,
+                String.format("%s %s %s", value,  RaveErrorStrings.LONG_DEF_ERROR, stringBuilder.toString())));
     }
 
     /**
