@@ -543,7 +543,9 @@ public abstract class BaseValidator {
      * @return an error if value is not present in list of acceptable values. Otherwise returns an empty list.
      */
     protected static List<RaveError> checkLongDef(
-            ValidationContext validationContext, long value, boolean flag,
+            ValidationContext validationContext,
+            long value,
+            boolean flag,
             long... acceptableValues) {
 
         for (long acceptable : acceptableValues) {
