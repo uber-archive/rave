@@ -210,7 +210,7 @@ public final class AnnotationSpecs {
          * @return this {@link Builder}
          */
         public Builder setLongDef(long ... values) {
-            annotationSpecs.hasLongDef= true;
+            annotationSpecs.hasLongDef = true;
             annotationSpecs.validLongValues= values;
             return this;
         }
