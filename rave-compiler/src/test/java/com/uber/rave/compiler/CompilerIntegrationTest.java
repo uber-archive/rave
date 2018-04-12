@@ -201,7 +201,9 @@ public class CompilerIntegrationTest {
             } catch (InvalidModelException e) {
                 continue;
             }
-            throw new AssertionError("Model should have failed with long: " + model.getStandard(), new IllegalStateException());
+            throw new AssertionError(
+                    "Model should have failed with long: " + model.getStandard(),
+                    new IllegalStateException());
         }
     }
 
