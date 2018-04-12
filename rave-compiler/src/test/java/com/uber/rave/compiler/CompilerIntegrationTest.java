@@ -32,6 +32,7 @@ import com.uber.rave.model.LongDefModel;
 import com.uber.rave.model.MultiMethodSampleModel;
 import com.uber.rave.model.SingleMethodSampleModel;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -191,16 +192,16 @@ public class CompilerIntegrationTest {
     @Test
     public void allInvalidLongDefModel_shouldFail() throws RaveException {
         LongDefModel.Builder builder = new LongDefModel.Builder();
-        Collection<LongDefModel> validCases = builder.getInvalidCases();
-        assertFalse(validCases.isEmpty());
+        Collection<LongDefModel> invalidCases = builder.getInvalidCases();
+        assertFalse(invalidCases.isEmpty());
         Rave rave = Rave.getInstance();
-        for (LongDefModel model : validCases) {
+        for (LongDefModel model : invalidCases) {
             try {
                 rave.validate(model);
             } catch (InvalidModelException e) {
                 continue;
             }
-            assertTrue("Model should have failed with long: " + model.getStandard() + "\n", false);
+            throw new AssertionError("Model should have failed with long: " + model.getStandard(), new IllegalStateException());
         }
     }
 
