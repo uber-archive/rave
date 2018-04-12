@@ -32,7 +32,6 @@ import com.uber.rave.model.LongDefModel;
 import com.uber.rave.model.MultiMethodSampleModel;
 import com.uber.rave.model.SingleMethodSampleModel;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Collection;
