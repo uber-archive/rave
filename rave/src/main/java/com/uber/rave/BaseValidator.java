@@ -509,7 +509,7 @@ public abstract class BaseValidator {
     }
 
     /**
-     * Check the value of an input long to see if it matches the acceptable values. This is the check that is run for
+     * Check the value of an input int to see if it matches the acceptable values. This is the check that is run for
      * the IntDef annotation. Note the flag value for this is currently unused but
      * we may add support later.
      *
@@ -520,15 +520,40 @@ public abstract class BaseValidator {
      * @return an error if value is not present in list of acceptable values. Otherwise returns an empty list.
      */
     protected static List<RaveError> checkIntDef(
-            ValidationContext validationContext, long value, boolean flag,
-            long... acceptableValues) {
+            ValidationContext validationContext, int value, boolean flag,
+            int... acceptableValues) {
 
-        for (long acceptable : acceptableValues) {
+        for (int acceptable : acceptableValues) {
             if (value == acceptable) {
                 return Collections.<RaveError>emptyList();
             }
         }
         return createIntDefError(value, acceptableValues, validationContext);
+    }
+
+    /**
+     * Check the value of an input long to see if it matches the acceptable values. This is the check that is run for
+     * the Long annotation. Note the flag value for this is currently unused but
+     * we may add support later.
+     *
+     * @param validationContext The context of the item in the class being validated. This is used in case of an error.
+     * @param value The long value to check.
+     * @param flag the is the flag value from IntDef it is currently unsupported.
+     * @param acceptableValues the values that the value parameter can take on.
+     * @return an error if value is not present in list of acceptable values. Otherwise returns an empty list.
+     */
+    protected static List<RaveError> checkLongDef(
+            ValidationContext validationContext,
+            long value,
+            boolean flag,
+            long... acceptableValues) {
+
+        for (long acceptable : acceptableValues) {
+            if (value == acceptable) {
+                return Collections.emptyList();
+            }
+        }
+        return createLongDefError(value, acceptableValues, validationContext);
     }
 
     /**
@@ -668,6 +693,28 @@ public abstract class BaseValidator {
     }
 
     private static List<RaveError> createIntDefError(
+            int value,
+            int[] acceptableValues,
+            ValidationContext validationContext) {
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean first = true;
+        for (int string : acceptableValues) {
+            if (!first) {
+                stringBuilder.append(" ");
+            } else {
+                stringBuilder.append("{");
+            }
+            stringBuilder.append(string);
+            first = false;
+        }
+        stringBuilder.append("}");
+
+        return createNewList(
+                new RaveError(validationContext, value + " " + RaveErrorStrings.INT_DEF_ERROR
+                        + stringBuilder.toString()));
+    }
+
+    private static List<RaveError> createLongDefError(
             long value,
             long[] acceptableValues,
             ValidationContext validationContext) {
@@ -684,9 +731,9 @@ public abstract class BaseValidator {
         }
         stringBuilder.append("}");
 
-        return createNewList(
-                new RaveError(validationContext, value + " " + RaveErrorStrings.INT_DEF_ERROR
-                        + stringBuilder.toString()));
+        return createNewList(new RaveError(
+                validationContext,
+                String.format("%s %s %s", value,  RaveErrorStrings.LONG_DEF_ERROR, stringBuilder.toString())));
     }
 
     /**

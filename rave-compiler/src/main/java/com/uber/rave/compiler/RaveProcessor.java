@@ -21,6 +21,7 @@
 package com.uber.rave.compiler;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.LongDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 
@@ -247,8 +248,8 @@ public final class RaveProcessor extends AbstractProcessor {
     }
 
     /**
-     * This method extracts Def type annotations. These include {@link StringDef} {@link IntDef}. These annotations
-     * are extended so there is a extra level of annotation hierarchy traversal that is required.
+     * This method extracts Def type annotations. These include {@link StringDef}, {@link IntDef}, and {@link LongDef}.
+     * These annotations are extended so there is a extra level of annotation hierarchy traversal that is required.
 
      * @param element The {@link Element} to check.
      * @return null if this isn't a support annotation type otherwise the annotation.
@@ -263,6 +264,11 @@ public final class RaveProcessor extends AbstractProcessor {
         if (annotation != null) {
             return annotation;
         }
+        annotation = element.getAnnotation(LongDef.class);
+        if (annotation != null) {
+            return annotation;
+        }
+
         return null;
     }
 

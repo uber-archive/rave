@@ -23,6 +23,7 @@ package com.uber.rave.compiler;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
+import android.support.annotation.LongDef;
 import android.support.annotation.Size;
 import android.support.annotation.StringDef;
 
@@ -48,6 +49,7 @@ final class AnnotationWriter {
     static final String CHECK_MUST_BE_FALSE_METHOD_NAME = "mustBeFalse";
     static final String CHECK_MUST_BE_STRING_DEF_VALUE = "checkStringDef";
     static final String CHECK_MUST_BE_INT_DEF_VALUE = "checkIntDef";
+    static final String CHECK_MUST_BE_LONG_DEF_VALUE = "checkLongDef";
     static final String CHECK_INT_RANGE_METHOD_NAME = "checkIntRange";
     static final String CHECK_FLOAT_RANGE_METHOD_NAME = "checkFloatRange";
     static final String MERGE_ERROR_METHOD_NAME = "mergeErrors";
@@ -150,9 +152,22 @@ final class AnnotationWriter {
         BaseAnnotationWriter baseWriter =
                 new BaseAnnotationWriter(elementInfo, CHECK_MUST_BE_INT_DEF_VALUE, true);
         baseWriter.addArg(LITERAL, intDef.flag(), true);
-        long[] acceptableInts = intDef.value();
-        for (long intVale : acceptableInts) {
-            baseWriter.addArg(LITERAL_LONG, intVale, true);
+        int[] acceptableInts = intDef.value();
+        for (int intVal : acceptableInts) {
+            baseWriter.addArg(LITERAL, intVal, true);
+        }
+        buildStatements(baseWriter.getFormattedString(), baseWriter.getArgs());
+    }
+
+    void write(@Nullable LongDef longDef) {
+        checkAnnotationNotNull(longDef);
+        // Args: validationContext, value, flag, acceptableValues
+        BaseAnnotationWriter baseWriter =
+            new BaseAnnotationWriter(elementInfo, CHECK_MUST_BE_LONG_DEF_VALUE, true);
+        baseWriter.addArg(LITERAL, longDef.flag(), true);
+        long[] acceptableInts = longDef.value();
+        for (long longVal : acceptableInts) {
+            baseWriter.addArg(LITERAL_LONG, longVal, true);
         }
         buildStatements(baseWriter.getFormattedString(), baseWriter.getArgs());
     }

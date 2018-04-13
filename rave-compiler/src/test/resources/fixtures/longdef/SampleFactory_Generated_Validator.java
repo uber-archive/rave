@@ -3,7 +3,7 @@ package fixtures;
 import com.uber.rave.BaseValidator;
 import com.uber.rave.InvalidModelException;
 import com.uber.rave.RaveError;
-import fixtures.intdef.IntDefTestClass;
+import fixtures.longdef.LongDefTestClass;
 import java.lang.Class;
 import java.lang.IllegalArgumentException;
 import java.lang.Object;
@@ -17,7 +17,7 @@ import javax.annotation.Generated;
 )
 public final class SampleFactory_Generated_Validator extends BaseValidator {
     SampleFactory_Generated_Validator() {
-        addSupportedClass(IntDefTestClass.class);
+        addSupportedClass(LongDefTestClass.class);
         registerSelf();
     }
 
@@ -26,18 +26,18 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
         if (!clazz.isInstance(object)) {
             throw new IllegalArgumentException(object.getClass().getCanonicalName() + "is not of type" + clazz.getCanonicalName());
         }
-        if (clazz.equals(IntDefTestClass.class)) {
-            validateAs((IntDefTestClass) object);
+        if (clazz.equals(LongDefTestClass.class)) {
+            validateAs((LongDefTestClass) object);
             return;
         }
         throw new IllegalArgumentException(object.getClass().getCanonicalName() + " is not supported by validator " + this.getClass().getCanonicalName());
     }
 
-    private void validateAs(IntDefTestClass object) throws InvalidModelException {
-        BaseValidator.ValidationContext context = getValidationContext(IntDefTestClass.class);
+    private void validateAs(LongDefTestClass object) throws InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(LongDefTestClass.class);
         List<RaveError> raveErrors = null;
         context.setValidatedItemName("getStandard()");
-        raveErrors = mergeErrors(raveErrors, checkIntDef(context, object.getStandard(), false, 0, 1, 2, 2147483647, -2147483648));
+        raveErrors = mergeErrors(raveErrors, checkLongDef(context, object.getStandard(), false, 0L, 1L, 2L, 9223372036854775807L, -9223372036854775808L));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

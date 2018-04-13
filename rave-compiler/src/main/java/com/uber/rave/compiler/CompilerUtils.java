@@ -23,6 +23,7 @@ package com.uber.rave.compiler;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
+import android.support.annotation.LongDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Size;
@@ -59,6 +60,7 @@ final class CompilerUtils {
             MustBeTrue.class,
             StringDef.class,
             IntDef.class,
+            LongDef.class,
             IntRange.class,
             FloatRange.class
     );
@@ -67,7 +69,8 @@ final class CompilerUtils {
         CONFLICTING_SUPPORT_ANNOTATIONS = ImmutableList.of(
                     new Pair<Class<? extends Annotation>, Class<? extends Annotation>>(MustBeTrue.class,
                             MustBeFalse.class),
-                    new Pair<Class<? extends Annotation>, Class<? extends Annotation>>(IntRange.class, IntDef.class));
+                    new Pair<Class<? extends Annotation>, Class<? extends Annotation>>(IntRange.class, IntDef.class),
+                    new Pair<Class<? extends Annotation>, Class<? extends Annotation>>(IntRange.class, LongDef.class));
     private static Map<Class<? extends Annotation>, Set<Class<? extends Annotation>>> sConflictingAnnotations;
     private static Map<String, Class<? extends Annotation>> sAnnotationMap;
 

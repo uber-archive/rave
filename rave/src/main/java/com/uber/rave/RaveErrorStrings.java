@@ -28,6 +28,7 @@ public final class RaveErrorStrings {
     public static final String FLOAT_RANGE_ERROR = "Does not conform to the following @FloatRange values:";
     public static final String NON_NULL_ERROR = "Item is null and shouldn't be.";
     public static final String INT_DEF_ERROR = "Does not conform to the following @IntDef values:";
+    public static final String LONG_DEF_ERROR = "Does not conform to the following @LongDef values:";
     public static final String INT_RANGE_ERROR = "Does not conform to the following @IntRange values:";
     public static final String MUST_BE_TRUE_ERROR = "Is not true.";
     public static final String MUST_BE_FALSE_ERROR = "Is not false.";

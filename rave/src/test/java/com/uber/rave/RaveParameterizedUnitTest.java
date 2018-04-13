@@ -25,6 +25,7 @@ import com.uber.rave.model.FloatRangeTestModel;
 import com.uber.rave.model.InheritFrom;
 import com.uber.rave.model.IntDefModel;
 import com.uber.rave.model.IntRangeTestModel;
+import com.uber.rave.model.LongDefModel;
 import com.uber.rave.model.MultiMethodSampleModel;
 import com.uber.rave.model.SingleMethodSampleModel;
 
@@ -99,6 +100,33 @@ public class RaveParameterizedUnitTest {
                 continue;
             }
             assertTrue("Model should have failed with int: " + model.getStandard() + "\n", false);
+        }
+    }
+
+    @Test
+    public void allValidLongDefModel_shouldSucceed() throws RaveException {
+        LongDefModel.Builder builder = new LongDefModel.Builder();
+        Collection<LongDefModel> validCases = builder.getValidCases();
+        assertThat(validCases).isNotEmpty();
+        Rave rave = Rave.getInstance();
+        for (LongDefModel model : validCases) {
+            rave.validate(model);
+        }
+    }
+
+    @Test
+    public void allInvalidLongDefModel_shouldFail() throws RaveException {
+        LongDefModel.Builder builder = new LongDefModel.Builder();
+        Collection<LongDefModel> validCases = builder.getInvalidCases();
+        assertThat(validCases).isNotEmpty();
+        Rave rave = Rave.getInstance();
+        for (LongDefModel model : validCases) {
+            try {
+                rave.validate(model);
+            } catch (InvalidModelException e) {
+                continue;
+            }
+            assertTrue("Model should have failed with long: " + model.getStandard() + "\n", false);
         }
     }
 

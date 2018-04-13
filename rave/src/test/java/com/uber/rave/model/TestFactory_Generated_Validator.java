@@ -21,6 +21,7 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
         addSupportedClass(IntDefModel.class);
         addSupportedClass(IntRangeTestModel.class);
         addSupportedClass(FloatRangeTestModel.class);
+        addSupportedClass(LongDefModel.class);
         registerSelf();
     }
 
@@ -66,6 +67,10 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
         }
         if (clazz.equals(FloatRangeTestModel.class)) {
             validateAs((FloatRangeTestModel) object);
+            return;
+        }
+        if (clazz.equals(LongDefModel.class)) {
+            validateAs((LongDefModel) object);
             return;
         }
         throw new IllegalArgumentException(
@@ -169,12 +174,23 @@ public final class TestFactory_Generated_Validator extends BaseValidator {
         }
     }
 
+    private void validateAs(LongDefModel object) throws
+            InvalidModelException {
+        BaseValidator.ValidationContext context = getValidationContext(LongDefModel.class);
+        List<RaveError> raveErrors = null;
+        context.setValidatedItemName("getStandard()");
+        raveErrors = mergeErrors(raveErrors, checkLongDef(context, object.getStandard(), false, 0L, 1L, 2L));
+        if (raveErrors != null && !raveErrors.isEmpty()) {
+            throw new InvalidModelException(raveErrors);
+        }
+    }
+
     private void validateAs(IntRangeTestModel object) throws
             InvalidModelException {
         BaseValidator.ValidationContext context = getValidationContext(IntRangeTestModel.class);
         List<RaveError> raveErrors = null;
         context.setValidatedItemName("getValue()");
-        raveErrors = mergeErrors(raveErrors, checkIntRange(context, object.getValue(), -15L, 1000L));
+        raveErrors = mergeErrors(raveErrors, checkIntRange(context, object.getValue(), -15, 1000));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

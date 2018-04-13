@@ -1,65 +1,63 @@
 package com.uber.rave.model;
 
-import android.support.annotation.IntDef;
+import android.support.annotation.LongDef;
 
 import com.uber.rave.AnnotationSpecs;
-import com.uber.rave.IntCreator;
+import com.uber.rave.LongCreator;
 import com.uber.rave.ObjectCreator;
 import com.uber.rave.ObjectCreatorIncrementer;
 import com.uber.rave.annotation.Validated;
-import com.uber.rave.compiler.MyFactory;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@Validated(factory = MyFactory.class)
-public class IntDefModel {
+@Validated(factory = TestFactory.class)
+public class LongDefModel {
+    public static final long NAVIGATION_MODE_STANDARD = 0L;
+    public static final long NAVIGATION_MODE_LIST = 1L;
+    public static final long NAVIGATION_MODE_TABS = 2L;
 
-    public static final int NAVIGATION_MODE_STANDARD = 0;
-    public static final int NAVIGATION_MODE_LIST = 1;
-    public static final int NAVIGATION_MODE_TABS = 2;
-
-    private final int value;
+    private final long value;
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS})
+    @LongDef({NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS})
     public @interface NavigationMode { }
 
-    public IntDefModel(int value) {
+    public LongDefModel(long value) {
         this.value = value;
     }
 
     @NavigationMode
-    public int getStandard() {
+    public long getStandard() {
         return value;
     }
 
-    public static class Builder extends ObjectCreator<com.uber.rave.model.IntDefModel> {
+    public static class Builder extends ObjectCreator<LongDefModel> {
 
-        private final IntCreator matchIntDefCreator;
+        private final LongCreator matchLongDefStringCreator;
         private final ObjectCreatorIncrementer incrementer;
 
         public Builder() {
             AnnotationSpecs spec = new AnnotationSpecs.Builder()
                     .setIsNullable(false)
-                    .setIntDef(NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS)
+                    .setLongDef(NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS)
                     .build();
-            matchIntDefCreator = new IntCreator(spec);
-            incrementer = new ObjectCreatorIncrementer(matchIntDefCreator);
+            matchLongDefStringCreator = new LongCreator(spec);
+            incrementer = new ObjectCreatorIncrementer(matchLongDefStringCreator);
             buildValidCases();
             buildInvalidCases();
         }
 
         public void buildValidCases() {
             while (incrementer.hasValidPermutations()) {
-                addValidType(new com.uber.rave.model.IntDefModel(matchIntDefCreator.getValidItem()));
+                addValidType(new LongDefModel(matchLongDefStringCreator.getValidItem()));
                 incrementer.incrementValidCreators();
             }
         }
 
         public void buildInvalidCases() {
             while (incrementer.hasInvalidPermutations()) {
-                addInvalidType(new com.uber.rave.model.IntDefModel(matchIntDefCreator.getInvalidItem()));
+                addInvalidType(new LongDefModel(matchLongDefStringCreator.getInvalidItem()));
                 incrementer.incrementInvalidCreators();
             }
         }
