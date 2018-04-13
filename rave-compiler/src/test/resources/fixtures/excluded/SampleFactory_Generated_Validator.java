@@ -8,7 +8,6 @@ import java.lang.Class;
 import java.lang.IllegalArgumentException;
 import java.lang.Object;
 import java.lang.Override;
-import java.lang.String;
 import java.util.List;
 import javax.annotation.Generated;
 
@@ -39,19 +38,6 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
         List<RaveError> raveErrors = null;
         context.setValidatedItemName("getCanBeNullField()");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.getCanBeNullField(), true, context));
-        if (raveErrors != null && !raveErrors.isEmpty()) {
-            throw new InvalidModelException(raveErrors);
-        }
-    }
-
-    public static void validateInternalFor_fixtures_test1_UseOfExcluded(String notNullField,
-            String canBeNullField) throws InvalidModelException {
-        BaseValidator.ValidationContext context = getValidationContext(UseOfExcluded.class);
-        List<RaveError> raveErrors = null;
-        context.setValidatedItemName("notNullField");
-        raveErrors = mergeErrors(raveErrors, checkNullable(notNullField, true, context));
-        context.setValidatedItemName("canBeNullField");
-        raveErrors = mergeErrors(raveErrors, checkNullable(canBeNullField, true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

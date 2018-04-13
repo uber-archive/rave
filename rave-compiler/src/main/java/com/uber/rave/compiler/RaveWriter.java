@@ -46,8 +46,6 @@ import com.uber.rave.annotation.MustBeTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -67,7 +65,6 @@ final class RaveWriter {
     static final String ADD_SUPPORTED_CLASS_METHOD_NAME = "addSupportedClass";
     static final String RE_EVAL_SUPERTYPE_METHOD_NAME = "reEvaluateAsSuperType";
     static final String MERGE_ERROR_METHOD_NAME = "mergeErrors";
-    static final String INNER_FIELD_METHOD_PREFIX = "validateInternalFor_";
 
     // Arg names.
     static final String VALIDATE_METHOD_ARG_NAME = "object";
@@ -107,7 +104,6 @@ final class RaveWriter {
     public void generateJava(RaveIR raveIR) throws IOException {
         // Make the main method that calls the private methods of the different types.
         List<MethodSpec> allMethods = generateSubtypeValidationMethods(raveIR);
-        allMethods.addAll(generateStaticFieldValidatorMethods(raveIR));
         allMethods.add(generateConstructor(raveIR));
         String className = raveIR.getSimpleName() + GENERATED_CLASS_POSTFIX;
         TypeSpec.Builder builder = TypeSpec.classBuilder(className);
@@ -172,37 +168,6 @@ final class RaveWriter {
         return allSpecs;
     }
 
-    private Collection<? extends MethodSpec> generateStaticFieldValidatorMethods(RaveIR raveIR) {
-        Collection<MethodSpec> methodSpecCollection = new LinkedList<>();
-        for (ClassIR classIR : raveIR.getClassIRs()) {
-            if (!classIR.hasValidatableFields()) {
-                continue;
-            }
-            String methodNamePostFix = classIR.getTypeMirror().toString().replace(".", "_");
-            MethodSpec.Builder builder = MethodSpec.methodBuilder(INNER_FIELD_METHOD_PREFIX + methodNamePostFix)
-                    .addException(RAVE_INVALID_MODEL_EXCEPTION_CLASS)
-                    .addModifiers(Modifier.STATIC, Modifier.PUBLIC)
-                    .returns(void.class);
-            builder.addStatement("$T $L = getValidationContext($T.class)", BaseValidator.ValidationContext.class,
-                    VALIDATION_CONTEXT_ARG_NAME, classIR.getTypeMirror());
-            builder.addStatement("$T<$T> $L = null", List.class, RaveError.class, RAVE_ERROR_ARG_NAME);
-            for (FieldIR fieldIR : classIR.getAllFieldIRs()) {
-                if (!fieldIR.hasAnyAnnotation()) {
-                    continue;
-                }
-                builder.addParameter(fieldIR.getTypeName(), fieldIR.getElementName());
-                buildAnnotationChecks(builder, fieldIR, AnnotationWriter.WriteType.FIELD);
-            }
-            builder.beginControlFlow("if ($L != null && !$L.isEmpty())", RAVE_ERROR_ARG_NAME,
-                    RAVE_ERROR_ARG_NAME);
-            builder.addStatement("throw new $T($L)", RAVE_INVALID_MODEL_EXCEPTION_CLASS, RAVE_ERROR_ARG_NAME);
-            builder.endControlFlow();
-            methodSpecCollection.add(builder.build());
-        }
-
-        return methodSpecCollection;
-    }
-
     /**
      * Generate a {@link MethodSpec} for a specific type. This generates the private method within the generated class
      * that validates the object as a specific type.
@@ -218,7 +183,8 @@ final class RaveWriter {
                 .addParameter(TypeName.get(classIR.getTypeMirror()), VALIDATE_METHOD_ARG_NAME);
         builder.addStatement("$T $L = getValidationContext($T.class)", BaseValidator.ValidationContext.class,
                 VALIDATION_CONTEXT_ARG_NAME, classIR.getTypeMirror());
-        builder.addStatement("$T<$T> $L = null", List.class, RaveError.class, RAVE_ERROR_ARG_NAME);
+        builder.addStatement("$T<$T> $L = null", List.class, RaveError.class,
+                RAVE_ERROR_ARG_NAME);
         for (TypeMirror mirror : classIR.getInheritedTypes()) {
             // Ex: raveErrors = mergeErrors(reEvaluateAsSuperType(ValidateSample2.class, object), raveErrors);
             builder.addStatement("$L = $L($L, $L($T.class, $L))", RAVE_ERROR_ARG_NAME,
@@ -226,7 +192,7 @@ final class RaveWriter {
                     typeUtils.erasure(mirror), VALIDATE_METHOD_ARG_NAME);
         }
         for (MethodIR methodIR : classIR.getAllMethods()) {
-            buildAnnotationChecks(builder, methodIR, AnnotationWriter.WriteType.METHOD);
+            buildAnnotationChecks(builder, methodIR);
         }
         builder.beginControlFlow("if ($L != null && !$L.isEmpty())", RAVE_ERROR_ARG_NAME,
                 RAVE_ERROR_ARG_NAME);
@@ -235,38 +201,35 @@ final class RaveWriter {
         return builder.build();
     }
 
-    private void buildAnnotationChecks(MethodSpec.Builder builder, ElementIRBase elementIRBase,
-            AnnotationWriter.WriteType writeType) {
+    private void buildAnnotationChecks(MethodSpec.Builder builder, MethodIR methodIR) {
         // No check needed for Nullable annotation.
-        boolean isNullable = !elementIRBase.hasAnnotation(NonNull.class);
-        boolean hasNonNullOrNullable = elementIRBase.hasAnnotation(NonNull.class)
-                || elementIRBase.hasAnnotation(Nullable.class);
-        AnnotationWriter writer = new AnnotationWriter(builder, elementIRBase.getElementName(), isNullable,
-                hasNonNullOrNullable, writeType);
-        if (hasNonNullOrNullable && !(elementIRBase.hasAnnotation(Size.class)
-                || elementIRBase.hasAnnotation(StringDef.class))) {
+        boolean isNullable = !methodIR.hasAnnotation(NonNull.class);
+        boolean hasNonNullOrNullable = methodIR.hasAnnotation(NonNull.class) || methodIR.hasAnnotation(Nullable.class);
+        AnnotationWriter writer = new AnnotationWriter(builder,
+                MethodSpec.methodBuilder(methodIR.getMethodGetterName()).build(), isNullable, hasNonNullOrNullable);
+        if (hasNonNullOrNullable && !(methodIR.hasAnnotation(Size.class) || methodIR.hasAnnotation(StringDef.class))) {
             writer.writeNullable();
         }
-        if (elementIRBase.hasAnnotation(Size.class)) {
-            writer.write(elementIRBase.getAnnotation(Size.class));
+        if (methodIR.hasAnnotation(Size.class)) {
+            writer.write(methodIR.getAnnotation(Size.class));
         }
-        if (elementIRBase.hasAnnotation(MustBeFalse.class)) {
+        if (methodIR.hasAnnotation(MustBeFalse.class)) {
             writer.writeMustBeFalse();
         }
-        if (elementIRBase.hasAnnotation(MustBeTrue.class)) {
+        if (methodIR.hasAnnotation(MustBeTrue.class)) {
             writer.writeMustBeTrue();
         }
-        if (elementIRBase.hasAnnotation(StringDef.class)) {
-            writer.write(elementIRBase.getAnnotation(StringDef.class));
+        if (methodIR.hasAnnotation(StringDef.class)) {
+            writer.write(methodIR.getAnnotation(StringDef.class));
         }
-        if (elementIRBase.hasAnnotation(IntDef.class)) {
-            writer.write(elementIRBase.getAnnotation(IntDef.class));
+        if (methodIR.hasAnnotation(IntDef.class)) {
+            writer.write(methodIR.getAnnotation(IntDef.class));
         }
-        if (elementIRBase.hasAnnotation(IntRange.class)) {
-            writer.write(elementIRBase.getAnnotation(IntRange.class));
+        if (methodIR.hasAnnotation(IntRange.class)) {
+            writer.write(methodIR.getAnnotation(IntRange.class));
         }
-        if (elementIRBase.hasAnnotation(FloatRange.class)) {
-            writer.write(elementIRBase.getAnnotation(FloatRange.class));
+        if (methodIR.hasAnnotation(FloatRange.class)) {
+            writer.write(methodIR.getAnnotation(FloatRange.class));
         }
         if (elementIRBase.hasAnnotation(LongDef.class)) {
             writer.write(elementIRBase.getAnnotation(LongDef.class));
