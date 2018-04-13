@@ -8,7 +8,6 @@ import java.lang.Class;
 import java.lang.IllegalArgumentException;
 import java.lang.Object;
 import java.lang.Override;
-import java.lang.String;
 import java.util.List;
 import javax.annotation.Generated;
 
@@ -39,17 +38,6 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
         List<RaveError> raveErrors = null;
         context.setValidatedItemName("getNullableField()");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.getNullableField(), true, context));
-        if (raveErrors != null && !raveErrors.isEmpty()) {
-            throw new InvalidModelException(raveErrors);
-        }
-    }
-
-    public static void validateInternalFor_fixtures_unannotated_UnannotatedField(String nullableField)
-            throws InvalidModelException {
-        BaseValidator.ValidationContext context = getValidationContext(UnannotatedField.class);
-        List<RaveError> raveErrors = null;
-        context.setValidatedItemName("nullableField");
-        raveErrors = mergeErrors(raveErrors, checkNullable(nullableField, true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

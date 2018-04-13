@@ -8,7 +8,6 @@ import java.lang.Class;
 import java.lang.IllegalArgumentException;
 import java.lang.Object;
 import java.lang.Override;
-import java.lang.String;
 import java.util.List;
 import javax.annotation.Generated;
 
@@ -43,21 +42,6 @@ public final class StrictModeFactory_Generated_Validator extends BaseValidator {
         raveErrors = mergeErrors(raveErrors, checkNullable(object.getCanBeNullField(), true, context));
         context.setValidatedItemName("getUnannotatedField()");
         raveErrors = mergeErrors(raveErrors, checkNullable(object.getUnannotatedField(), false, context));
-        if (raveErrors != null && !raveErrors.isEmpty()) {
-            throw new InvalidModelException(raveErrors);
-        }
-    }
-
-    public static void validateInternalFor_fixtures_validationstrategy_simple_SimpleCase(String notNullField,
-            String canBeNullField, String unannotatedField) throws InvalidModelException {
-        BaseValidator.ValidationContext context = getValidationContext(SimpleCase.class);
-        List<RaveError> raveErrors = null;
-        context.setValidatedItemName("notNullField");
-        raveErrors = mergeErrors(raveErrors, checkNullable(notNullField, false, context));
-        context.setValidatedItemName("canBeNullField");
-        raveErrors = mergeErrors(raveErrors, checkNullable(canBeNullField, false, context));
-        context.setValidatedItemName("unannotatedField");
-        raveErrors = mergeErrors(raveErrors, checkNullable(unannotatedField, false, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }

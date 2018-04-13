@@ -29,6 +29,6 @@ import java.lang.annotation.Target;
  * Annotation to denote that some function must return false. These can be used to assert conditions on a method return
  * type.
  */
-@Target({ElementType.METHOD, ElementType.FIELD})
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
 public @interface MustBeTrue { }

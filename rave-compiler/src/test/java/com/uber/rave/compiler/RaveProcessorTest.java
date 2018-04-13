@@ -409,32 +409,6 @@ public class RaveProcessorTest {
     }
 
     @Test
-    public void testFieldMethodValidationGeneration_whenFieldsArePrivate_shouldGenerateAppropriateMethods() {
-        sources.add(JavaFileObjects.forResource("fixtures/fields/comprehensive/SimpleCase.java"));
-        sources.add(JavaFileObjects.forResource("fixtures/fields/FieldsOnlyFactory.java"));
-
-        assertAbout(javaSources()).that(sources)
-                .processedWith(raveProcessor)
-                .compilesWithoutError()
-                .and()
-                .generatesSources(JavaFileObjects.forResource(
-                        "fixtures/fields/comprehensive/FieldsOnlyFactory_Generated_Validator.java"));
-    }
-
-    @Test
-    public void testFieldMethodValidationGeneration_whenFieldsArePrivateButNotUsed_shouldNotGenerateMuchValidation() {
-        sources.add(JavaFileObjects.forResource("fixtures/fields/no_gen/NoGen.java"));
-        sources.add(JavaFileObjects.forResource("fixtures/fields/NotStrictFieldsOnlyFactory.java"));
-
-        assertAbout(javaSources()).that(sources)
-                .processedWith(raveProcessor)
-                .compilesWithoutError()
-                .and()
-                .generatesSources(JavaFileObjects.forResource(
-                        "fixtures/fields/no_gen/NotStrictFieldsOnlyFactory_Generated_Validator.java"));
-    }
-
-    @Test
     public void testExcludedMethod_shouldNotGenerateValidateMethodExcluded() {
         sources.add(JavaFileObjects.forResource("fixtures/excluded/UseOfExcluded.java"));
         sources.add(JavaFileObjects.forResource("fixtures/SampleFactory.java"));

@@ -10,7 +10,6 @@ import java.lang.Class;
 import java.lang.IllegalArgumentException;
 import java.lang.Object;
 import java.lang.Override;
-import java.lang.String;
 import java.util.List;
 import javax.annotation.Generated;
 
@@ -71,17 +70,6 @@ public final class SampleFactory_Generated_Validator extends BaseValidator {
         raveErrors = mergeErrors(raveErrors, reEvaluateAsSuperType(ValidateByInterface.class, object));
         context.setValidatedItemName("getNonNullString()");
         raveErrors = mergeErrors(raveErrors, isSizeOk(object.getNonNullString(), true, 1L, 5L, 1L, context));
-        if (raveErrors != null && !raveErrors.isEmpty()) {
-            throw new InvalidModelException(raveErrors);
-        }
-    }
-
-    public static void validateInternalFor_fixtures_test4_ValidateSample2(String notNullField) throws
-            InvalidModelException {
-        BaseValidator.ValidationContext context = getValidationContext(ValidateSample2.class);
-        List<RaveError> raveErrors = null;
-        context.setValidatedItemName("notNullField");
-        raveErrors = mergeErrors(raveErrors, checkNullable(notNullField, true, context));
         if (raveErrors != null && !raveErrors.isEmpty()) {
             throw new InvalidModelException(raveErrors);
         }
