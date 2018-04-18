@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 2.1.0
+----------------------------
+2018-04-18
+
+- Bump Android Support annotations to 27.1.1.
+- New: Rave now supports `@LongDef`.
+
 Version 2.0.0
 ----------------------------
 2017-05-25
