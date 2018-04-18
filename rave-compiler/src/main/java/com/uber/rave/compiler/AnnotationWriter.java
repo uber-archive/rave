@@ -160,7 +160,7 @@ final class AnnotationWriter {
         checkAnnotationNotNull(longDef);
         // Args: validationContext, value, flag, acceptableValues
         BaseAnnotationWriter baseWriter =
-            new BaseAnnotationWriter(elementInfo, CHECK_MUST_BE_LONG_DEF_VALUE, true);
+            new BaseAnnotationWriter(getter, CHECK_MUST_BE_LONG_DEF_VALUE, true);
         baseWriter.addArg(LITERAL, longDef.flag(), true);
         long[] acceptableInts = longDef.value();
         for (long longVal : acceptableInts) {
