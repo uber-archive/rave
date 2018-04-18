@@ -231,8 +231,8 @@ final class RaveWriter {
         if (methodIR.hasAnnotation(FloatRange.class)) {
             writer.write(methodIR.getAnnotation(FloatRange.class));
         }
-        if (elementIRBase.hasAnnotation(LongDef.class)) {
-            writer.write(elementIRBase.getAnnotation(LongDef.class));
+        if (methodIR.hasAnnotation(LongDef.class)) {
+            writer.write(methodIR.getAnnotation(LongDef.class));
         }
     }
 }
