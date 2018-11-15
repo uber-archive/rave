@@ -1,7 +1,7 @@
 package com.uber.rave.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Size;
+import androidx.annotation.NonNull;
+import androidx.annotation.Size;
 
 import com.uber.rave.annotation.Validated;
 import com.uber.rave.compiler.MyFactory;

@@ -20,7 +20,7 @@
 
 package com.uber.rave;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.uber.rave.model.IntDefModel;
 import com.uber.rave.model.LongDefModel;

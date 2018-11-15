@@ -1,6 +1,6 @@
 package com.uber.rave.sample.network;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.uber.rave.BaseValidator;
 import com.uber.rave.ValidatorFactory;
