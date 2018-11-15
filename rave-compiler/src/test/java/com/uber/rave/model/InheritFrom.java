@@ -1,6 +1,6 @@
 package com.uber.rave.model;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.uber.rave.ObjectCreatorIncrementer;
 import com.uber.rave.ParameterizedBuilder;

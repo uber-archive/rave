@@ -2,7 +2,7 @@ package fixtures.intrange;
 
 import com.uber.rave.annotation.Validated;
 import fixtures.SampleFactory;
-import android.support.annotation.IntRange;
+import androidx.annotation.IntRange;
 
 @Validated(factory = SampleFactory.class)
 public class BadIntRangeUsage {

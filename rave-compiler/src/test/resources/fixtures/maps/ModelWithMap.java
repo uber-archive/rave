@@ -3,7 +3,7 @@ package fixtures.maps;
 import com.uber.rave.annotation.Validated;
 import java.util.Map;
 import fixtures.SampleFactory;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 @Validated(factory = SampleFactory.class)
 public class ModelWithMap {

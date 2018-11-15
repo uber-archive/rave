@@ -5,7 +5,7 @@ import com.uber.rave.annotation.Validated;
 import fixtures.SampleFactory;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 @Validated(factory = SampleFactory.class)
 public class BadIntDefUse {

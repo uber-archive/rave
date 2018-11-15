@@ -1,6 +1,6 @@
 package fixtures.fields;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.uber.rave.BaseValidator;
 import com.uber.rave.Validator;

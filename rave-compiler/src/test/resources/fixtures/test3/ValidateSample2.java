@@ -1,7 +1,7 @@
 package fixtures.test3;
 
-import android.support.annotation.Nullable;
-import android.support.annotation.Size;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
 
 import com.uber.rave.annotation.Validated;
 

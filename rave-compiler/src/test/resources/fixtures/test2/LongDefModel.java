@@ -1,6 +1,6 @@
 package com.uber.rave.model;
 
-import android.support.annotation.LongDef;
+import androidx.annotation.LongDef;
 
 import com.uber.rave.AnnotationSpecs;
 import com.uber.rave.LongCreator;
