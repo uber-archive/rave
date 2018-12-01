@@ -12,7 +12,7 @@ dependencies {
     testCompile deps.jsr305
     testCompile deps.junit4
     testCompile deps.slf4japi
-    testCompile deps.supportAnnotations
+    testCompile deps.androidxAnnotations
     testCompile deps.googleTruth
 }
 

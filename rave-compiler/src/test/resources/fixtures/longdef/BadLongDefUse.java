@@ -5,7 +5,7 @@ import com.uber.rave.annotation.Validated;
 import fixtures.SampleFactory;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import android.support.annotation.LongDef;
+import androidx.annotation.LongDef;
 
 @Validated(factory = SampleFactory.class)
 public class BadLongDefUse {

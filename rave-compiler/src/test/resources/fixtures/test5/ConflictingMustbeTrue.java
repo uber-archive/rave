@@ -1,7 +1,7 @@
 package fixtures.test5;
 
 import fixtures.SampleFactory;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.uber.rave.annotation.MustBeFalse;
 import com.uber.rave.annotation.MustBeTrue;

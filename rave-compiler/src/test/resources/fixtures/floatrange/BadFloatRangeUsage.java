@@ -2,7 +2,7 @@ package fixtures.floatrange;
 
 import com.uber.rave.annotation.Validated;
 import fixtures.SampleFactory;
-import android.support.annotation.FloatRange;
+import androidx.annotation.FloatRange;
 
 @Validated(factory = SampleFactory.class)
 public class BadFloatRangeUsage {

@@ -20,10 +20,10 @@
 
 package com.uber.rave.compiler;
 
-import android.support.annotation.IntDef;
-import android.support.annotation.LongDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
+import androidx.annotation.IntDef;
+import androidx.annotation.LongDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringDef;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableList;
@@ -181,10 +181,10 @@ public final class RaveProcessor extends AbstractProcessor {
                     methodIR.addAnnotation(annotation);
                 } else if (mirror.getAnnotationType().asElement()
                         .getSimpleName().toString().toLowerCase().equals("nullable")) {
-                    methodIR.addAnnotation(() -> android.support.annotation.Nullable.class);
+                    methodIR.addAnnotation(() -> androidx.annotation.Nullable.class);
                 } else if (mirror.getAnnotationType().asElement()
                         .getSimpleName().toString().toLowerCase().equals("nonnull")) {
-                    methodIR.addAnnotation(() -> android.support.annotation.NonNull.class);
+                    methodIR.addAnnotation(() -> androidx.annotation.NonNull.class);
                 } else {
                     Annotation annotation = extractDefTypeAnnotations(mirror.getAnnotationType().asElement());
                     if (annotation != null) {
@@ -208,7 +208,7 @@ public final class RaveProcessor extends AbstractProcessor {
 
         switch (mode) {
             case DEFAULT:
-                methodIR.addAnnotation(() -> android.support.annotation.Nullable.class);
+                methodIR.addAnnotation(() -> androidx.annotation.Nullable.class);
                 break;
             case STRICT:
                 methodIR.addAnnotation(() -> NonNull.class);

@@ -20,13 +20,13 @@
 
 package com.uber.rave.compiler;
 
-import android.support.annotation.FloatRange;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
-import android.support.annotation.LongDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.Size;
-import android.support.annotation.StringDef;
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
+import androidx.annotation.LongDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Size;
+import androidx.annotation.StringDef;
 
 import com.squareup.javapoet.MethodSpec;
 import com.uber.rave.BaseValidator;
@@ -72,7 +72,7 @@ final class AnnotationWriter {
      * @param builder the {@link MethodSpec.Builder} that is used to generate the code.
      * @param getter the {@link MethodSpec} for the getter method being evaluated.
      * @param isNullable true if the method DOES NOT have have a {@link NonNull} annotation.
-     * @param hasNonNullOrNullable true if either {@link NonNull} or {@link android.support.annotation.Nullable}
+     * @param hasNonNullOrNullable true if either {@link NonNull} or {@link androidx.annotation.Nullable}
      * annotations are present on the method.
      */
     AnnotationWriter(
