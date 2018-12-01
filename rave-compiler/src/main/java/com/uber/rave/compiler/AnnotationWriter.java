@@ -20,12 +20,12 @@
 
 package com.uber.rave.compiler;
 
-import androidx.annotation.FloatRange;
-import androidx.annotation.IntDef;
-import androidx.annotation.IntRange;
-import androidx.annotation.LongDef;
-import androidx.annotation.Size;
-import androidx.annotation.StringDef;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
+import android.support.annotation.LongDef;
+import android.support.annotation.Size;
+import android.support.annotation.StringDef;
 
 import com.squareup.javapoet.MethodSpec;
 import com.uber.rave.BaseValidator;

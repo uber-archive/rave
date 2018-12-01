@@ -1,6 +1,6 @@
 package com.uber.rave.model;
 
-import androidx.annotation.FloatRange;
+import android.support.annotation.FloatRange;
 
 import com.uber.rave.AnnotationSpecs;
 import com.uber.rave.DoubleCreator;

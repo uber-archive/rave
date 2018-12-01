@@ -2,7 +2,7 @@ package fixtures.fields.no_gen;
 
 import fixtures.fields.NotStrictFieldsOnlyFactory;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import com.uber.rave.annotation.Validated;
 

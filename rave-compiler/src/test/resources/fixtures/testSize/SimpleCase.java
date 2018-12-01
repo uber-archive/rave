@@ -2,7 +2,7 @@ package fixtures.testSize;
 
 import fixtures.SampleFactory;
 
-import androidx.annotation.Size;
+import android.support.annotation.Size;
 
 import com.uber.rave.annotation.Validated;
 

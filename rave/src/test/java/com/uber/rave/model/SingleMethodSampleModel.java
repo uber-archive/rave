@@ -1,8 +1,8 @@
 package com.uber.rave.model;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Size;
-import androidx.annotation.StringDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Size;
+import android.support.annotation.StringDef;
 
 import com.uber.rave.AnnotationSpecs;
 import com.uber.rave.ObjectCreator;

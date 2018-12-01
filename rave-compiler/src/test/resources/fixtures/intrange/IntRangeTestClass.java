@@ -2,7 +2,7 @@ package fixtures.intrange;
 
 import com.uber.rave.annotation.Validated;
 import fixtures.SampleFactory;
-import androidx.annotation.IntRange;
+import android.support.annotation.IntRange;
 
 @Validated(factory = SampleFactory.class)
 public class IntRangeTestClass {

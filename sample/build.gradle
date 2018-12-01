@@ -1,19 +1,18 @@
 buildscript {
     repositories {
         jcenter()
-        google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:2.3.3'
     }
 }
 
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "com.uber.rave.sample"
@@ -31,8 +30,8 @@ android {
 }
 
 dependencies {
-    compile 'androidx.appcompat:appcompat:1.0.2'
-    compile 'androidx.multidex:multidex:2.0.0'
+    compile 'com.android.support:appcompat-v7:27.1.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'javax.inject:javax.inject:1'
 
     compile 'com.google.dagger:dagger:2.10'
@@ -44,6 +43,6 @@ dependencies {
     compile project(':rave')
     annotationProcessor project(':rave-compiler')
 
-    compile 'com.jakewharton:butterknife:9.0.0-rc1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

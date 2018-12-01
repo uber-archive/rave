@@ -2,8 +2,8 @@ package fixtures.validationstrategy.simple;
 
 import fixtures.validationstrategy.StrictModeFactory;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.uber.rave.annotation.Validated;
 

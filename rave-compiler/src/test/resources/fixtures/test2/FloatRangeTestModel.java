@@ -1,6 +1,6 @@
 package com.uber.rave.model;
 
-import androidx.annotation.FloatRange;
+import android.support.annotation.FloatRange;
 
 import com.uber.rave.AnnotationSpecs;
 import com.uber.rave.DoubleCreator;
@@ -10,7 +10,7 @@ import com.uber.rave.annotation.Validated;
 import com.uber.rave.compiler.MyFactory;
 
 /**
- * A class that uses {@link androidx.annotation.FloatRange} annotation.
+ * A class that uses {@link android.support.annotation.FloatRange} annotation.
  */
 @Validated(factory = MyFactory.class)
 public class FloatRangeTestModel {

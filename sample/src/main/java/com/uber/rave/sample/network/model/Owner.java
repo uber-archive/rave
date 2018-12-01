@@ -1,6 +1,6 @@
 package com.uber.rave.sample.network.model;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import com.uber.rave.annotation.Validated;
 import com.uber.rave.sample.network.RaveValidatorFactory;

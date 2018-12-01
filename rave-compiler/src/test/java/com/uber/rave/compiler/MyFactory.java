@@ -20,7 +20,7 @@
 
 package com.uber.rave.compiler;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import com.uber.rave.BaseValidator;
 import com.uber.rave.ValidatorFactory;

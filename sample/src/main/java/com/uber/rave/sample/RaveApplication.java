@@ -1,5 +1,5 @@
 package com.uber.rave.sample;
 
-import androidx.multidex.MultiDexApplication;
+import android.support.multidex.MultiDexApplication;
 
 public class RaveApplication extends MultiDexApplication { }

@@ -1,6 +1,6 @@
 package com.uber.rave.model;
 
-import androidx.annotation.IntRange;
+import android.support.annotation.IntRange;
 
 import com.uber.rave.AnnotationSpecs;
 import com.uber.rave.IntCreator;

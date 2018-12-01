@@ -1,6 +1,6 @@
 package com.uber.rave.model;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import com.uber.rave.model.SingleMethodSampleModel;
 import com.uber.rave.ObjectCreatorIncrementer;
