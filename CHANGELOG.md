@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 2.2.0
+----------------------------
+2018-12-03
+
+- **Breaking change:** Project migrated to [AndroidX](https://developer.android.com/jetpack/androidx/). See the [class and package mappings](https://developer.android.com/jetpack/androidx/migrate) for help migrating
+
 Version 2.1.0
 ----------------------------
 2018-04-18
